@@ -1,0 +1,262 @@
+.ledger-container {
+    width: 95%;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  .ledger-title {
+    text-align: center;
+    background-color: #606060;
+    color: white;
+    padding: 10px;
+    font-size: 22px;
+  }
+  
+  .table-section {
+    margin-top: 20px;
+  }
+  
+  h3 {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-left: 5px solid #606060;
+    font-size: 18px;
+  }
+  
+  .ledger-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .ledger-table th,
+  .ledger-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+  }
+  
+  .ledger-table th {
+    background-color: #f8f8f8;
+  }
+  
+  .agent {
+    color: blue;
+    /* font-weight: bold; */
+  }
+  
+  .final-amount {
+    color: green;
+    font-weight: bold;
+  }
+
+  .bg-final{
+    background-color: green;
+  }
+
+  .bg-final2{
+    background-color: #dc3545;
+  }
+  
+  .settlement-btn {
+    background-color: #ffc107;
+    color: black;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    /* font-weight: bold; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+  }
+  
+  .settlement-btn:hover {
+    background-color: #ffcc00;
+  }
+  
+  .table-container {
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .date-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .date-filters label {
+    font-size: 14px;
+  }
+  
+  .table-wrapper {
+    overflow-x: auto;
+  }
+  
+  .commission-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+  }
+  
+  .commission-table th, .commission-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .commission-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .reset-btn {
+    padding: 5px 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .reset-btn:hover {
+    background-color: darkred;
+  }
+
+  .bg-full {
+    background-color: var(--theme1-bg);
+    text-align: center;
+    padding: 15px;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  @media (max-width: 768px) {
+    .table-wrapper {
+      overflow-x: scroll;
+    }
+  }
+
+  .text-blue{
+    color: blue;
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 0px;
+    width: 400px;
+    border-radius: 10px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .modal-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+
+
+
+  .modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.3rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    outline: 0;
+  }
+  
+
+  .modal-fit-width {
+  width: auto !important;
+}
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-backdrop.fade {
+    opacity: 0;
+  }
+  .modal-backdrop.show {
+    opacity: 0.5;
+  }
+  
+  .modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+  }
+  
+  .modal-header .close {
+    padding: 1rem;
+    margin: -1rem -1rem -1rem auto;
+  }
+  
+  .modal-title {
+    margin-bottom: 0;
+    line-height: 1.5;
+  }
+  
+  .modal-body {
+    position: relative;
+    flex: 1 1 auto;
+    padding: 1rem;
+  }
+  
+  .modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem;
+    border-top: 1px solid #dee2e6;
+    border-bottom-left-radius: 0.3rem;
+    border-bottom-right-radius: 0.3rem;
+  }
+  
+  .modal-footer > :not(:first-child) {
+    margin-left: 0.25rem;
+  }
+  .modal-footer > :not(:last-child) {
+    margin-right: 0.25rem;
+  }
+  
+  .modal-scrollbar-measure {
+    position: absolute;
+    top: -9999px;
+    width: 50px;
+    height: 50px;
+    overflow: scroll;
+  }
+  
+
