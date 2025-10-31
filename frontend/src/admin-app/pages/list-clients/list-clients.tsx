@@ -1532,28 +1532,7 @@ const ListClients = () => {
                           </td>
 
                           {/* <td></td> */}
-                          <td>
-                              <a
-                                href={`https://wa.me/?text=${encodeURIComponent(
-                                  `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLinks:\nAdmin Link: https://taj44.com/\nClient Link: https://taj44.com/admin`
-                                )}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                title="Share on WhatsApp"
-                                style={{ display: "inline-flex", alignItems: "center" }}
-                              >
-                                <img
-                                  src="/imgs/whatsapp.png"
-                                  alt="WhatsApp"
-                                  style={{
-                                    width: "20px",
-                                    height: "20px",
-                                    objectFit: "contain",
-                                    cursor: "pointer",
-                                  }}
-                                />
-                              </a>
-                            </td><td>
+                        <td>
                               <a
                                 href={`https://wa.me/?text=${encodeURIComponent(
                                   `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLinks:\nAdmin Link: https://taj44.com/\nClient Link: https://taj44.com/admin`
