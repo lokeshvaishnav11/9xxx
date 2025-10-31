@@ -1179,62 +1179,134 @@ async deleteUser(req: Request, res: Response): Promise<Response> {
     }
   }
 
+  // async updateUserStatus(req: Request, res: Response): Promise<Response> {
+  //   try {
+  //     const { username, isUserActive, isUserBetActive,  isUserBet2Active, transactionPassword, single } = req.body
+  //     const currentUser: any = req.user
+  //     console.log(req.body,"ressss")
+  //     const currentUserData: any = await User.findOne({ _id: currentUser._id })
+  //     if (!single) {
+  //       // const isMatch = await currentUserData.compareTxnPassword(transactionPassword)
+  //       // if (!isMatch) {
+  //       //   return this.fail(res, 'Transaction Password not matched')
+  //       // }
+  //     }
+  //     const user = await User.findOne({ username })
+  //     if (user) {
+  //       await User.updateMany(
+  //         {
+  //           $or: [
+  //             { _id: user._id },
+  //             { parentStr: { $elemMatch: { $eq: Types.ObjectId(user._id) } } },
+  //           ],
+  //         },
+  //         {
+  //           isLogin: isUserActive,
+  //           betLock: isUserBetActive,
+  //           betLock2: isUserBet2Active,
+  //         },
+  //       )
+
+  //       UserSocket.logout({
+  //             role: user.role,
+  //             sessionId: '123',
+  //             _id: user._id,
+  //           })
+
+
+  //           // Create an operation log
+  //           await Operation.create({
+  //             username: username,
+  //             operation: "Status Change",
+  //             // doneBy: currentUser.username,
+  //             doneBy: `${currentUser.username} (${currentUserData.code})`,
+
+  //             // description: `OLD status: Login=${user.isLogin}, Bet=${user.betLock}, Bet2=${user.betLock2} | NEW status: Login=${isUserActive}, Bet=${isUserBetActive}, Bet2=${isUserBet2Active}`,
+
+  //             description: `OLD status Disable, NEW status Active`,
+  //           });
+
+  //       return this.success(res, {}, 'User status updated')
+  //     } else {
+  //       return this.fail(res, 'User does not exist!')
+  //     }
+  //   } catch (e: any) {
+  //     return this.fail(res, e)
+  //   }
+  // }
+
+
   async updateUserStatus(req: Request, res: Response): Promise<Response> {
-    try {
-      const { username, isUserActive, isUserBetActive,  isUserBet2Active, transactionPassword, single } = req.body
-      const currentUser: any = req.user
-      console.log(req.body,"ressss")
-      const currentUserData: any = await User.findOne({ _id: currentUser._id })
-      if (!single) {
-        // const isMatch = await currentUserData.compareTxnPassword(transactionPassword)
-        // if (!isMatch) {
-        //   return this.fail(res, 'Transaction Password not matched')
-        // }
-      }
-      const user = await User.findOne({ username })
-      if (user) {
-        await User.updateMany(
-          {
-            $or: [
-              { _id: user._id },
-              { parentStr: { $elemMatch: { $eq: Types.ObjectId(user._id) } } },
-            ],
-          },
-          {
-            isLogin: isUserActive,
-            betLock: isUserBetActive,
-            betLock2: isUserBet2Active,
-          },
-        )
+  try {
+    const {
+      username,
+      isUserActive,
+      isUserBetActive,
+      isUserBet2Active,
+      transactionPassword,
+      single,
+    } = req.body;
 
-        UserSocket.logout({
-              role: user.role,
-              sessionId: '123',
-              _id: user._id,
-            })
+    const currentUser: any = req.user;
+    console.log(req.body, "Request body");
 
+    const currentUserData: any = await User.findOne({ _id: currentUser._id });
 
-            // Create an operation log
-            await Operation.create({
-              username: username,
-              operation: "Status Change",
-              // doneBy: currentUser.username,
-              doneBy: `${currentUser.username} (${currentUserData.code})`,
-
-              // description: `OLD status: Login=${user.isLogin}, Bet=${user.betLock}, Bet2=${user.betLock2} | NEW status: Login=${isUserActive}, Bet=${isUserBetActive}, Bet2=${isUserBet2Active}`,
-
-              description: `OLD status Disable, NEW status Active`,
-            });
-
-        return this.success(res, {}, 'User status updated')
-      } else {
-        return this.fail(res, 'User does not exist!')
-      }
-    } catch (e: any) {
-      return this.fail(res, e)
+    if (!single) {
+      // Uncomment this if you want to validate transaction password
+      // const isMatch = await currentUserData.compareTxnPassword(transactionPassword);
+      // if (!isMatch) {
+      //   return this.fail(res, 'Transaction Password not matched');
+      // }
     }
-  }
 
+    const user = await User.findOne({ username });
+    if (!user) {
+      return this.fail(res, 'User does not exist!');
+    }
+
+    // Find all users affected (main user + child users)
+    const usersToUpdate = await User.find({
+      $or: [
+        { _id: user._id },
+        { parentStr: { $elemMatch: { $eq: Types.ObjectId(user._id) } } },
+      ],
+    });
+
+    if (usersToUpdate.length > 0) {
+      // Update all matched users in the database
+      await User.updateMany(
+        { _id: { $in: usersToUpdate.map(u => u._id) } },
+        {
+          isLogin: isUserActive,
+          betLock: isUserBetActive,
+          betLock2: isUserBet2Active,
+        }
+      );
+
+      // Logout each affected user
+      usersToUpdate.forEach(u => {
+        UserSocket.logout({
+          role: u.role,
+          sessionId: '123', // You may want to replace this with the real sessionId
+          _id: u._id,
+        });
+      });
+
+      // Create operation log
+      await Operation.create({
+        username: username,
+        operation: "Status Change",
+        doneBy: `${currentUser.username} (${currentUserData.code})`,
+        description: `OLD status Disable, NEW status Active`,
+      });
+    }
+
+    return this.success(res, {}, 'User status updated');
+  } catch (e: any) {
+    return this.fail(res, e);
+  }
+}
   
 
   async updateUserWallet(req: Request, res: Response): Promise<Response> {
