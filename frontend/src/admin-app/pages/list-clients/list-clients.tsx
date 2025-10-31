@@ -742,7 +742,7 @@ const ListClients = () => {
                     <div className="">
                       {/* <h2 className="d-inline-block">Account List</h2> */}
                       <p>
-                        {(userState.user.role == RoleType.admin ||
+                        {/* {(userState.user.role == RoleType.admin ||
                           userState.user.role == RoleType.sadmin) && (
                           <button
                             type="submit"
@@ -751,7 +751,7 @@ const ListClients = () => {
                           >
                             Logout All Users
                           </button>
-                        )}
+                        )} */}
 
                         {/* <button
                           type="submit"
