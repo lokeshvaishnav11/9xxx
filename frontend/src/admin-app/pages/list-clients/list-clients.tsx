@@ -1538,7 +1538,7 @@ const ListClients = () => {
                             <td>
                               <a
                                 href={`https://wa.me/?text=${encodeURIComponent(
-                                  `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLinks:\nAdmin Link: https://taj44.com/\nClient Link: https://taj44.com/admin`
+                                  `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLinks:\nAdmin Link: https://taj44.com/admin\nClient Link: https://taj44.com`
                                 )}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -1546,7 +1546,7 @@ const ListClients = () => {
                                 style={{ display: "inline-flex", alignItems: "center" }}
                               >
                                 <img
-                                  src="/imgs/whatsapp.png"
+                                  src="https://admin.7wickets.co/assets/images/whatsapp.png"
                                   alt="WhatsApp"
                                   style={{
                                     width: "20px",
@@ -1619,30 +1619,9 @@ const ListClients = () => {
                               </td>
                             ) : (
                               <td>
-                                <button
-                                  onClick={() => {
-                                    const dummy = [
-                                      { matchName: "Australia v India", exposure: 5000, date: "Oct 31, 2025 2:13:12 PM" },
-                                      { matchName: "Australia v India", exposure: 1000, date: "Oct 31, 2025 2:09:45 PM" },
-                                      { matchName: "Australia v India", exposure: 5000, date: "Oct 31, 2025 2:09:37 PM" },
-                                      { matchName: "Australia v India", exposure: 5000, date: "Oct 31, 2025 2:09:26 PM" },
-                                    ];
-                                    setEngageRows(dummy);
-                                    setEngageModalOpen(true);
-                                  }}
-                                  style={{
-                                    background: "transparent",
-                                    border: "none",
-                                    color: "#0b66c3",
-                                    textDecoration: "underline",
-                                    cursor: "pointer",
-                                    fontSize: 13,
-                                    padding: 0,
-                                  }}
-                                  title="View Exposure Details"
-                                >
+                              
                                   {mainBalancechild(user).toFixed(2)}
-                                </button>
+                              
                               </td>
                             )}
 
