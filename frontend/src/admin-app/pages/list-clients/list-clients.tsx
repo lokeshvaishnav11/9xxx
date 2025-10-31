@@ -1535,7 +1535,7 @@ const ListClients = () => {
                         <td>
                               <a
                                 href={`https://wa.me/?text=${encodeURIComponent(
-                                  `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLinks:\nAdmin Link: https://taj44.com/\nClient Link: https://taj44.com/admin`
+                                  `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLinks:\nAdmin Link: https://taj44.com/admin/\nClient Link: https://taj44.com`
                                 )}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
