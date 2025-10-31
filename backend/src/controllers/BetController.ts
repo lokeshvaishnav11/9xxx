@@ -1341,6 +1341,44 @@ export class BetController extends ApiController {
     }
   };
 
+ betList32 = async (req: Request, res: Response): Promise<Response> => {
+  console.log(req.body, "req.body");
+
+  try {
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: "userId is required" });
+    }
+
+  
+
+    // Agar admin ya subadmin hai to unke child users ke bets
+   
+
+    // Sirf pending bets leke aa
+    const bets = await Bet.find({
+      userId:ObjectId(userId),
+      status: "pending",
+    })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    console.log(bets, "Pending bets fetched");
+
+    return res.status(200).json({
+      success: true,
+      bets,
+    });
+  } catch (e: any) {
+    console.error(e);
+    return res.status(500).json({
+      success: false,
+      message: e.message || "Something went wrong",
+    });
+  }
+};
+
 
 
   // marketDetails = async (req: Request, res: Response): Promise<Response> => {
