@@ -53,6 +53,8 @@ import DeleteModal from "./modals/DeleteModal";
 import WalletIcon from "@mui/icons-material/Wallet";
 import { ClassNames } from "@emotion/react";
 import EngageModal from "./modals/EngageModel";
+import accountService from "../../../services/account.service";
+
 
 
 const ListClients = () => {
@@ -1598,17 +1600,21 @@ const ListClients = () => {
                           )} */}
 
 
-                           {user.role === "user" ? (
+                            {user.role === "user" ? (
                               <td>
-                                <button
-                                  onClick={() => {
+                                {/* <button
+                                  onClick={async(user:any) => {
                                     // dummy data for modal
-                                    const dummy = [
-                                      { matchName: "Australia v India", exposure: 5000, date: "Oct 31, 2025 2:13:12 PM" },
-                                      { matchName: "Australia v India", exposure: 1000, date: "Oct 31, 2025 2:09:45 PM" },
-                                      { matchName: "Australia v India", exposure: 5000, date: "Oct 31, 2025 2:09:37 PM" },
-                                      { matchName: "Australia v India", exposure: 5000, date: "Oct 31, 2025 2:09:26 PM" },
-                                    ];
+                                    // const dummy = [
+                                    //   { matchName: "Australia v India", exposure: 5000, date: "Oct 31, 2025 2:13:12 PM" },
+                                    //   { matchName: "Australia v India", exposure: 1000, date: "Oct 31, 2025 2:09:45 PM" },
+                                    //   { matchName: "Australia v India", exposure: 5000, date: "Oct 31, 2025 2:09:37 PM" },
+                                    //   { matchName: "Australia v India", exposure: 5000, date: "Oct 31, 2025 2:09:26 PM" },
+                                    // ];
+                                    const data = {userId:user}
+                                    console.log(data,"data is here")
+                                    const res =await accountService.getBets32(data)
+                                    console.log(res,"res is here")
                                     setEngageRows(dummy);
                                     setEngageModalOpen(true);
                                   }}
@@ -1624,13 +1630,55 @@ const ListClients = () => {
                                   title="View Exposure Details"
                                 >
                                   {finalExposer(user?.balance)}
+                                </button> */}
+                                <button
+                                  onClick={async () => {
+                                    try {
+                                      // user object ko check kar le
+                                      if (!user || !user._id) {
+                                        console.error("User data missing!");
+                                        return;
+                                      }
+
+                                      const data = { userId: user._id };
+                                      console.log(data, "data being sent");
+
+                                      const res = await accountService.getBets32(data);
+                                      console.log(res, "response from getBets32");
+
+                                      // yahan assume kar rahe hain ki res.data ya res.results me array aata hai
+                                      if (res) {
+                                        setEngageRows(res?.data?.bets);
+                                      }  else {
+                                        console.warn("Unexpected response format:", res);
+                                        setEngageRows([]); // fallback empty array
+                                      }
+
+                                      setEngageModalOpen(true);
+                                    } catch (error) {
+                                      console.error("Error fetching exposure details:", error);
+                                    }
+                                  }}
+                                  style={{
+                                    background: "transparent",
+                                    border: "none",
+                                    color: "#0b66c3",
+                                    textDecoration: "underline",
+                                    cursor: "pointer",
+                                    fontSize: 13,
+                                    padding: 0,
+                                  }}
+                                  title="View Exposure Details"
+                                >
+                                  {finalExposer(user?.balance)}
                                 </button>
+
                               </td>
                             ) : (
                               <td>
-                              
-                                  {mainBalancechild(user).toFixed(2)}
-                              
+
+                                {mainBalancechild(user).toFixed(2)}
+
                               </td>
                             )}
 
