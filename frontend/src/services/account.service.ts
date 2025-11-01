@@ -13,6 +13,10 @@ class AccountService {
     return api.get(`matchdetail`);
   }
 
+   getBets32(data:any) {
+    return api.post(`bet32`,data);
+  }
+
   comgames(){
     return api.get('completedgames')
   }
