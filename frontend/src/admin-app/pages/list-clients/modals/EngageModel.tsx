@@ -269,7 +269,7 @@ const EngageModal: React.FC<EngageModalProps> = ({
           onClick={(e) => e.stopPropagation()}
           tabIndex={-1}
         >
-          <div style={styles.header}>
+          {/* <div style={styles.header}>
             <div style={styles.titleWrap}>
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <h3 style={styles.title}>{title}</h3>
@@ -302,11 +302,11 @@ const EngageModal: React.FC<EngageModalProps> = ({
                 ×
               </button>
             </div>
-          </div>
+          </div> */}
 
           <div style={styles.body}>
             <div style={styles.controls}>
-              <div style={styles.search}>
+              {/* <div style={styles.search}>
                 <input
                   type="search"
                   placeholder="Search match name..."
@@ -317,9 +317,9 @@ const EngageModal: React.FC<EngageModalProps> = ({
                 <div style={{ fontSize: 13, color: "#6b7280" }}>
                   <strong>{filtered.length}</strong> results
                 </div>
-              </div>
+              </div> */}
 
-              <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
+              {/* <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
                 <button
                   onClick={() => {
                     // quick highlight: focus the first large exposure
@@ -344,7 +344,7 @@ const EngageModal: React.FC<EngageModalProps> = ({
                 >
                   Highlight Big
                 </button>
-              </div>
+              </div> */}
             </div>
 
             <div style={styles.tableWrap}>
@@ -364,7 +364,7 @@ const EngageModal: React.FC<EngageModalProps> = ({
                       </td>
                     </tr>
                   ) : (
-                    filtered.map((r, idx) => {
+                    filtered.map((r:any, idx) => {
                       const isHighlighted = highlightIdx === idx;
                       return (
                         <tr
@@ -380,7 +380,7 @@ const EngageModal: React.FC<EngageModalProps> = ({
                         >
                           <td style={styles.td}>
                             <div style={{ fontWeight: 700, marginBottom: 6 }}>
-                              {r.matchName}
+                              {r.selectionName}
                             </div>
                             <div style={{ fontSize: 13, color: "#6b7280" }}>
                               {/* small helper text */}
@@ -391,10 +391,11 @@ const EngageModal: React.FC<EngageModalProps> = ({
                           </td>
                           <td style={styles.td}>
                             <span style={styles.exposurePill}>
-                              {Number(r.exposure).toLocaleString()}
+                              {Number(r.stack).toLocaleString()}
                             </span>
                           </td>
-                          <td style={styles.td}>{formatDate(r.date)}</td>
+                          <td style={styles.td}>{formatDate(r.betClickTime
+)}</td>
                         </tr>
                       );
                     })
@@ -408,14 +409,14 @@ const EngageModal: React.FC<EngageModalProps> = ({
             <button onClick={onClose} style={styles.closePrimary}>
               Close
             </button>
-            <button
+            {/* <button
               onClick={() => {
                 exportCSV();
               }}
               style={styles.exportBtn}
             >
               Export CSV
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
