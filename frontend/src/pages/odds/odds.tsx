@@ -23,6 +23,7 @@ import { selectInitApp } from '../../redux/actions/common/commonSlice'
 import { typographyClasses } from '@mui/material'
 import betService from '../../services/bet.service'
 import {io} from "socket.io-client";
+import ClientBetsUser from '../../admin-app/pages/SportsDetail/ClientBetsUser'
 
 
 // const isMobile = true;
@@ -388,8 +389,8 @@ const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
 
   
 
-  return !isMobile || (isMobile && userState?.user?.role != RoleType.user) ? (
-    <MatchDetail
+ return !isMobile || (isMobile && userState?.user?.role != RoleType.user) ? (
+    <><MatchDetail
       currentMatch={currentMatch}
       fancies={fancies}
       scoreBoard={scoreBoard}
@@ -399,18 +400,21 @@ const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
       t10Tv={t10Tv}
       matchedMatch={matchedMatch}
       otherTv={otherTv} />
+
+     {userState?.user?.role != RoleType.user ? <ClientBetsUser /> : <></>}
+      </>
+      
   ) : (
-    <MatchDetailMobile
-      currentMatch={currentMatch}
-      fancies={fancies}
-      scoreBoard={scoreBoard}
-      marketDataList={marketDataList}
-      matchId={matchId}
-      t10Tv={t10Tv}
-      markets={markets}
-      matchedMatch={matchedMatch}
-      otherTv={otherTv}
-    />
+    <><MatchDetailMobile
+        currentMatch={currentMatch}
+        fancies={fancies}
+        scoreBoard={scoreBoard}
+        marketDataList={marketDataList}
+        matchId={matchId}
+        t10Tv={t10Tv}
+        markets={markets}
+        matchedMatch={matchedMatch}
+        otherTv={otherTv} /> {userState?.user?.role != RoleType.user ? <ClientBetsUser /> : <></>}</>
   )
 }
 export default React.memo(Odds)
