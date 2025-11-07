@@ -31,7 +31,7 @@ const BookPopup = () => {
         close()
       }}
       contentLabel='Fancy Book'
-      className={'modal-dialog modal-sm'}
+      className={'modal-dialog modal-sm d-none'}
       ariaHideApp={false}
     >
       <div className='modal-content'>
