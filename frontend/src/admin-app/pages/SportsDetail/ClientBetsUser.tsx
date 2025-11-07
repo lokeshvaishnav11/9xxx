@@ -2,12 +2,14 @@ import React from "react";
 import accountService from "../../../services/account.service";
 import { AxiosResponse } from "axios";
 import { useParams } from "react-router-dom";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { selectUserData } from "../../../redux/actions/login/loginSlice";
 import { dateFormat } from "../../../utils/helper";
 import moment from "moment";
 import { isMobile } from "react-device-detect";
 import UserService from "../../../services/user.service";
+import { FancyBook, selectBookFancy, setBookFancy } from "../../../redux/actions/bet/betSlice";
+import bookService from "../../../services/book.service";
 
 // const isMobile = true;
 //
@@ -78,6 +80,8 @@ const ClientBetsUser = () => {
   const [marketData2, setmarketData2] = React.useState<MatchItem[]>([]);
   const [sendid, setSendid] = React.useState(null);
   const [stack, setStack] = React.useState<any[]>([]);
+
+  const dispatch = useAppDispatch()
 
   const maid = useParams().matchId;
 
@@ -320,6 +324,8 @@ const ClientBetsUser = () => {
 
   const [ledgerTotal, setLedgerTotal] = React.useState<any>({});
 
+
+
   const showModal = (username: string) => {
     setSelectedUser(username);
   };
@@ -347,6 +353,23 @@ const ClientBetsUser = () => {
       setPlus(true);
     }
   }, [isMobile]);
+
+  const bookFancy: FancyBook = useAppSelector(selectBookFancy)
+    const [book, setBook] = React.useState<Record<string, number>>({})
+    const [isOpen, setIsOpen] = React.useState(false)
+  
+    React.useEffect(() => {
+      if (bookFancy.matchId) {
+        bookService.getFancyBook(bookFancy).then((res: AxiosResponse) => {
+          setBook(res.data.data)
+          setIsOpen(true)
+        })
+      }
+    }, [bookFancy])
+    const close = () => {
+      dispatch(setBookFancy({} as FancyBook))
+      setIsOpen(false)
+    }
 
   return (
     <>
@@ -428,7 +451,7 @@ const ClientBetsUser = () => {
           </div>
         </div>
 
-        <div className="row">
+        <div className="row d-none">
           <div className="col-md-6">
             <table
               className="table table-striped table-bordered"
@@ -617,11 +640,20 @@ const ClientBetsUser = () => {
                   <>
                     <h6 className="mb-2" key={bet?.selectionId}>
                       <button
-                        onClick={() =>
+                        onClick={() => {
                           setSendid((prev) =>
                             prev === bet?.selectionId ? null : bet?.selectionId
-                          )
-                        }
+                          );
+                        
+                          dispatch(
+                            setBookFancy({
+                              matchId: bet?.matchId,
+                              selectionId: bet?.selectionId,
+                              marketName: bet?.selectionName,
+                            })
+                          );
+                        }}
+                        
                         className="p-2 small badge navbar-bet99 w-100 text-left border text-dark ng-binding"
                       >
                         {bet?.selectionName}
@@ -630,7 +662,7 @@ const ClientBetsUser = () => {
                           <i className="fas fa-trophy"></i>
                           {bet?.fancy?.result
                             ? bet?.fancy?.result
-                            : bet?.oppsiteVol}
+                            : ''}
                           {/* // )} */}
                         </span>
                       </button>
@@ -743,6 +775,27 @@ const ClientBetsUser = () => {
                                   </tr>
                                 ))}
                             </tbody>
+                            <div className="book-badges">
+  {Object.keys(book).length > 0 &&
+    Object.keys(book).map((itemKey) => {
+      const value = book[itemKey];
+      const isLay = value < 0;
+
+      return (
+        <div
+          key={itemKey}
+          className={`book-badge ${isLay ? 'lay' : 'back'}`}
+        >
+          <span className="badge-label">{itemKey}</span>
+          <span
+            className={`badge-value ${isLay ? 'red' : 'green'}`}
+          >
+            {value}
+          </span>
+        </div>
+      );
+    })}
+</div>
                           </table>
                         </div>
                       </div>

@@ -657,7 +657,7 @@ const AllClientLedger = () => {
   }, [userState]);
 
   return (
-    <>
+    <div style={{zoom:0.8}}>
       <p className="text-center bg-secondary tx-12 text-white p-1">My Ledger</p>
 
       <div className="ledger-container">
@@ -833,7 +833,7 @@ const AllClientLedger = () => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
