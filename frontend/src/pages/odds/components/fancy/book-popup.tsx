@@ -15,7 +15,7 @@ const BookPopup = () => {
     if (bookFancy.matchId) {
       bookService.getFancyBook(bookFancy).then((res: AxiosResponse) => {
         setBook(res.data.data)
-        setIsOpen(true)
+        // setIsOpen(true)
       })
     }
   }, [bookFancy])
