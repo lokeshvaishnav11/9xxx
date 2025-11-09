@@ -22,7 +22,7 @@ type Props = {
 
 
 export const AvailableToBackLay = React.memo(
-  
+
   ({ selections, market, runner }: Props) => {
     const dispatch = useAppDispatch();
     const getCurrentMatch = useAppSelector(selectCurrentMatch);
@@ -43,7 +43,7 @@ export const AvailableToBackLay = React.memo(
             betData: {
               isBack,
               // odds: parseFloat(back.price.toFixed(4)),
-              odds: market.marketName == "Bookmaker" ?  parseFloat(back.price.toFixed(4)): parseFloat(back.price.toFixed(4)),
+              odds: market.marketName == "Bookmaker" ? parseFloat(back.price.toFixed(4)) : parseFloat(back.price.toFixed(4)),
               volume: back.size,
               marketId: market.marketId,
               marketName: market.marketName,
@@ -74,20 +74,20 @@ export const AvailableToBackLay = React.memo(
         const blinkCls = back.changed ? "blink" : "";
         if (market.oddsType == OddsType.BM && index !== 2) return;
         const classforbox =
-          (market.oddsType != OddsType.BM) 
+          (market.oddsType != OddsType.BM)
             ? "box-1"
             : "box-2";
 
 
 
-    //          // Decide what to display based on index
-    // let displayPrice = "";
-    // if (index === 2) {
-    //   displayPrice =
-    //     market.oddsType === OddsType.B
-    //       ? back.price || "-"
-    //       : (back.price * 100 - 100).toFixed() || "-";
-    // }
+        //          // Decide what to display based on index
+        // let displayPrice = "";
+        // if (index === 2) {
+        //   displayPrice =
+        //     market.oddsType === OddsType.B
+        //       ? back.price || "-"
+        //       : (back.price * 100 - 100).toFixed() || "-";
+        // }
 
         return (
           <div
@@ -96,18 +96,18 @@ export const AvailableToBackLay = React.memo(
             className={`${classforbox}  text-center ${cls} ${blinkCls}`}
           >
 
-<span className="odd d-block">
+            <span className="odd d-block">
               {market.oddsType == OddsType.BM
-                ? (back.price*100-100).toFixed(2)
-                  ? (back.price*100-100).toFixed(2)
+                ? (back.price * 100 - 100).toFixed(2)
+                  ? (back.price * 100 - 100).toFixed(2)
                   : "-"
-                : (back.price*100-100).toFixed(2)
-                ? (back.price*100-100).toFixed(2)
-                : "-"}
+                : (back.price * 100 - 100).toFixed(2)
+                  ? (back.price * 100 - 100).toFixed(2)
+                  : "-"}
             </span>
-     
+
             {/* <span className="odd d-block">{displayPrice}</span> */}
-          
+
             {/* <span className="d-block">
               {back.size ? nFormatter(back.size, 1) : "-"}
             </span> */}
@@ -121,7 +121,7 @@ export const AvailableToBackLay = React.memo(
         const i = index;
         const cls = index === 0 ? "lay" : `lay${i}`;
         const blinkCls = lay.changed ? "blink" : "";
-        if ( market.oddsType == OddsType.BM && index != 0) return;
+        if (market.oddsType == OddsType.BM && index != 0) return;
         const classforbox =
           (market.oddsType != OddsType.BM)
             ? "box-1"
@@ -129,14 +129,14 @@ export const AvailableToBackLay = React.memo(
 
 
 
-    //          // Determine what to show
-    // let displayPrice = "";
-    // if (index === 0) {
-    //   displayPrice =
-    //     market.oddsType === OddsType.B
-    //       ? lay.price || "-"
-    //       : lay.price || "-";
-    // }
+        //          // Determine what to show
+        // let displayPrice = "";
+        // if (index === 0) {
+        //   displayPrice =
+        //     market.oddsType === OddsType.B
+        //       ? lay.price || "-"
+        //       : lay.price || "-";
+        // }
 
 
 
@@ -147,15 +147,18 @@ export const AvailableToBackLay = React.memo(
             className={`${classforbox}   text-center ${cls} ${blinkCls}`}
           >
 
-           
-            <span className="odd d-block">
+
+            <span className="odd d-block" style={{
+              width: "80px",   // pehle chhoti thi, isse wide ho jaayegi
+              // display: "inline-block",
+            }}>
               {market.oddsType == OddsType.BM
-                ? (lay.price*100-100).toFixed(2)
-                  ? (lay.price*100-100).toFixed(2)
+                ? (lay.price * 100 - 100).toFixed(2)
+                  ? (lay.price * 100 - 100).toFixed(2)
                   : "-"
-                : (lay.price*100-100).toFixed(2)
-                ? (lay.price*100-100).toFixed(2)
-                : "-"}
+                : (lay.price * 100 - 100).toFixed(2)
+                  ? (lay.price * 100 - 100).toFixed(2)
+                  : "-"}
             </span>
 
 

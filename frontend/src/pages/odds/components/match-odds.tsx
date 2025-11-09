@@ -226,10 +226,10 @@ class MatchOdds extends React.PureComponent<
                   )} */}
 
                   <div style={{ backgroundColor: "#76d68f", borderColor: "#76d68f", }} className={`back ${classforheading} float-left text-center`}>
-                    <b>Back</b>
+                    <b>Lagai</b>
                   </div>
                   <div style={{ backgroundColor: "#76d68f", borderColor: "#76d68f", }} className={`lay ${classforheading} float-left text-center`}>
-                    <b>Lay</b>
+                    <b>Khai</b>
                   </div>
                   {/* {  (
                     <>

@@ -22,8 +22,9 @@ import authService from '../../services/auth.service'
 import { selectInitApp } from '../../redux/actions/common/commonSlice'
 import { typographyClasses } from '@mui/material'
 import betService from '../../services/bet.service'
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 import ClientBetsUser from '../../admin-app/pages/SportsDetail/ClientBetsUser'
+import moment from 'moment'
 
 
 // const isMobile = true;
@@ -43,7 +44,7 @@ const Odds = () => {
   const [isTvShow, setIsTvShow] = React.useState<boolean>(false)
   const userState = useAppSelector(selectUserData)
   const { matchId } = useParams()
-  console.log(matchId,"matchid inn spots ")
+  console.log(matchId, "matchid inn spots ")
   const dispatch = useDispatch()
   const selectFancyT = useAppSelector(selectFancyType)
   const initApp = useAppSelector(selectInitApp)
@@ -61,13 +62,13 @@ const Odds = () => {
   //   }
 
   //   fancyadd();
-    
+
   // },[matchId])
 
- 
 
 
-  
+
+
 
   const fetchOddsDetail = async () => {
     try {
@@ -149,8 +150,8 @@ const Odds = () => {
     fetchT10Stream()
   }, [marketDataList])
 
-  
-  
+
+
   const scoreBoard = () => {
     if (currentMatch && currentMatch.sportId == '4333')
       return <Score matchId={currentMatch?.matchId} isT10={currentMatch?.isT10 || false} />
@@ -181,7 +182,7 @@ const Odds = () => {
       currentMatch && currentMatch.sportId == '4'
         ? 'https://livestream-v3-iframe.akamaized.uk/?eventid='
         : 'https://livestream-v3-iframe.akamaized.uk/?eventid='
-        // : 'https://hr08bets.in/sports-stream-live/index.html?eventid='
+    // : 'https://hr08bets.in/sports-stream-live/index.html?eventid='
     return (
       !currentMatch?.isT10 && (
         <div className='card m-b-10' style={{ border: '0px none' }}>
@@ -205,7 +206,7 @@ const Odds = () => {
                 // src={`https://playg3.livestream11.com/user/526414545/unknown/27.0.178.13/c590458e-6d81-450e-8a6d-119bc2234267`}
                 src={`https://livestream-v3-iframe.akamaized.uk/?eventid=${currentMatch?.matchId}`}
               ></iframe>
-              LIVE TV 
+              LIVE TV
             </div>
           )}
           {isMobile && (
@@ -215,7 +216,7 @@ const Odds = () => {
                 // src={`${tvUrl}${currentMatch?.matchId}`}
                 src={`https://livestream-v3-iframe.akamaized.uk/?eventid=${currentMatch?.matchId}`}
               ></iframe>
-          
+
             </div>
           )}
         </div>
@@ -228,7 +229,7 @@ const Odds = () => {
 
   React.useEffect(() => {
     if (!id) return; // prevent firing if id is undefined
-  
+
     betService.iframeUrl(id)
       .then((res) => {
         console.log(res, "res of data");
@@ -249,150 +250,156 @@ const Odds = () => {
     forceNew: true,
   };
 
-//   React.useEffect(()=>{
-//     const socket = io("https://d-score.scoreswift.xyz", options); 
+  //   React.useEffect(()=>{
+  //     const socket = io("https://d-score.scoreswift.xyz", options); 
 
-//     socket.on("connect", () => {
-//       console.log("Connected to server");
-    
-//       // this number is 462034047 oldgmid which you can get from "Match details endpoint"
-//       socket.emit("subscribe", { type: 1, rooms: [currentMatch?.matchId] });
-//       console.log("data has been send, waiting for score update");
-//     });
+  //     socket.on("connect", () => {
+  //       console.log("Connected to server");
 
-
-
-// socket.on("disconnect", () => {
-//   console.log("Disconnected from server");
-// });
-
-// // Error handling
-// socket.on("connect_error", (error:any) => {
-//   console.error("Connection error:", error);
-// });
-
-// socket.on("connect_timeout", () => {
-//   console.error("Connection timeout");
-// });
-
-
-// // score udpate will came here
-// socket.on("update", (data:any) => {
-//   console.log("score update has been arrived", data);
-// });
-
-// // Clean up on application exit
-// // process.on("SIGINT", () => {
-// //   console.log("Closing socket connection");
-// //   socket.close();
-// //   process.exit();
-// // });
-    
-    
-//   },[])
+  //       // this number is 462034047 oldgmid which you can get from "Match details endpoint"
+  //       socket.emit("subscribe", { type: 1, rooms: [currentMatch?.matchId] });
+  //       console.log("data has been send, waiting for score update");
+  //     });
 
 
 
+  // socket.on("disconnect", () => {
+  //   console.log("Disconnected from server");
+  // });
+
+  // // Error handling
+  // socket.on("connect_error", (error:any) => {
+  //   console.error("Connection error:", error);
+  // });
+
+  // socket.on("connect_timeout", () => {
+  //   console.error("Connection timeout");
+  // });
 
 
-const getSimilarity = (str1:any, str2:any) => {
-  if (!str1 || !str2) return 0;
-  str1 = str1.toLowerCase().replace(/[^a-z]/g, '');
-  str2 = str2.toLowerCase().replace(/[^a-z]/g, '');
+  // // score udpate will came here
+  // socket.on("update", (data:any) => {
+  //   console.log("score update has been arrived", data);
+  // });
 
-  let matches = 0;
-  for (let char of str1) {
-    if (str2.includes(char)) matches++;
-  }
-
-  const longerLength = Math.max(str1.length, str2.length);
-  return matches / longerLength;
-};
-
-const [matcheddata, setMatcheddata] = React.useState<any>({});
-const [matchedMatch, setMatchedMatch] = React.useState<any>({});
-const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
+  // // Clean up on application exit
+  // // process.on("SIGINT", () => {
+  // //   console.log("Closing socket connection");
+  // //   socket.close();
+  // //   process.exit();
+  // // });
 
 
-
-// React.useEffect(()=>{
-//   axios.get('https://cricket-apis.onrender.com/api/live-matches').then((res)=>{
-//     console.log(res,"recent matches ")
-//     const im = res?.data?.data
-    
-
-
-//     const matchTitle:string = currentMatch?.name; // e.g. "Sri Lanka v Bangladesh"
-//     if (!matchTitle) return;
-
-
-//     const [team1, team2] = matchTitle?.split(" v ").map(t => t.trim());
-
-//     const found = im.find((item:any) => {
-//       const a = item.team_a || "";
-//       const b = item.team_b || "";
-
-//       const score1a = getSimilarity(team1, a);
-//       const score2b = getSimilarity(team2, b);
-
-//       const score1b = getSimilarity(team1, b);
-//       const score2a = getSimilarity(team2, a);
-
-//       return (
-//         (score1a > 0.7 && score2b > 0.7) || // A-B order
-//         (score1b > 0.7 && score2a > 0.7)    // B-A order
-//       );
-//     });
-
-//     setMatcheddata(found || null);
-//     console.log(found, "matched match hdhdhdh match found");
+  //   },[])
 
 
 
 
-    
-//     // console.log(fim,"filtred mathes")
-//   })
-// },[currentMatch?.name])
 
-// React.useEffect(() => {
-//   if (!matcheddata?.match_id) return;
+  const getSimilarity = (str1: any, str2: any) => {
+    if (!str1 || !str2) return 0;
+    str1 = str1.toLowerCase().replace(/[^a-z]/g, '');
+    str2 = str2.toLowerCase().replace(/[^a-z]/g, '');
 
-//   const fetchLiveMatch = async () => {
-//     try {
-//       const response = await axios.post('https://cricket-apis.onrender.com/api/live-match', {
-//         match_id: matcheddata?.match_id
-//       });
+    let matches = 0;
+    for (let char of str1) {
+      if (str2.includes(char)) matches++;
+    }
 
-//       const newData = response?.data?.data;
-//       setMatchedMatch(newData);
-//       console.log("Live match data updated", newData);
-//     } catch (error) {
-//       console.error("Error fetching live match:", error);
-//     }
-//   };
+    const longerLength = Math.max(str1.length, str2.length);
+    return matches / longerLength;
+  };
 
-//   // Initial call
-//   fetchLiveMatch();
-
-//   // Setup polling every 5 seconds
-//   intervalRef.current = setInterval(fetchLiveMatch, 1000);
-
-//   // Cleanup on unmount or match_id change
-//   return () => {
-//     if (intervalRef.current) clearInterval(intervalRef.current);
-//   };
-// }, [matcheddata?.match_id]);
+  const [matcheddata, setMatcheddata] = React.useState<any>({});
+  const [matchedMatch, setMatchedMatch] = React.useState<any>({});
+  const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
 
 
 
+  // React.useEffect(()=>{
+  //   axios.get('https://cricket-apis.onrender.com/api/live-matches').then((res)=>{
+  //     console.log(res,"recent matches ")
+  //     const im = res?.data?.data
 
-  
 
- return !isMobile || (isMobile && userState?.user?.role != RoleType.user) ? (
+
+  //     const matchTitle:string = currentMatch?.name; // e.g. "Sri Lanka v Bangladesh"
+  //     if (!matchTitle) return;
+
+
+  //     const [team1, team2] = matchTitle?.split(" v ").map(t => t.trim());
+
+  //     const found = im.find((item:any) => {
+  //       const a = item.team_a || "";
+  //       const b = item.team_b || "";
+
+  //       const score1a = getSimilarity(team1, a);
+  //       const score2b = getSimilarity(team2, b);
+
+  //       const score1b = getSimilarity(team1, b);
+  //       const score2a = getSimilarity(team2, a);
+
+  //       return (
+  //         (score1a > 0.7 && score2b > 0.7) || // A-B order
+  //         (score1b > 0.7 && score2a > 0.7)    // B-A order
+  //       );
+  //     });
+
+  //     setMatcheddata(found || null);
+  //     console.log(found, "matched match hdhdhdh match found");
+
+
+
+
+
+  //     // console.log(fim,"filtred mathes")
+  //   })
+  // },[currentMatch?.name])
+
+  // React.useEffect(() => {
+  //   if (!matcheddata?.match_id) return;
+
+  //   const fetchLiveMatch = async () => {
+  //     try {
+  //       const response = await axios.post('https://cricket-apis.onrender.com/api/live-match', {
+  //         match_id: matcheddata?.match_id
+  //       });
+
+  //       const newData = response?.data?.data;
+  //       setMatchedMatch(newData);
+  //       console.log("Live match data updated", newData);
+  //     } catch (error) {
+  //       console.error("Error fetching live match:", error);
+  //     }
+  //   };
+
+  //   // Initial call
+  //   fetchLiveMatch();
+
+  //   // Setup polling every 5 seconds
+  //   intervalRef.current = setInterval(fetchLiveMatch, 1000);
+
+  //   // Cleanup on unmount or match_id change
+  //   return () => {
+  //     if (intervalRef.current) clearInterval(intervalRef.current);
+  //   };
+  // }, [matcheddata?.match_id]);
+
+
+
+
+
+
+  return !isMobile || (isMobile && userState?.user?.role != RoleType.user) ? (
     <><MatchDetail
       currentMatch={currentMatch}
-      fancies={fancies}
+      fancies={
+        moment().isSame(moment(currentMatch?.matchDateTime), "day") &&
+          moment().isAfter(moment(currentMatch?.matchDateTime))
+          ? fancies
+          : []
+      }
+      // fancies={fancies}
       scoreBoard={scoreBoard}
       marketDataList={marketDataList}
       matchId={matchId}
@@ -401,20 +408,26 @@ const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
       matchedMatch={matchedMatch}
       otherTv={otherTv} />
 
-     {userState?.user?.role != RoleType.user ? <ClientBetsUser /> : <></>}
-      </>
-      
+      {userState?.user?.role != RoleType.user ? <ClientBetsUser /> : <></>}
+    </>
+
   ) : (
     <><MatchDetailMobile
-        currentMatch={currentMatch}
-        fancies={fancies}
-        scoreBoard={scoreBoard}
-        marketDataList={marketDataList}
-        matchId={matchId}
-        t10Tv={t10Tv}
-        markets={markets}
-        matchedMatch={matchedMatch}
-        otherTv={otherTv} /> {userState?.user?.role != RoleType.user ? <ClientBetsUser /> : <></>}</>
+      currentMatch={currentMatch}
+      fancies={
+        moment().isSame(moment(currentMatch?.matchDateTime), "day") &&
+          moment().isAfter(moment(currentMatch?.matchDateTime))
+          ? fancies
+          : []
+      }
+      // fancies={fancies}
+      scoreBoard={scoreBoard}
+      marketDataList={marketDataList}
+      matchId={matchId}
+      t10Tv={t10Tv}
+      markets={markets}
+      matchedMatch={matchedMatch}
+      otherTv={otherTv} /> {userState?.user?.role != RoleType.user ? <ClientBetsUser /> : <></>}</>
   )
 }
 export default React.memo(Odds)

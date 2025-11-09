@@ -174,7 +174,7 @@ const [userAlldata, setUserAlldata] = React.useState<{ [key: string]: any }>({})
               <div className="d-flex align-items-center">
                 <CustomLink to="/" className="d-flex logo align-items-center">
                   <img
-                    src="/imgs/profiletop.png"
+                    src="/imgs/d006 copy.png"
                     className="img-fluid "
                     // style={{ maxHeight: "40px" }}
                     alt="Logo"

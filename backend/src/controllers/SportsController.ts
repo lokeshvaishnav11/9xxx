@@ -370,7 +370,7 @@ class SportsController extends ApiController {
     const fancy = await sportsService.getSession(match.matchId, match.sportId)
     const fancyone = fancy?.data?.sports?.filter((m: any) =>
       (m.gtype === "session" || m.gtype === "fancy1") &&
-      (m.RunnerName && !m.RunnerName.includes(" run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" Caught out ")) && (m.RunnerName && !m.RunnerName.includes(" ball No ")) && (m.RunnerName && !m.RunnerName.includes(" Run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" run bhav")) && (m.RunnerName.includes(".3 over ")) &&(m.RunnerName && m.RunnerName.includes(" 2")) && (m.RunnerName && m.RunnerName.includes(' ball run '))
+      (m.RunnerName && !m.RunnerName.includes(" run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" Caught out ")) && (m.RunnerName && !m.RunnerName.includes(" ball No ")) && (m.RunnerName && !m.RunnerName.includes(" Run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" run bhav")) && (m.RunnerName.includes(".3 over ")) &&(m.RunnerName && m.RunnerName.includes(" 2")) && (m.RunnerName && m.RunnerName.includes(' ball run ') && (m.RunnerName && m.RunnerName.includes(' ')))
     )
 
     if (fancy.data.sports) {

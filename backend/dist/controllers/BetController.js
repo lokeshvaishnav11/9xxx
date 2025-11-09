@@ -1162,6 +1162,35 @@ class BetController extends ApiController_1.ApiController {
                 return this.fail(res, e);
             }
         });
+        this.betList32 = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body, "req.body");
+            try {
+                const { userId } = req.body;
+                if (!userId) {
+                    return res.status(400).json({ message: "userId is required" });
+                }
+                // Agar admin ya subadmin hai to unke child users ke bets
+                // Sirf pending bets leke aa
+                const bets = yield Bet_1.Bet.find({
+                    userId: ObjectId(userId),
+                    status: "pending",
+                })
+                    .sort({ createdAt: -1 })
+                    .lean();
+                console.log(bets, "Pending bets fetched");
+                return res.status(200).json({
+                    success: true,
+                    bets,
+                });
+            }
+            catch (e) {
+                console.error(e);
+                return res.status(500).json({
+                    success: false,
+                    message: e.message || "Something went wrong",
+                });
+            }
+        });
         // marketDetails = async (req: Request, res: Response): Promise<Response> => {
         //   // console.log(req.body, req.query, req.user, "reqqqqqbcvvvod");
         //   function convertDecimalFields(obj: any): any {

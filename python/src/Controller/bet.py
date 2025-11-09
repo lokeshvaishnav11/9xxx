@@ -184,7 +184,7 @@ def checkMaxlimit(payload,userInfo):
 
         total_stack = result[0]["totalStack"] if result else 0
 
-        if payload['betOn'] == "CASINO" and total_stack+payload['stack'] > 10000000:
+        if payload['betOn'] == "CASINO" and total_stack+payload['stack'] > 50000:
             return {"message": "failed", "notification": "Max Limit completed !"}
         # elif payload['betOn'] == "MATCH_ODDS" and total_stack + payload['stack'] > 500000:
         #     return {"message": "failed", "notification": "Max Limit completed !"}

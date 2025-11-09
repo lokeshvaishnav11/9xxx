@@ -47,7 +47,7 @@ const TransactionPasswordModel = (props: any) => {
               किए जा सकते है और एक बात का ध्यान रखे, इस पासवर्ड को किसी के साथ सांझा ना करे|{' '}
             </p> */}
             <p style={{ fontSize: '16px', marginBottom: '10px' }}>
-              धन्यवाद, टीम {'taj44.com'}
+              धन्यवाद, टीम {'Delhi06.com'}
             </p>
           </div>
         </div>

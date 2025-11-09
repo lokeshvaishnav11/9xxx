@@ -22,6 +22,7 @@ class BetRoute {
         this.router.post('/getexposer', Passport_1.default.authenticateJWT, this.betController.getexposer);
         this.router.get('/bets', Passport_1.default.authenticateJWT, this.betController.betList);
         this.router.get('/bets22', Passport_1.default.authenticateJWT, this.betController.betList22);
+        this.router.post('/bet32', Passport_1.default.authenticateJWT, this.betController.betList32);
         this.router.get('/matchdetail', Passport_1.default.authenticateJWT, this.betController.marketDetails);
         this.router.get('/completedgames', Passport_1.default.authenticateJWT, this.betController.completedgames);
         this.router.get('/completedgamescasino', Passport_1.default.authenticateJWT, this.betController.completedgamescasino);

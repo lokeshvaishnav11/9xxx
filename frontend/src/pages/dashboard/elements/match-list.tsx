@@ -60,6 +60,8 @@ const MatchList: React.FC<MatchListProps> = ({
                           className="inplay"
                           style={{ color: "green" }}
                         >
+                          {moment().isSame(moment(match.matchDateTime), "day") && 
+   moment().isAfter(moment(match.matchDateTime))?
                           <svg
                             className="text-success Blink"
                             style={{ width: "12px", height: "12px" }}
@@ -71,8 +73,10 @@ const MatchList: React.FC<MatchListProps> = ({
                               fill="currentColor"
                               d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
                             />
-                          </svg>
-                          INPLAY
+                          </svg>:""}
+                         {moment().isSame(moment(match.matchDateTime), "day") && 
+   moment().isAfter(moment(match.matchDateTime)) ? "INPLAY" : ""} 
+                         
                         </p>
 
                                 <p className="ng-binding">

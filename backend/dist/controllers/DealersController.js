@@ -1064,50 +1064,104 @@ class DealersController extends ApiController_1.ApiController {
             }
         });
     }
+    // async updateUserStatus(req: Request, res: Response): Promise<Response> {
+    //   try {
+    //     const { username, isUserActive, isUserBetActive,  isUserBet2Active, transactionPassword, single } = req.body
+    //     const currentUser: any = req.user
+    //     console.log(req.body,"ressss")
+    //     const currentUserData: any = await User.findOne({ _id: currentUser._id })
+    //     if (!single) {
+    //       // const isMatch = await currentUserData.compareTxnPassword(transactionPassword)
+    //       // if (!isMatch) {
+    //       //   return this.fail(res, 'Transaction Password not matched')
+    //       // }
+    //     }
+    //     const user = await User.findOne({ username })
+    //     if (user) {
+    //       await User.updateMany(
+    //         {
+    //           $or: [
+    //             { _id: user._id },
+    //             { parentStr: { $elemMatch: { $eq: Types.ObjectId(user._id) } } },
+    //           ],
+    //         },
+    //         {
+    //           isLogin: isUserActive,
+    //           betLock: isUserBetActive,
+    //           betLock2: isUserBet2Active,
+    //         },
+    //       )
+    //       UserSocket.logout({
+    //             role: user.role,
+    //             sessionId: '123',
+    //             _id: user._id,
+    //           })
+    //           // Create an operation log
+    //           await Operation.create({
+    //             username: username,
+    //             operation: "Status Change",
+    //             // doneBy: currentUser.username,
+    //             doneBy: `${currentUser.username} (${currentUserData.code})`,
+    //             // description: `OLD status: Login=${user.isLogin}, Bet=${user.betLock}, Bet2=${user.betLock2} | NEW status: Login=${isUserActive}, Bet=${isUserBetActive}, Bet2=${isUserBet2Active}`,
+    //             description: `OLD status Disable, NEW status Active`,
+    //           });
+    //       return this.success(res, {}, 'User status updated')
+    //     } else {
+    //       return this.fail(res, 'User does not exist!')
+    //     }
+    //   } catch (e: any) {
+    //     return this.fail(res, e)
+    //   }
+    // }
     updateUserStatus(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { username, isUserActive, isUserBetActive, isUserBet2Active, transactionPassword, single } = req.body;
+                const { username, isUserActive, isUserBetActive, isUserBet2Active, transactionPassword, single, } = req.body;
                 const currentUser = req.user;
-                console.log(req.body, "ressss");
+                console.log(req.body, "Request body");
                 const currentUserData = yield User_1.User.findOne({ _id: currentUser._id });
                 if (!single) {
-                    // const isMatch = await currentUserData.compareTxnPassword(transactionPassword)
+                    // Uncomment this if you want to validate transaction password
+                    // const isMatch = await currentUserData.compareTxnPassword(transactionPassword);
                     // if (!isMatch) {
-                    //   return this.fail(res, 'Transaction Password not matched')
+                    //   return this.fail(res, 'Transaction Password not matched');
                     // }
                 }
                 const user = yield User_1.User.findOne({ username });
-                if (user) {
-                    yield User_1.User.updateMany({
-                        $or: [
-                            { _id: user._id },
-                            { parentStr: { $elemMatch: { $eq: mongoose_2.Types.ObjectId(user._id) } } },
-                        ],
-                    }, {
+                if (!user) {
+                    return this.fail(res, 'User does not exist!');
+                }
+                // Find all users affected (main user + child users)
+                const usersToUpdate = yield User_1.User.find({
+                    $or: [
+                        { _id: user._id },
+                        { parentStr: { $elemMatch: { $eq: mongoose_2.Types.ObjectId(user._id) } } },
+                    ],
+                });
+                if (usersToUpdate.length > 0) {
+                    // Update all matched users in the database
+                    yield User_1.User.updateMany({ _id: { $in: usersToUpdate.map(u => u._id) } }, {
                         isLogin: isUserActive,
                         betLock: isUserBetActive,
                         betLock2: isUserBet2Active,
                     });
-                    user_socket_1.default.logout({
-                        role: user.role,
-                        sessionId: '123',
-                        _id: user._id,
+                    // Logout each affected user
+                    usersToUpdate.forEach(u => {
+                        user_socket_1.default.logout({
+                            role: u.role,
+                            sessionId: '123',
+                            _id: u._id,
+                        });
                     });
-                    // Create an operation log
+                    // Create operation log
                     yield Operation_1.default.create({
                         username: username,
                         operation: "Status Change",
-                        // doneBy: currentUser.username,
                         doneBy: `${currentUser.username} (${currentUserData.code})`,
-                        // description: `OLD status: Login=${user.isLogin}, Bet=${user.betLock}, Bet2=${user.betLock2} | NEW status: Login=${isUserActive}, Bet=${isUserBetActive}, Bet2=${isUserBet2Active}`,
                         description: `OLD status Disable, NEW status Active`,
                     });
-                    return this.success(res, {}, 'User status updated');
                 }
-                else {
-                    return this.fail(res, 'User does not exist!');
-                }
+                return this.success(res, {}, 'User status updated');
             }
             catch (e) {
                 return this.fail(res, e);
