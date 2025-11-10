@@ -635,7 +635,7 @@ const [userList, setUserList] = React.useState<any>({});
 
 
 
-        <div className="flex newmargin  justify-between md:justify-end p-2  bg-gray-header">
+        <div className="flex newmargin  justify-between md:justify-end p-2  bg-gray-header" style={{backgroundColor:"darkgoldenrod",color:"black"}}>
           <div
             className="side-menu-buttonn md:hidden ml-2 "
             onClick={toggleDrawer}
@@ -662,7 +662,7 @@ const [userList, setUserList] = React.useState<any>({});
             <ul className="user-searchh flex gap-2  list-unstyled ">
               <li className="username  text-white my-2">
                 <span
-                  className="bg-gray-500 relative  rounded-sm px-2 py-2"
+                  className="bg-gray-500 relative  rounded-sm px-2 py-2" style={{backgroundColor:"#cf9a16",color:"black"}}
                   onClick={() => setShowMenu(!showMenu)}
                 >
                   {userState?.user?.username} <i className="fa fa-caret-down" />
@@ -721,7 +721,7 @@ const [userList, setUserList] = React.useState<any>({});
 
           <CustomLink to={"/"} className="logo-new navbarbg  -600">
             {/* <img className="" src="/9x.png" /> */}
-             <img className=""  style={{ width: "500px" }} src="/9xone.png" />
+             <img className=""  style={{ width: "500px" }} src="/imgs/d006 copy.png" />
 
           </CustomLink>
 
@@ -799,7 +799,7 @@ const [userList, setUserList] = React.useState<any>({});
 
                     </CustomLink>
 
-                    { dropdownOpen ? <div style={{background:"#424242"}} className="dropdown-menuj bg-neutral-700 md:pl-2   absolutek z-50 hiddenj group-hover:block w-full">
+                    { dropdownOpen ? <div  className="dropdown-menuj bg-neutral-700 md:pl-2   absolutek z-50 hiddenj group-hover:block w-full">
                       {getRoleOptions().map((role) => (
                         <li key={role.key}>
                           <CustomLink
@@ -810,7 +810,7 @@ const [userList, setUserList] = React.useState<any>({});
                             className="dropdown-item hover:bg-gray-400"
                           >
                             <b className="text-white mobile-style md:text-lg text-xs  md:flex md:flex-row flex flex-col items-center gap-1">
-                              <ListIcon className="text-yellow-600" />
+                              <ListIcon className="text-black-600" />
                               {role.label}({userList?.items?.filter((i: any) => i.role === `${role.key}`)?.length})
                             </b>
                           </CustomLink>
@@ -1162,7 +1162,7 @@ const [userList, setUserList] = React.useState<any>({});
                    { dropdownOpen3 ?  <div
                       className="dropdown-menuf bg-neutral-700 md:pl-2"
                       aria-labelledby="navbarDropdownMenuLink"
-                      style={{background:"#424242"}}
+                      style={{background:"darkgoldenrod"}}
                     >
                       <li>
                         <CustomLink
@@ -1347,7 +1347,7 @@ const [userList, setUserList] = React.useState<any>({});
                      { dropdownOpen4 ? <div
                         className="dropdown-menud bg-none  md:pl-2"
                         aria-labelledby="navbarDropdownMenuLink"
-                        style={{background:"#424242"}}
+                        // style={{background:"#424242"}}
                       >
                         {userState?.user?.role === RoleType.admin && (
                           <>

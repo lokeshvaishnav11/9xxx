@@ -11,15 +11,16 @@
 }
 
 .text-yellow-600{
-  color: #a18c12;
+  color: black;
 }
 
 #sidebar {
   /* min-width: 250px; */
   /* max-width: 250px; */
   /* background: #424242; */
-  color: #fff;
+  color:black;
   /* transition: all 6.3s; */
+  background-color: darkgoldenrod;
 }
 #sidebar.active {
   /* min-width: 80px; */
@@ -27,6 +28,10 @@
   /* text-align: center */
   transition: all 2.3s;
 
+}
+
+.svg-t{
+  color:"black"
 }
 
 
@@ -39,5 +44,5 @@
 }
 
 .bg-active{
-  background-color: #606060;
+  background-color: rgb(127, 93, 6);
 }

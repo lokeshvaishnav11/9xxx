@@ -34,8 +34,8 @@ const shared = useParams().share
     <>
       <div className='prelative'>
         <Tabs>
-          <Tab eventKey='home' title='ODDS'>
-            <div className='game-heading clsforellipse mb-1'>
+          <Tab eventKey='home' title='ODDS' style={{backgroundColor:"darkgoldenrod",color:"black"}}>
+            <div className='game-heading clsforellipse mb-1' style={{backgroundColor:"darkgoldenrod",color:"black"}}>
               <span className='card-header-title giveMeEllipsis'>{props.currentMatch?.name}</span>
               <span className='float-right card-header-date'>
                               { moment(props.currentMatch?.matchDateTime).format('MM/DD/YYYY  h:mm a') }

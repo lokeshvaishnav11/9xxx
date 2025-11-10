@@ -57,7 +57,8 @@ body {
   /* row-gap: 15px; */
   margin-top: 48px;
   margin-bottom: 2px;
-  background-color: #424242;
+  /* background-color: #424242; */
+  background-color: darkgoldenrod;
 
 }
 
@@ -979,7 +980,8 @@ input+.slider span:last-child {
 
 /*first level*/
 .btco-hover-menu .collapse ul>li:hover>a {
-  background: var(--theme2-bg);
+  /* background: var(--theme2-bg); */
+  background:'darkgoldenrod';
   color: var(--secondary-color);
 }
 

@@ -54,7 +54,7 @@ const MatchList: React.FC<MatchListProps> = ({
                   <div className="container w-100 mt-2 p-0">
                     <div className="card single-match text-center my-2">
                       <a onClick={() => currentMatch(match)}>
-                        <h5 className="ng-binding">{match.name}</h5>
+                        <h5 className="ng-binding" style={{backgroundColor:"darkgoldenrod",color:"black"}}>{match.name}</h5>
                         <p
                           ng-show="row.inplay"
                           className="inplay"

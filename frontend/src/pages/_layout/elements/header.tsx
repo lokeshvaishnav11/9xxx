@@ -167,7 +167,7 @@ const [userAlldata, setUserAlldata] = React.useState<{ [key: string]: any }>({})
   return (
     <header className="header">
       <div className="container-fluidu">
-        <div className="ro">
+        <div className="ro" style={{backgroundColor:"darkgoldenrod"}}>
           <div className="container-fluid text-white py-2">
             <div className="d-flex align-items-center justify-content-between flex-wrap">
               {/* Logo */}
@@ -183,7 +183,7 @@ const [userAlldata, setUserAlldata] = React.useState<{ [key: string]: any }>({})
               </div>
 
               {/* User Info */}
-              <div className="d-flex flex-column text-center text-md-end flex-grow-1 px-3">
+              <div className="d-flex flex-column text-center text-md-end flex-grow-1 px-3" style={{color:"black"}}>
                 <p className="mb-1 fw-bold ">
                   {userState?.user?.username}({userAlldata?.code})
                 </p>
@@ -197,7 +197,7 @@ const [userAlldata, setUserAlldata] = React.useState<{ [key: string]: any }>({})
 
                 {!selectHideBal.exposer && (
                   <div>
-                    <a href="#" onClick={getExposer} >Expo: </a>
+                    <a href="#" onClick={getExposer}  style={{color:"red"}}>Expo: </a>
                     <b>
                       {balance.exposer > 0 ? balance.exposer?.toFixed(2) : 0}
                     </b>
@@ -217,7 +217,7 @@ const [userAlldata, setUserAlldata] = React.useState<{ [key: string]: any }>({})
                     alt="Logout"
                     style={{ maxHeight: "30px" }}
                   />
-                  <span className="mt-2">Logout</span>
+                  <span className="mt-2" style={{color:"red"}}>Logout</span>
                 </a>
               </div>
             </div>

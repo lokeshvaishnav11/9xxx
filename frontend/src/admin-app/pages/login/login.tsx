@@ -63,7 +63,7 @@ const Login = () => {
             <div className='col-md-12'>
               <div  className='loginInner1 container-fluid '>
                 <div className='log-logo m-b-20 text-center'>
-                  <img src='/imgs/logoone.png' className='logo-login' style={{ maxWidth: "250px", maxHeight: "100px" }} />
+                  <img src='/imgs/d006 copy.png' className='logo-login' style={{ maxWidth: "250px", maxHeight: "100px" }} />
                 </div>
                 <div className='featured-box-login featured-box-secundary default log-fld'>
                   <h2 className="text-center">Sign In</h2>
