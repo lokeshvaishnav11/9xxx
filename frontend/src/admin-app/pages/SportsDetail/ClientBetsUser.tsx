@@ -384,7 +384,7 @@ const ClientBetsUser = () => {
 
 
 
-            <div className="container">
+            <div className="container" style={{marginBottom:"150px"}}>
                 <div className="res-table d-none"></div>
 
                 <div className="control-group mt-2 selectize-control single">

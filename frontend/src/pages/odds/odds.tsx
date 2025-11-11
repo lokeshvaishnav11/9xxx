@@ -405,6 +405,7 @@ const Odds = () => {
       matchId={matchId}
       markets={markets}
       t10Tv={t10Tv}
+      userRole = {userState?.user?.role}
       matchedMatch={matchedMatch}
       otherTv={otherTv} />
 

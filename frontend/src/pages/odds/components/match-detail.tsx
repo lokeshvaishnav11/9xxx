@@ -235,7 +235,7 @@ const MatchDetail = (props: any) => {
               </Fragment>
             )}
 
-            <div className='card m-b-10 my-bet'>
+            {userState?.user?.role== RoleType.user &&<div className='card m-b-10 my-bet'>
               <div className='card-header'>
                 <h6 className='card-title d-inline-block'>My Bet</h6>
                 <a
@@ -249,10 +249,10 @@ const MatchDetail = (props: any) => {
               <div className='card-body'>
                 <MyBetComponent />
               </div>
-            </div>
+            </div>}
 
 
-            <div className='card m-b-10 my-bet'>
+            {userState?.user?.role== RoleType.user && <div className='card m-b-10 my-bet'>
               {/* <div className='card-header'> */}
               {/* <h6 className='card-title d-inline-block'>Declared Bet</h6> */}
               <h6 className="p-2 w-100 m-0 bg-info text-white text-center">Declared Bets</h6>
@@ -267,7 +267,7 @@ const MatchDetail = (props: any) => {
               <div className='card-body'>
                 <MyBetComponent22 />
               </div>
-            </div>
+            </div>}
           </div>
           {/* tab here */}
 
