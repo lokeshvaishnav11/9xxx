@@ -4,7 +4,7 @@ import { AxiosResponse } from "axios";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectUserData } from "../../../redux/actions/login/loginSlice";
-import { dateFormat } from "../../../utils/helper";
+import { betDateFormat, dateFormat } from "../../../utils/helper";
 import moment from "moment";
 import { isMobile } from "react-device-detect";
 import UserService from "../../../services/user.service";
@@ -355,7 +355,7 @@ const ClientBetsLedger = () => {
         <span className="text-center small bg-info text-white p-1">
           {" "}
           {/* ( {new Date(marketData2[0]?.matchDateTime).toLocaleTimeString()} ) */}
-          {moment(marketData2[0]?.matchDateTime).format(dateFormat)}
+          {moment(marketData2[0]?.matchDateTime).format(betDateFormat)}
         </span>
 
         
@@ -589,7 +589,7 @@ const ClientBetsLedger = () => {
                           className="pt-2 pb-1 text-nowrap"
                           style={{ fontSize: "xx-small" }}
                         >
-                          {moment(bet?.betClickTime).format(dateFormat)} 
+                          {moment(bet?.betClickTime).format(betDateFormat)} 
                         </td>
                         <td
                           className="pt-2 pb-1"
@@ -741,7 +741,7 @@ const ClientBetsLedger = () => {
                                       className="pt-2 pb-1 text-nowrap"
                                       style={{ fontSize: "xx-small" }}
                                     >
-                                      {moment(bet?.betClickTime).format(dateFormat)} 
+                                      {moment(bet?.betClickTime).format(betDateFormat)} 
                                       {/* ( {new Date(bet?.betClickTime).toLocaleTimeString()}) */}
                                     </td>
                                     <td

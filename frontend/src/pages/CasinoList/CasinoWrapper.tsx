@@ -104,7 +104,7 @@ const CasinoWrapper = (props: any) => {
     navigate.go("/unsettledbet");
   };
 
-  
+
   React.useEffect(() => {
     if (userState.user._id) {
       socketUser.emit(
@@ -121,7 +121,7 @@ const CasinoWrapper = (props: any) => {
   }, [userState.user, casinoMatchData?.match_id]);
 
 
-  
+
 
 
 
@@ -214,15 +214,15 @@ const CasinoWrapper = (props: any) => {
 
 
   React.useEffect(() => {
-    axios.get(`https://socket2.taj44.com/api/get-casino-tv/${gameCode}`).then((res)=>{
-      console.log(res,"ressss of caisono tv")
+    axios.get(`https://socket2.taj44.com/api/get-casino-tv/${gameCode}`).then((res) => {
+      console.log(res, "ressss of caisono tv")
       setNewtv(res?.data?.tv)
     })
-   }, []);
+  }, []);
 
 
 
-   console.log(newtv,"newtvvvvvv")
+  console.log(newtv, "newtvvvvvv")
 
 
 
@@ -485,7 +485,7 @@ const CasinoWrapper = (props: any) => {
   const gameIdMap: Record<any, any> = {
     card32b: "card32eu",
     baccarat2: "baccarat2",
-    dt20: "dt20",
+    dt20: "dt202",
     lucky7B: "lukcy7eu",
     Tp1Day: "teen",
     // race2020: 3036,
@@ -525,9 +525,8 @@ const CasinoWrapper = (props: any) => {
     <>
       {!isMobile ? (
         <div
-          className={`row mtc-5 row5 casino-container-box ${
-            gameCode === "cricket2020" ? "cc-20" : ""
-          }`}
+          className={`row mtc-5 row5 casino-container-box ${gameCode === "cricket2020" ? "cc-20" : ""
+            }`}
         >
           <div className="col-8 col-lg-8">
             <div className="card m-b-10 my-bet">
@@ -572,17 +571,17 @@ const CasinoWrapper = (props: any) => {
                     background: "#000",
                   }}
                 >
-                  { gameId && (
+                  {gameId && (
                     <iframe
                       title="stream"
                       width="100%"
                       height={isMobile ? "220" : "420"}
                       style={{ border: "0px" }}
-                      src={newtv}
-                      // src={`https://live.cricketid.xyz/casino-tv?id=${gameIdMap[gameId]}`}
+                      // src={newtv}
+                      src={`https://casino-stream-v2.cricketid.xyz/casino-tv?id=${gameId}`}
 
-                      // src={`https://hr08bets.in/casino-live/?id=${gameId}`}
-                      // src={`https://sfront.starrexch.me/casino-tv?id=${gameId}`}
+                    // src={`https://hr08bets.in/casino-live/?id=${gameId}`}
+                    // src={`https://sfront.starrexch.me/casino-tv?id=${gameId}`}
                     ></iframe>
                   )}
                   {/* <iframe src='https://diamond.igtechgaming.com/freecasino/tvop?id=lucky7' width="100%"></iframe> */}
@@ -593,7 +592,7 @@ const CasinoWrapper = (props: any) => {
                     <CasinoTitle lastResult={casinoMatchData} />
                   )}
                   {(gameCode == "onedaypoker" && casinoMatchData?.desc != "") ||
-                  (gameCode == "onedaypoker20" && casinoMatchData?.desc != "")
+                    (gameCode == "onedaypoker20" && casinoMatchData?.desc != "")
                     ? oneDayPokerDescription(casinoMatchData?.desc)
                     : ""}
                   {gameCode == "cricket2020" && (
@@ -615,9 +614,9 @@ const CasinoWrapper = (props: any) => {
               {(liveMatchData?.remark != "" &&
                 liveMatchData?.slug != "Superover" &&
                 liveMatchData?.slug != "fivewicket") ||
-              (liveMatchData?.event_data?.remark != "" &&
-                liveMatchData?.slug != "Superover" &&
-                liveMatchData?.slug != "fivewicket") ? (
+                (liveMatchData?.event_data?.remark != "" &&
+                  liveMatchData?.slug != "Superover" &&
+                  liveMatchData?.slug != "fivewicket") ? (
                 <div className="notice-casino-odds">
                   <div className="marqueeN">
                     <p>
@@ -651,7 +650,7 @@ const CasinoWrapper = (props: any) => {
                       >
                         View All
                       </a> */}
-                       <CustomLink to={"/completed-casino"}  className="card-title d-inline-block btn-danger p-1 rounded">Result</CustomLink>
+                      <CustomLink to={"/completed-casino"} className="card-title d-inline-block btn-danger p-1 rounded">Result</CustomLink>
                     </div>
                     <div className="card-body">
                       <MyBetComponent />
@@ -696,7 +695,7 @@ const CasinoWrapper = (props: any) => {
                       // background: '#000',
                     }}
                   >
-                    { gameId && (
+                    {gameId && (
                       <iframe
                         title="stream"
                         width="100%"
@@ -704,8 +703,10 @@ const CasinoWrapper = (props: any) => {
                         style={{ border: "0px" }}
                         // src={`https://hr08bets.in/casino-live/?id=${gameId}`}
                         // src={`https://sfront.starrexch.me/casino-tv?id=${gameId}`}
-                        src={newtv}
-                      // src={`https://live.cricketid.xyz/casino-tv?id=${gameIdMap[gameId]}`}
+                        // src={newtv}
+                        src={`https://casino-stream-v2.cricketid.xyz/casino-tv?id=${gameId}`}
+
+                        // src={`https://live.cricketid.xyz/casino-tv?id=${gameIdMap[gameId]}`}
                         sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
                         seamless
                       ></iframe>
@@ -724,7 +725,7 @@ const CasinoWrapper = (props: any) => {
                       ""
                     )}
                     {(gameCode == "onedaypoker" && casinoMatchData?.desc) ||
-                    (gameCode == "onedaypoker20" && casinoMatchData?.desc)
+                      (gameCode == "onedaypoker20" && casinoMatchData?.desc)
                       ? oneDayPokerDescription(casinoMatchData.desc)
                       : ""}
                     {gameCode == "cricket2020" && (
@@ -743,8 +744,8 @@ const CasinoWrapper = (props: any) => {
               >
                 {renderUiData(gameCode)}
                 {(liveMatchData?.remark != "" && gameCode != "Cards3J") ||
-                (liveMatchData?.event_data?.remark != "" &&
-                  gameCode != "Cards3J") ? (
+                  (liveMatchData?.event_data?.remark != "" &&
+                    gameCode != "Cards3J") ? (
                   <div className="notice-casino-odds">
                     <div className="marqueeN">
                       <p>
@@ -771,7 +772,7 @@ const CasinoWrapper = (props: any) => {
               <div className="card m-b-10 my-bet">
                 <div className="card-header" style={{ display: "flex", justifyContent: "space-between" }}>
                   <h6 className="card-title d-inline-block">My Bet</h6>
-                  <CustomLink to={"/completed-casino"}  className="card-title d-inline-block btn-danger p-1 rounded">Result</CustomLink>
+                  <CustomLink to={"/completed-casino"} className="card-title d-inline-block btn-danger p-1 rounded">Result</CustomLink>
                 </div>
                 <div className="card-body">
                   <MyBetComponent />

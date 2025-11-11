@@ -3,7 +3,7 @@ import React, { MouseEvent } from "react";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import accountService from "../../../services/account.service";
-import { dateFormat } from "../../../utils/helper";
+import { betDateFormat, dateFormat } from "../../../utils/helper";
 import { isMobile } from "react-device-detect";
 import mobileSubheader from "../_layout/elements/mobile-subheader";
 import userService from "../../../services/user.service";
@@ -88,7 +88,7 @@ const AccountStatementAdminDeposit = () => {
           _id: stmt._id,
           // eslint-disable-next-line camelcase
           sr_no: index + 1,
-          date: moment(stmt.createdAt).format(dateFormat),
+          date: moment(stmt.createdAt).format(betDateFormat),
           credit: stmt.amount,
           debit: stmt.amount,
           closing: closingbalance.toFixed(2),
@@ -364,7 +364,7 @@ const AccountStatementAdminDeposit = () => {
                       <tr key={parseAccountStmt[0]._id}>
                         <td>-</td>
                         <td className='wnwrap'>
-                          {moment(parseAccountStmt[0].createdAt).format(dateFormat)}
+                          {moment(parseAccountStmt[0].createdAt).format(betDateFormat)}
                         </td>
                         <td>-</td>
                         <td>-</td>
