@@ -4,7 +4,7 @@ import { AxiosResponse } from "axios";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { selectUserData } from "../../../redux/actions/login/loginSlice";
-import { dateFormat } from "../../../utils/helper";
+import { betDateFormat, dateFormat } from "../../../utils/helper";
 import moment from "moment";
 import { isMobile } from "react-device-detect";
 import UserService from "../../../services/user.service";
@@ -600,7 +600,7 @@ const ClientBetsUser = () => {
                                                     className="pt-2 pb-1 text-nowrap"
                                                     style={{ fontSize: "xx-small" }}
                                                 >
-                                                    {moment(bet?.betClickTime).format(dateFormat)}
+                                                    {moment(bet?.betClickTime).format(betDateFormat)}
                                                 </td>
                                                 {/* <td
                           className="pt-2 pb-1"
@@ -770,7 +770,7 @@ const ClientBetsUser = () => {
                                                                                 className="pt-2 pb-1 text-nowrap"
                                                                                 style={{ fontSize: "xx-small" }}
                                                                             >
-                                                                                {moment(bet?.betClickTime).format(dateFormat)}
+                                                                                {moment(bet?.betClickTime).format(betDateFormat)}
                                                                                 x                                                                        </td>
                                                                             {/* <td
                                       className="pt-2 pb-1"

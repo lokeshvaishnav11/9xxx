@@ -1536,9 +1536,20 @@ const ListClients = () => {
                             </td>
 
                             <td>
-                              <a
+                              {/* <a
                                 href={`https://wa.me/?text=${encodeURIComponent(
                                   `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLinks:\nAdmin Link: https://taj44.com/admin\nClient Link: https://taj44.com`
+                                )}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Share on WhatsApp"
+                                style={{ display: "inline-flex", alignItems: "center" }}
+                              > */}
+                              <a
+                                href={`https://wa.me/?text=${encodeURIComponent(
+                                  user.username?.startsWith('C')
+                                    ? `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLink:\nClient Link: https://delhi06.com`
+                                    : `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLinks:\nAdmin Link: https://delhi06/admin\nClient Link: https://delhi06.com`
                                 )}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -1619,9 +1630,9 @@ const ListClients = () => {
                               </td>
                             ) : (
                               <td>
-                              
-                                  {mainBalancechild(user).toFixed(2)}
-                              
+
+                                {mainBalancechild(user).toFixed(2)}
+
                               </td>
                             )}
 
