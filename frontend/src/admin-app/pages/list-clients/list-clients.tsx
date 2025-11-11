@@ -1542,9 +1542,11 @@ const ListClients = () => {
 
                           {/* <td></td> */}
                         <td>
-                              <a
+                             <a
                                 href={`https://wa.me/?text=${encodeURIComponent(
-                                  `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLinks:\nAdmin Link: https://taj44.com/admin/\nClient Link: https://taj44.com`
+                                  user.username?.startsWith('C')
+                                    ? `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLink:\nClient Link: https://delhi06.com`
+                                    : `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLinks:\nAdmin Link: https://delhi06/admin\nClient Link: https://delhi06.com`
                                 )}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
