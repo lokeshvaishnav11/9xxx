@@ -984,8 +984,8 @@ const ListClients = () => {
                       {/* <th></th> */}
                       <th></th>
 
-                      <th>User</th>
                       <th>Name</th>
+                      <th>User</th>
                       <th>Mobile</th>
                       <th>Password</th>
 
@@ -1546,7 +1546,7 @@ const ListClients = () => {
                                 href={`https://wa.me/?text=${encodeURIComponent(
                                   user.username?.startsWith('C')
                                     ? `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLink:\nClient Link: https://delhi06.com`
-                                    : `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLinks:\nAdmin Link: https://delhi06/admin.com\nClient Link: https://delhi06.com`
+                                    : `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLinks:\nAdmin Link: https://delhi06.com/admin\nClient Link: https://delhi06.com`
                                 )}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
