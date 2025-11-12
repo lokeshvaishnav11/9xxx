@@ -578,7 +578,7 @@ const CasinoWrapper = (props: any) => {
                       height={isMobile ? "220" : "420"}
                       style={{ border: "0px" }}
                       // src={newtv}
-                      src={`https://casino-stream-v2.cricketid.xyz/casino-tv?id=${gameId}`}
+                      src={`https://live.cricketid.xyz/casino-tv?id=${gameId}`}
 
                     // src={`https://hr08bets.in/casino-live/?id=${gameId}`}
                     // src={`https://sfront.starrexch.me/casino-tv?id=${gameId}`}
@@ -704,9 +704,9 @@ const CasinoWrapper = (props: any) => {
                         // src={`https://hr08bets.in/casino-live/?id=${gameId}`}
                         // src={`https://sfront.starrexch.me/casino-tv?id=${gameId}`}
                         // src={newtv}
-                        src={`https://casino-stream-v2.cricketid.xyz/casino-tv?id=${gameId}`}
+                        // src={`https://casino-stream-v2.cricketid.xyz/casino-tv?id=${gameId}`}
 
-                        // src={`https://live.cricketid.xyz/casino-tv?id=${gameIdMap[gameId]}`}
+                        src={`https://live.cricketid.xyz/casino-tv?id=${gameId}`}
                         sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
                         seamless
                       ></iframe>
