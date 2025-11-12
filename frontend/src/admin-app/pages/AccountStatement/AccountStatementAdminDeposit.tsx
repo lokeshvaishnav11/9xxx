@@ -24,7 +24,7 @@ const AccountStatementAdminDeposit = () => {
 
   const myuser = useParams().name
 
-  
+
 
   const [accountStmt, setAccountStmt] = React.useState<any>({});
   const [parseAccountStmt, setparseAccountStmt] = React.useState<any>([]);
@@ -141,7 +141,7 @@ const AccountStatementAdminDeposit = () => {
 
   const handleSubmitform = (event: any) => {
     event.preventDefault();
-   submitAccountStatement();
+    submitAccountStatement();
   };
 
   const onSuggestionsFetchRequested = ({ value }: any) => {
@@ -220,17 +220,45 @@ const AccountStatementAdminDeposit = () => {
         closingbalance = closingbalance + stmt.amount;
         return (
           <tr key={`${stmt._id}${index}`}>
-            <td>{stmt.sr_no}</td>
-            <td className="wnwrap">{stmt.date}</td>
-            <td className="green wnwrap">
+            <td style={
+              stmt.debit >= 0
+                ? { backgroundColor: "green", color: "white" }
+                : { backgroundColor: "red", color: "white" }
+            }>{stmt.sr_no}</td>
+            <td style={
+              stmt.debit >= 0
+                ? { backgroundColor: "green", color: "white" }
+                : { backgroundColor: "red", color: "white" }
+            } className="wnwrap">{stmt.date}</td>
+            <td style={
+              stmt.debit >= 0
+                ? { backgroundColor: "green", color: "white" }
+                : { backgroundColor: "red", color: "white" }
+            } className="green wnwrap">
               {stmt.credit >= 0 && stmt.credit.toFixed(2)}
             </td>
-            <td className="red wnwrap">
+            <td style={
+              stmt.debit >= 0
+                ? { backgroundColor: "green", color: "white" }
+                : { backgroundColor: "red", color: "white" }
+            } className="red wnwrap">
               {stmt.credit < 0 && stmt.credit.toFixed(2)}
             </td>
-            <td className="green wnwrap">{stmt.closing}</td>
-            <td>{stmt.stmt.txnBy}</td>
-            <td
+            <td style={
+              stmt.debit >= 0
+                ? { backgroundColor: "green", color: "white" }
+                : { backgroundColor: "red", color: "white" }
+            } className="green wnwrap">{stmt.closing}</td>
+            <td style={
+              stmt.debit >= 0
+                ? { backgroundColor: "green", color: "white" }
+                : { backgroundColor: "red", color: "white" }
+            }>{stmt.stmt.txnBy}</td>
+            <td style={
+              stmt.debit >= 0
+                ? { backgroundColor: "green", color: "white" }
+                : { backgroundColor: "red", color: "white" }
+            }
               onClick={(e: MouseEvent<HTMLTableCellElement>) =>
                 getBets(e, stmt.stmt)
               }
@@ -271,7 +299,7 @@ const AccountStatementAdminDeposit = () => {
                     <label className='label'>User</label>
                     <CustomAutoComplete
                       onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                      // onSelectUser={onSelectUser}
+                    // onSelectUser={onSelectUser}
                     />
                   </div>
                   <div className='col-6 col-lg-2 mbc-5 d-none'>
@@ -338,17 +366,17 @@ const AccountStatementAdminDeposit = () => {
                 <table className='text-center' id='customers1'>
                   <thead>
                     <tr>
-                      <th className="text-white" style={{ width: '10%', background:"#424242", textAlign: 'center', whiteSpace: 'nowrap' }}>
+                      <th className="text-black" style={{ width: '10%', background: "darkgoldenrod", textAlign: 'center', whiteSpace: 'nowrap' }}>
                         Sr No.
                       </th>
-                      <th className="text-white" style={{ width: '20%', background:"#424242", textAlign: 'center', whiteSpace: 'nowrap' }}>
+                      <th className="text-black" style={{ width: '20%', background: "darkgoldenrod", textAlign: 'center', whiteSpace: 'nowrap' }}>
                         Date{' '}
                       </th>
-                      <th className="text-white" style={{ width: '10%', background:"#424242", textAlign: 'center' }}>Credit </th>
-                      <th className="text-white" style={{ width: '10%', background:"#424242", textAlign: 'center' }}>Debit</th>
-                      <th className="text-white" style={{ width: '10%', background:"#424242", textAlign: 'center' }}>Balance</th>
-                      <th className="text-white" style={{ width: '10%', background:"#424242", textAlign: 'center' }}>From</th>
-                      <th className="text-white" style={{ width: '45%', background:"#424242", textAlign: 'center' }}>Remark</th>
+                      <th className="text-black" style={{ width: '10%', background: "darkgoldenrod", textAlign: 'center' }}>Credit </th>
+                      <th className="text-black" style={{ width: '10%', background: "darkgoldenrod", textAlign: 'center' }}>Debit</th>
+                      <th className="text-black" style={{ width: '10%', background: "darkgoldenrod", textAlign: 'center' }}>Balance</th>
+                      <th className="text-black" style={{ width: '10%', background: "darkgoldenrod", textAlign: 'center' }}>From</th>
+                      <th className="text-black" style={{ width: '45%', background: "darkgoldenrod", textAlign: 'center' }}>Remark</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -390,7 +418,7 @@ const AccountStatementAdminDeposit = () => {
               />
             </div>
 
-            
+
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 
 .card-header{
-	background: #424242 !important;
+	background: darkgoldenrod !important;
 	color: #fff !important;
 } 
 .matka-profit{
@@ -58,7 +58,7 @@ table ul .dropdown-toggle::after {
 }
 
 .navbar-bet99 {
-    background: #424242 !important;
+    background: darkgoldenrod !important;
     color: #fff !important
 }
 
@@ -403,11 +403,11 @@ small, .small {
 }
 
 .bg-warning {
-	background-color: #424242 !important;
+	background-color: darkgoldenrod !important;
 }
 
 .casino_img_text {
-    background: #424242;
+    background: darkgoldenrod;
     align-items: center;
     border-radius: 4px;
     display: inline-flex;

@@ -17,11 +17,29 @@ if (rootElement) {
   root.render(
     <Suspense
       fallback={
-        <div className='suspense-loading'>
-          {/* <img src='/imgs/logo.png' width={200} /> Prevoius Loader */}
-          <img src='/imgs/loading.gif' width={200} /> 
+        // <div className='suspense-loading' style={{color:"black" , display:"flex" , alignItems:"center" ,fontSize:"10px"}}>
+        //   {/* <img src='/imgs/logo.png' width={200} /> Prevoius Loader */}
+        //   {/* <img src='/imgs/loading.gif' width={200} />  */}
+        //   Loading....
 
-        </div>
+        // </div>
+
+        <div
+  className="suspense-loading"
+  style={{
+    color: "black",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh", // 👈 full viewport height
+    fontSize: "40px",
+    fontWeight: "500",
+    backgroundColor: "#fff", // optional, for clarity
+  }}
+>
+  Loading....
+</div>
+
       }
     >
       <Provider store={store}>

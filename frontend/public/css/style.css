@@ -4,7 +4,7 @@
 :root {
   --text-primary: #08c;
   --text-secondary: #2d3e50;
-  --primary-bg: #fff;
+  --primary-bg: #F4EED0;
   --secondary-bg: #000;
   --link-bg: #bbb;
   --grey-bg: #ccc;
@@ -3376,7 +3376,7 @@ marquee.casino-remark {
 }
 
 .table-row {
-  background-color: #424242;
+  background-color: darkgoldenrod;
 }
 
 .fancy-market .table-row {
@@ -3401,7 +3401,7 @@ marquee.casino-remark {
 
 .table-header>div,
 .table-row>div {
-  padding: 5px 0;
+  padding: 12px 8px;
   border: 1px solid #fff;
   border-right: 0;
   border-bottom: 0;
@@ -3449,7 +3449,7 @@ marquee.casino-remark {
 }
 
 .table-row>div .odd {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   margin-bottom: 1px;
 }

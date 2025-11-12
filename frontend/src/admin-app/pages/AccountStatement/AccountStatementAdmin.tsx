@@ -340,17 +340,17 @@ const AccountStatementAdmin = () => {
                 <table className='text-center' id='customers1'>
                   <thead>
                     <tr>
-                      <th className="text-white" style={{ width: '10%', background:"#424242", textAlign: 'center', whiteSpace: 'nowrap' }}>
+                      <th className="text-black" style={{ width: '10%', background:"darkgoldenrod", textAlign: 'center', whiteSpace: 'nowrap' }}>
                         Sr No.
                       </th>
-                      <th className="text-white" style={{ width: '20%', background:"#424242", textAlign: 'center', whiteSpace: 'nowrap' }}>
+                      <th className="text-black" style={{ width: '20%', background:"darkgoldenrod", textAlign: 'center', whiteSpace: 'nowrap' }}>
                         Date{' '}
                       </th>
-                      <th className="text-white" style={{ width: '10%', background:"#424242", textAlign: 'center' }}>Credit </th>
-                      <th className="text-white" style={{ width: '10%', background:"#424242", textAlign: 'center' }}>Debit</th>
-                      <th className="text-white" style={{ width: '10%', background:"#424242", textAlign: 'center' }}>Balance</th>
-                      <th className="text-white" style={{ width: '10%', background:"#424242", textAlign: 'center' }}>From</th>
-                      <th className="text-white" style={{ width: '45%', background:"#424242", textAlign: 'center' }}>Remark</th>
+                      <th className="text-black" style={{ width: '10%', background:"darkgoldenrod", textAlign: 'center' }}>Credit </th>
+                      <th className="text-black" style={{ width: '10%', background:"darkgoldenrod", textAlign: 'center' }}>Debit</th>
+                      <th className="text-black" style={{ width: '10%', background:"darkgoldenrod", textAlign: 'center' }}>Balance</th>
+                      <th className="text-black" style={{ width: '10%', background:"darkgoldenrod", textAlign: 'center' }}>From</th>
+                      <th className="text-black" style={{ width: '45%', background:"darkgoldenrod", textAlign: 'center' }}>Remark</th>
                     </tr>
                   </thead>
                   <tbody>

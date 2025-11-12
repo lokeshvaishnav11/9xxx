@@ -1,7 +1,7 @@
 @import url('https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css');
 
 .nine-x-gray {
-   background-color:#424242;
+   background-color:darkgoldenrod;
 }
 
 @media (min-width: 768px) {

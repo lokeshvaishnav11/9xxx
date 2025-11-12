@@ -371,6 +371,10 @@ import TvIcon from "@mui/icons-material/Tv";
 import { useDrawer } from "../../../../context/DrawerContext";
 import betService from "../../../../services/bet.service";
 
+import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+
 import DeleteIcon from '@mui/icons-material/Delete';
 import GroupIcon from '@mui/icons-material/Group';
 import { useParams } from "react-router-dom";
@@ -830,7 +834,7 @@ const [userList, setUserList] = React.useState<any>({});
                       className="md:flex gap-2 py-2  md:flex-row flex flex-col items-center"
                         to="/sports-details"
                     >
-                      <SummarizeIcon className="text-yellow-600" />
+                      <SportsSoccerIcon className="text-yellow-600" />
                       <b className="md:text-lg text-xs font-medium text-white">
                         Sport's Betting
                       </b>
@@ -854,7 +858,7 @@ const [userList, setUserList] = React.useState<any>({});
 
                   <li className="nav-item hidden dropdown border-b md:w-60">
                     <a onClick={() => setDropdownOpen2(!dropdownOpen2)} className="md:flex md:flex-row flex flex-col gap-2 items-center">
-                      <SummarizeIcon className="text-yellow-600" />
+                      <SportsSoccerIcon className="text-yellow-600" />
                       <b className="md:text-lg text-xs font-medium text-white">
                         Sports Betting
                       </b>{" "}
@@ -1153,7 +1157,7 @@ const [userList, setUserList] = React.useState<any>({});
 
                   <li className={`nav-item dropdown border-b md:w-60 ${activeMenu === "Ledger" ? "bg-active" : ""}`}>
                     <a   onClick={() => {setDropdownOpen3(!dropdownOpen3); setActiveMenu("Ledger");}} className={`md:flex py-2  md:flex-row flex flex-col gap-2 items-center `}>
-                      <SummarizeIcon className="text-yellow-600" />
+                      <ReceiptLongIcon className="text-yellow-600" />
                       <b className="md:text-lg text-xs font-medium text-white">
                         Ledger
                       </b>{" "}
@@ -1515,7 +1519,7 @@ const [userList, setUserList] = React.useState<any>({});
                       className="md:flex gap-2 py-2 md:flex-row flex flex-col items-center"
                       to={"/all-client-report"}
                     >
-                      <TvIcon className="text-yellow-600 " />
+                      <LocalOfferIcon className="text-yellow-600 " />
                       <b className="md:text-lg text-xs font-medium text-white">
                         All{" "}
                         {userState?.user?.role === RoleType.dl

@@ -46,6 +46,15 @@ const MyBetComponent22 = () => {
     }
   }, [getCurrentMatch, getCasinoCurrentMatch, betRefresh])
 
+  // ✅ Group bets by selectionName
+const groupedMyAllBet = getMyAllBet?.reduce((acc: any, bet: any) => {
+  const key = bet.selectionName || "Unknown"
+  if (!acc[key]) acc[key] = []
+  acc[key].push(bet)
+  return acc
+}, {}) || {}
+
+
   React.useEffect(() => {
     if (getPlaceBet.bet.marketId) {
       //setMyAllBet([{ ...getPlaceBet.bet }, ...getMyAllBet])
@@ -91,42 +100,67 @@ const MyBetComponent22 = () => {
             {/* {!isMobile && <th style={{background:"#76d68f"}}> Place Date</th>} */}
             {/* {!isMobile && <th style={{background:"#76d68f"}}> Match Date</th>} */}
             <th className='text-center'> Dec</th>
-            {userState.user.role !== RoleType.user && <th> Date</th>}
+            <th>Date</th>
           </tr>
         </thead>
-        <tbody className='scorall'>
-          {getMyAllBet.map((bet: any,  index: number) => (
-            // <tr className={bet.isBack ? 'back' : 'lay'} key={bet._id}>
-            <tr className={bet.profitLoss?.$numberDecimal < 0 ? 'bg-danger text-white' : 'bg-success'} key={bet._id}>
+      <tbody className='scorall'>
+      {Object.keys(groupedMyAllBet).map((runnerName: string, groupIndex: number) => (
+    <React.Fragment key={runnerName}>
+      {/* Group Header Row */}
+      <tr>
+        <td colSpan={8} style={{ backgroundColor: "darkgoldenrod", color: "black", padding: "8px 10px", textAlign: "left" }}>
+          {runnerName}
+        </td>
+      </tr>
 
-              <td className='no-wrap'> {index + 1} </td>
-              {userState.user.role !== RoleType.user && <td>{bet.userName}</td>}
-              <td className='no-wrap'>
-                {' '}
-                {bet.selectionName} /{' '}
-                {bet.marketName === 'Fancy' && bet.gtype !== 'fancy1' ? bet.volume.toFixed(2) : bet.odds}{' '}
-              </td>
-              <td className='no-wrap text-center'> {bet.marketName === 'Fancy' && bet.gtype !== 'fancy1' ? bet.volume.toFixed(2) : bet.odds}</td>
-              {/* <td className='no-wrap'>{Math.abs(bet?.profitLoss?.$numberDecimal).toFixed(2)}</td> */}
-              <td className='no-wrap'>{Math.abs(Number(bet?.profitLoss?.$numberDecimal)).toFixed(2)}</td>
+      {/* Grouped Bets */}
+      {groupedMyAllBet[runnerName]?.map((bet: any, index: number) => (
+        <tr
+          key={bet._id}
+          className={Number(bet.profitLoss?.$numberDecimal) < 0 ? 'bg-danger text-white' : 'bg-success'}
+        >
+          <td className='no-wrap'>{index + 1}</td>
+          {userState.user.role !== RoleType.user && <td>{bet?.userName}</td>}
 
-              <td className='no-wrap text-center' >{bet.marketName === 'Fancy' && bet.gtype !== 'fancy1' ? bet.odds : "-"} </td>
-              <td className='no-wrap text-center' > {bet.isBack ? "Yes" : "No"} </td>
+          <td className='no-wrap'>
+            {bet?.selectionName} /{' '}
+            {bet?.marketName === 'Fancy' && bet.gtype !== 'fancy1'
+              ? bet.volume.toFixed(2)
+              : bet.odds}
+          </td>
 
+          <td className='no-wrap text-center'>
+            {bet.marketName === 'Fancy' && bet.gtype !== 'fancy1'
+              ? bet.volume.toFixed(2)
+              : bet.odds}
+          </td>
 
-              {/* {!isMobile && (
-                <td className='no-wrap'> {moment(bet.betClickTime).format(betDateFormat)} </td>
-              )} */}
-              {/* {!isMobile && (
-                <td className='no-wrap'> {moment(bet.createdAt).format(betDateFormat)} </td>
-              )} */}
+          <td className='no-wrap'>
+            {Math.abs(Number(bet?.profitLoss?.$numberDecimal)).toFixed(2)}
+          </td>
 
-<td className='no-wrap text-center' > {bet?.result?.result ? bet?.result?.result :"YES" } </td>
+          <td className='no-wrap text-center'>
+            {bet.marketName === 'Fancy' && bet.gtype !== 'fancy1' ? bet.odds : "-"}
+          </td>
 
-              {userState.user.role !== RoleType.user && <td className='no-wrap'>{moment.utc(bet.betClickTime).utcOffset('+05:30').format('DD/MM/YYYY hh:mm:ss A')}</td>}
-            </tr>
-          ))}
-        </tbody>
+          <td className='no-wrap text-center'>{bet.isBack ? "Yes" : "No"}</td>
+
+          <td className='no-wrap text-center'>
+            {bet?.result?.result ? bet?.result?.result : "YES"}
+          </td>
+
+          <td className='no-wrap'>
+            {moment
+              .utc(bet.betClickTime)
+              .utcOffset('+05:30')
+              .format('DD/MM/YYYY hh:mm:ss A')}
+          </td>
+        </tr>
+      ))}
+    </React.Fragment>
+  ))}
+</tbody>
+
       </table>
     </div>
   )

@@ -5,7 +5,7 @@
 }
 .body-top-bar {
     border: none;
-    background-color: #424242;
+    background-color: darkgoldenrod;
     padding: 5px 0;
 }
 .user-dp img {
@@ -121,7 +121,7 @@
   
 
 .casino_img_text {
-	background: #424242;
+	background: darkgoldenrod;
     align-items: center;
     border-radius: 4px;
     display: inline-flex;
@@ -135,7 +135,7 @@
     text-indent: 0.0892857143em;
     text-transform: uppercase;
     vertical-align: middle;
-    color: #fff;
+    color: #000000;
     border: none;
     /* margin: 0 10px; */
     padding:5px;

@@ -313,14 +313,14 @@ const [endDate, setEndDate] = React.useState<string>("");
               {optionuser === "all" ? (
                 <>
                   <tr>
-                    <th style={{borderRightColor:"#424242", borderRightWidth:"20px"}} colSpan={4}>MILA HAI</th>
+                    <th style={{borderRightColor:"darkgoldenrod", borderRightWidth:"20px"}} colSpan={4}>MILA HAI</th>
                     <th  colSpan={4}>DENA HAI</th>
                   </tr>
                   <tr>
                     <th>Name</th>
                     <th >M Comm</th>
                     <th>S Comm</th>
-                    <th style={{borderRightColor:"#424242", borderRightWidth:"20px"}}>Total Comm</th>
+                    <th style={{borderRightColor:"darkgoldenrod", borderRightWidth:"20px"}}>Total Comm</th>
                     <th>M Comm</th>
                     <th>S Comm</th>
                     <th>Total Comm</th>
@@ -346,7 +346,7 @@ const [endDate, setEndDate] = React.useState<string>("");
                       <td className="">{row.name}{`(${row.cname})`}<button onClick={() => settled(row.name)} className="bg-yellow-400 mt-1.5 px-2 py-1.5 rounded-md">Reset</button></td>
                       <td className="">{row.milaCasinoComm.toFixed(2)}</td>
                       <td>{row.milaSportsComm.toFixed(2)}</td>
-                      <td style={{borderRightColor:"#424242", borderRightWidth:"20px"}}>{row.milaTotalComm.toFixed(2)}</td>
+                      <td style={{borderRightColor:"darkgoldenrod", borderRightWidth:"20px"}}>{row.milaTotalComm.toFixed(2)}</td>
                       <td>{row.denaCasinoComm.toFixed(2)}</td>
                       <td>{row.denaSportsComm.toFixed(2)}</td>
                       <td>{row.denaTotalComm.toFixed(2)}</td>

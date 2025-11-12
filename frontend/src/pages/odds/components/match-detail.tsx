@@ -109,7 +109,7 @@ const MatchDetail = (props: any) => {
                       <div className={`border rounded shadow-sm  mb-3 bg-white ${props?.matchedMatch?.match_id ? "d-none" : "d-none"}`}>
                         {/* Header */}
 
-                        <div style={{ backgroundColor: "#424242" }} className="d-flex py-2 px-1 justify-content-between align-items-center mb-">
+                        <div style={{ backgroundColor: "darkgoldenrod" }} className="d-flex py-2 px-1 justify-content-between align-items-center mb-">
                           <h6 className="mb-0 fw-bold  text-white">Match Scorecard</h6>
 
                           <span className="badge bg-success">Live</span>

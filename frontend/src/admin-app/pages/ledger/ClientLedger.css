@@ -6,8 +6,8 @@
   
   .ledger-title {
     text-align: center;
-    background-color: #606060;
-    color: white;
+    background-color: darkgoldenrod;
+    color: rgb(0, 0, 0);
     padding: 10px;
     font-size: 22px;
   }
@@ -19,7 +19,7 @@
   h3 {
     background-color: #f4f4f4;
     padding: 10px;
-    border-left: 5px solid #606060;
+    border-left: 5px solid darkgoldenrod;
     font-size: 18px;
   }
   

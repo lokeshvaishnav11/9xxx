@@ -87,7 +87,7 @@ const shared = useParams().share
   return (
     <div className={`border rounded shadow-sm  mb-3 bg-white ${props?.matchedMatch?.match_id  ? "d-none" : "d-none"}`}>
       {/* Header */}
-      <div style={{backgroundColor:"#424242"}} className="d-flex py-2 px-1 justify-content-between align-items-center mb-">
+      <div style={{backgroundColor:"darkgoldenrod"}} className="d-flex py-2 px-1 justify-content-between align-items-center mb-">
         <h6 className="mb-0 fw-bold  text-white">Match Scorecard</h6>
    
         <span className="badge bg-success">Live</span>
@@ -229,7 +229,7 @@ const shared = useParams().share
         </Tabs>
         <div className='csmobileround' style={{ top: '16px' }}>
           <span onClick={() => settvstatus(tavstatus ? false : true)}>
-            <i className='fa fa-tv'></i>{' '}
+            Live TV
           </span>
         </div>
       </div>

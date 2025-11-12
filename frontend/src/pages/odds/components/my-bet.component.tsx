@@ -126,7 +126,7 @@
 
 //           ))}
 //                     <tr>
-//   <td colSpan={8} style={{ backgroundColor: "#424242", color: "white", padding: "8px 10px", textAlign: "left" }}>
+//   <td colSpan={8} style={{ backgroundColor: "darkgoldenrod", color: "white", padding: "8px 10px", textAlign: "left" }}>
 //     Match Bets
 //   </td>
 // </tr>
@@ -270,7 +270,7 @@ const MyBetComponent = () => {
           {Object.keys(groupedFancyBets).map((runnerName: string, groupIndex: number) => (
             <React.Fragment key={runnerName}>
               <tr>
-                <td colSpan={8} style={{ backgroundColor: "#424242", color: "white", padding: "8px 10px", textAlign: "left" }}>
+                <td colSpan={8} style={{ backgroundColor: "darkgoldenrod", color: "black", padding: "8px 10px", textAlign: "left" }}>
                   {runnerName}
                 </td>
               </tr>
@@ -297,7 +297,7 @@ const MyBetComponent = () => {
 
           {/* ✅ Match Bets Section (unchanged) */}
           <tr>
-            <td colSpan={8} style={{ backgroundColor: "#424242", color: "white", padding: "8px 10px", textAlign: "left" }}>
+            <td colSpan={8} style={{ backgroundColor: "darkgoldenrod", color: "black", padding: "8px 10px", textAlign: "left" }}>
               Match Bets
             </td>
           </tr>
