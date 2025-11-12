@@ -2132,19 +2132,42 @@ class BetController extends ApiController_1.ApiController {
                 if (matchId) {
                     filter = Object.assign(Object.assign({}, filter), { matchId: parseInt(matchId) });
                 }
-                if (startDate && startDate != "") {
-                    startDate = startDate.includes("T")
-                        ? `${startDate.replace("T", " ")}:00`
-                        : `${startDate} 00:00:00`;
-                    endDate = endDate.includes("T")
-                        ? `${endDate.replace("T", " ")}:00`
-                        : `${endDate} 23:59:59`;
-                    filter = Object.assign(Object.assign({}, filter), {
-                        createdAt: {
-                            $gte: new Date(startDate),
-                            $lte: new Date(endDate),
-                        },
-                    });
+                // if (startDate && startDate != "") {
+                //   startDate = startDate.includes("T")
+                //     ? `${startDate.replace("T", " ")}:00`
+                //     : `${startDate} 00:00:00`;
+                //   endDate = endDate.includes("T")
+                //     ? `${endDate.replace("T", " ")}:00`
+                //     : `${endDate} 23:59:59`;
+                //   filter = {
+                //     ...filter,
+                //     ...{
+                //       createdAt: {
+                //         $gte: new Date(startDate),
+                //         $lte: new Date(endDate),
+                //       },
+                //     },
+                //   };
+                // }
+                if (startDate && startDate !== "") {
+                    // Normalize format
+                    const formatDate = (dateStr, isEnd = false) => {
+                        // Agar "T" hai to HTML datetime-local ka format hai (YYYY-MM-DDTHH:mm:ss)
+                        if (dateStr.includes("T")) {
+                            // HTML format ko space-based datetime me convert karo
+                            return dateStr.replace("T", " ");
+                        }
+                        else {
+                            // Agar "T" nahi hai to seconds ke hisab se default add karo
+                            return isEnd ? `${dateStr} 23:59:59` : `${dateStr} 00:00:00`;
+                        }
+                    };
+                    const formattedStart = formatDate(startDate);
+                    const formattedEnd = formatDate(endDate, true);
+                    filter = Object.assign(Object.assign({}, filter), { createdAt: {
+                            $gte: new Date(formattedStart),
+                            $lte: new Date(formattedEnd),
+                        } });
                 }
                 if (reportType && reportType != "") {
                     filter = Object.assign(Object.assign({}, filter), { sportId: { $in: [parseInt(reportType), reportType] } });

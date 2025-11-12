@@ -105,7 +105,7 @@ const Completegames = () => {
                     <div className="container w-100 mt-2 p-0" >
                       <div className="card single-match text-center my-2">
                         <a>
-                          <h5 onClick={() => handleMatchClick(match.matchId)} className="ng-binding">{match.name}</h5>
+                          <h5 onClick={() => handleMatchClick(match.matchId)} className="ng-binding" style={{backgroundColor:"darkgoldenrod"}}>{match.name}</h5>
 
 
                           <div className='p-2'> <p className=" d-flex justify-content-between">
@@ -176,7 +176,7 @@ const Completegames = () => {
                                             <div className="table-responsive" style={{ overflowX: 'scroll' , maxHeight: '400px', }}>
 
                                               <table className="table table-sm table-bordered mb-0  text-nowrap align-middle">
-                                                <thead className="table-secondary text-center">
+                                                <thead className="table-secondary text-center"  style={{backgroundColor:"darkgoldenrod"}}>
                                                   <tr className="text-center">
                                                     <th className='text-center'>Date</th>
 
@@ -381,7 +381,7 @@ const Completegames = () => {
                                                              }}
                                                              onClick={() => setOpenMatch(openMatch === matchName ? null : matchName)}
                                                          >
-                                                             <h5 className="mb-2 ng-binding">{matchName}</h5>
+                                                             <h5 className="mb-2 ng-binding"  style={{backgroundColor:"darkgoldenrod"}}>{matchName}</h5>
      
                                                              <div className="d-flex p-1 justify-content-between">
                                                                  <p className="">Start On</p>
@@ -418,7 +418,7 @@ const Completegames = () => {
                                                                         <div className="table-responsive" style={{ overflowX: 'scroll' }}>
                                                                             <div style={{ minWidth: '750px' }}>
                                                                                 <table className="table table-sm table-striped table-bordered mb-0 text-nowrap">
-                                                                                    <thead className="table-secondary text-center fs-6">
+                                                                                    <thead className="table-secondary text-center fs-6"  style={{backgroundColor:"darkgoldenrod"}}>
                                                                                         <tr>
                                                                                             <th className='text-center'>Username</th>
                                                                                             <th>Type</th>

@@ -253,7 +253,7 @@ class MatchOdds extends React.PureComponent<
                             className={`table-row ${runner.status === 'SUSPENDED' ? 'suspended' : ''
                               }`}
                           >
-                            <div style={{ backgroundColor: "#e2dddd" }} className={`  country-name ${classforheadingfirst}`}>
+                            <div style={{ backgroundColor: "darkgoldenrod" }} className={`  country-name ${classforheadingfirst}`}>
                               <span className='team-name '>
                                 <b style={{ color: "black", }}>{runner.runnerName}</b>
                               </span>

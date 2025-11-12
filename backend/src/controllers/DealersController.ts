@@ -1356,27 +1356,68 @@ async deleteUser(req: Request, res: Response): Promise<Response> {
     }
   }
 
-  getUserListSuggestion = async (req: Request, res: Response) => {
-    try {
-      const { username } = req.body
-      const regex = new RegExp(username, 'i')
-      const currentUser: any = req.user
+  // getUserListSuggestion = async (req: Request, res: Response) => {
+  //   try {
+  //     const { username } = req.body
+  //     const regex = new RegExp(username, 'i')
+  //     const currentUser: any = req.user
 
-      const users = await User.find({
-        username: { $regex: regex },
+  //     const users = await User.find({
+  //       username: { $regex: regex },
+  //       parentStr: { $elemMatch: { $eq: Types.ObjectId(currentUser._id) } },
+  //     })
+  //       .select({
+  //         _id: 1,
+  //         username: 1,
+  //         role: 1,
+  //       })
+  //       .limit(10)
+  //     return this.success(res, users)
+  //   } catch (e: any) {
+  //     return this.fail(res, e)
+  //   }
+  // }
+
+  getUserListSuggestion = async (req: Request, res: Response) => {
+  try {
+    const { username } = req.body;
+    const regex = new RegExp(username, "i");
+    const currentUser: any = req.user;
+
+    // 🔍 Pehle username se match karne ki koshish karo
+    let users = await User.find({
+      username: { $regex: regex },
+      parentStr: { $elemMatch: { $eq: Types.ObjectId(currentUser._id) } },
+    })
+      .select({
+        _id: 1,
+        username: 1,
+        role: 1,
+        code: 1, // 👈 include code in response
+      })
+      .limit(10);
+
+    // 🔁 Agar username se kuch nahi mila to code field se search karo
+    if (users.length === 0) {
+      users = await User.find({
+        code: { $regex: regex },
         parentStr: { $elemMatch: { $eq: Types.ObjectId(currentUser._id) } },
       })
         .select({
           _id: 1,
           username: 1,
           role: 1,
+          code: 1,
         })
-        .limit(10)
-      return this.success(res, users)
-    } catch (e: any) {
-      return this.fail(res, e)
+        .limit(10);
     }
+
+    return this.success(res, users);
+  } catch (e: any) {
+    return this.fail(res, e);
   }
+};
+
 
   saveGeneralSettings = async (req: Request, res: Response) => {
     try {

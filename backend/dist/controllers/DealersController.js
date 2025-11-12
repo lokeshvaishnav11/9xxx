@@ -31,12 +31,33 @@ const Operation_1 = __importDefault(require("../models/Operation"));
 class DealersController extends ApiController_1.ApiController {
     constructor() {
         super();
+        // getUserListSuggestion = async (req: Request, res: Response) => {
+        //   try {
+        //     const { username } = req.body
+        //     const regex = new RegExp(username, 'i')
+        //     const currentUser: any = req.user
+        //     const users = await User.find({
+        //       username: { $regex: regex },
+        //       parentStr: { $elemMatch: { $eq: Types.ObjectId(currentUser._id) } },
+        //     })
+        //       .select({
+        //         _id: 1,
+        //         username: 1,
+        //         role: 1,
+        //       })
+        //       .limit(10)
+        //     return this.success(res, users)
+        //   } catch (e: any) {
+        //     return this.fail(res, e)
+        //   }
+        // }
         this.getUserListSuggestion = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const { username } = req.body;
-                const regex = new RegExp(username, 'i');
+                const regex = new RegExp(username, "i");
                 const currentUser = req.user;
-                const users = yield User_1.User.find({
+                // 🔍 Pehle username se match karne ki koshish karo
+                let users = yield User_1.User.find({
                     username: { $regex: regex },
                     parentStr: { $elemMatch: { $eq: mongoose_2.Types.ObjectId(currentUser._id) } },
                 })
@@ -44,8 +65,23 @@ class DealersController extends ApiController_1.ApiController {
                     _id: 1,
                     username: 1,
                     role: 1,
+                    code: 1, // 👈 include code in response
                 })
                     .limit(10);
+                // 🔁 Agar username se kuch nahi mila to code field se search karo
+                if (users.length === 0) {
+                    users = yield User_1.User.find({
+                        code: { $regex: regex },
+                        parentStr: { $elemMatch: { $eq: mongoose_2.Types.ObjectId(currentUser._id) } },
+                    })
+                        .select({
+                        _id: 1,
+                        username: 1,
+                        role: 1,
+                        code: 1,
+                    })
+                        .limit(10);
+                }
                 return this.success(res, users);
             }
             catch (e) {

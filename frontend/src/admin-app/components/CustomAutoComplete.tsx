@@ -23,11 +23,11 @@ const CustomAutoComplete = forwardRef(
 
     const getSuggestionValue = (suggestion: any) => {
       onSelectUser(suggestion)
-      return suggestion.username
+      return suggestion.username 
     }
 
     const renderSuggestion = (suggestion: any) => (
-      <div className='dropdown-item'>{suggestion.username}</div>
+      <div className='dropdown-item'>{suggestion.username + "/" +suggestion.code}</div>
     )
 
     const inputProps = {

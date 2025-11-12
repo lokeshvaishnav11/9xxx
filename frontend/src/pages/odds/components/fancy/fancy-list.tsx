@@ -107,7 +107,7 @@ export const FancyList = React.memo(
                             justifyContent: isMobile ? 'space-between' : '',
                             flexDirection:"column",
                             alignItems:"center",
-                            color:"white"
+                            // color:"white"
                           }}
                         >
                          

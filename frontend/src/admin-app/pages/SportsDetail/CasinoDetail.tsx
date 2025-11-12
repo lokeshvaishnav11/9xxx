@@ -101,11 +101,11 @@ const CasinoDetail = () => {
                                                         className=""
                                                         style={{
                                                             cursor: "pointer",
-                                                            backgroundColor: "#f8f9fa",
+                                                            backgroundColor: "#F4EED0",
                                                         }}
                                                         onClick={() => setOpenMatch(openMatch === matchName ? null : matchName)}
                                                     >
-                                                        <h5 className="mb-2 ng-binding">{matchName}</h5>
+                                                        <h5 className="mb-2 ng-binding" style={{backgroundColor:"darkgoldenrod"}}>{matchName}</h5>
 
                                                         <div className="d-flex p-1 justify-content-between">
                                                             <p className="">Start On</p>
