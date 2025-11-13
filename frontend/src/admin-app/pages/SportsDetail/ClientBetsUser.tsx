@@ -22,6 +22,7 @@ interface LedgerItem {
 }
 
 interface MatchItem {
+    parentData: any;
     parentNameStr: any;
     volume: any;
     profitLoss: any;
@@ -384,7 +385,7 @@ const ClientBetsUser = () => {
 
 
 
-            <div className="container" style={{marginBottom:"150px"}}>
+            <div className="container" style={{ marginBottom: "150px" }}>
                 <div className="res-table d-none"></div>
 
                 <div className="control-group mt-2 selectize-control single">
@@ -523,7 +524,9 @@ const ClientBetsUser = () => {
                                     <tbody className="small">
                                         {marketonlymatch?.map((bet, index) => (
                                             <tr key={index}>
-                                                <td className="p-1 pt-2 small pr-0">{bet?.parentNameStr}/{bet?.userName}</td>
+                                                <td style={{ fontSize: "10px" }} className="p-1 pt-2 "> {bet?.parentData
+                                                    .filter((item: any) => item !== userState.user.username)
+                                                    .join("/")}/{bet?.userName}</td>
                                                 <td
                                                     className={`pt-2 pb-1 ${bet?.profitLoss < 0
                                                         ? "text-black-500"
@@ -692,9 +695,9 @@ const ClientBetsUser = () => {
                                                                     ?.filter((bet) => bet?.selectionId === sendid)
                                                                     .map((bet, index) => (
                                                                         <tr key={index}>
-                                                                            <td className="p-1 pt-2 small pr-0">
-                                                                                {bet?.parentNameStr}/{bet.userName}
-                                                                            </td>
+                                                                            <td style={{ fontSize: "10px" }} className="p-1 pt-2 "> {bet?.parentData
+                                                                                .filter((item: any) => item !== userState.user.username)
+                                                                                .join("/")}/{bet?.userName}</td>
                                                                             <td className="pt-2 pb-1">{bet?.odds}</td>
                                                                             {/* <td className="pt-2 pb-1">{bet?.volume}</td> */}
 
@@ -720,7 +723,7 @@ const ClientBetsUser = () => {
                                                                                     <>
                                                                                         <button
                                                                                             className="btn-not btn btn-sm p-1 ng-scope"
-                                                                                            style={{ fontSize: "xx-small" ,backgroundColor:"red"}}
+                                                                                            style={{ fontSize: "xx-small", backgroundColor: "red" }}
                                                                                         >
                                                                                             <span
                                                                                                 className="badge badge-light"
@@ -812,7 +815,7 @@ const ClientBetsUser = () => {
                                                 </div>
                                                 <div
                                                     className="book-badges d-flex flex-wrap gap-2 overflow-auto mt-2 p-2 border rounded"
-                                                    // style={{ maxHeight: "70px" }}
+                                                // style={{ maxHeight: "70px" }}
                                                 >
                                                     {Object.keys(book).length > 0 &&
                                                         Object.keys(book).map((itemKey) => {
@@ -830,7 +833,7 @@ const ClientBetsUser = () => {
                                                                         fontSize: "12px",
                                                                         // fontWeight: "500",
                                                                         color: isLay ? "#141313ff" : "#090909ff",
-                                                                        backgroundColor: isLay ?  "#28a745" : "red",
+                                                                        backgroundColor: isLay ? "#28a745" : "red",
                                                                     }}
                                                                 >
                                                                     <span className="badge-label">{itemKey}</span>

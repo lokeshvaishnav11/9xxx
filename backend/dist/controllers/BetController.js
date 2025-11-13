@@ -1348,6 +1348,148 @@ class BetController extends ApiController_1.ApiController {
         //     return this.fail(res, e);
         //   }
         // };
+        // marketDetails = async (req: Request, res: Response): Promise<Response> => {
+        //   function convertDecimalFields(obj: any): any {
+        //     const converted = { ...obj };
+        //     for (const key in converted) {
+        //       const val = converted[key];
+        //       if (val && typeof val === "object" && val._bsontype === "Decimal128") {
+        //         converted[key] = parseFloat(val.toString());
+        //       }
+        //     }
+        //     return converted;
+        //   }
+        //   try {
+        //     const user: any = req.user;
+        //     const usersWithThisAsParent = await User.find({
+        //       parentStr: ObjectId(user._id),
+        //       role: "user" as RoleType,
+        //     });
+        //     const userIds = usersWithThisAsParent.map((u) => u._id);
+        //     // const [bets, matches, childData] = await Promise.all([
+        //     //   Bet.find({
+        //     //     userId: { $in: userIds },
+        //     //     bet_on: { $ne: "CASINO" as BetOn },
+        //     //     status: { $ne: "deleted" },
+        //     //   }),
+        //     //   Match.find({}),
+        //     //   User.find({ parentId: user._id }),
+        //     // ]);
+        //     const [bets, matches, childData] = await Promise.all([
+        //       Bet.aggregate([
+        //         {
+        //           $match: {
+        //             userId: { $in: userIds },
+        //             bet_on: { $ne: "CASINO" },
+        //             status: { $ne: "deleted" },
+        //           },
+        //         },
+        //         {
+        //           $lookup: {
+        //             from: "users",
+        //             let: { parentIds: "$parentStr" },
+        //             pipeline: [
+        //               {
+        //                 $match: {
+        //                   $expr: {
+        //                     $in: [
+        //                       "$_id",
+        //                       {
+        //                         $map: {
+        //                           input: "$$parentIds",
+        //                           as: "id",
+        //                           in: { $toObjectId: "$$id" },
+        //                         },
+        //                       },
+        //                     ],
+        //                   },
+        //                 },
+        //               },
+        //               { $project: { _id: 0, username: 1 } },
+        //             ],
+        //             as: "parentData",
+        //           },
+        //         },
+        //         {
+        //           $addFields: {
+        //             parentData: {
+        //               $map: { input: "$parentData", as: "p", in: "$$p.username" },
+        //             },
+        //           },
+        //         },
+        //       ]),
+        //       Match.find({}),
+        //       User.find({ parentId: user._id }),
+        //     ]);
+        //     // const bets = betsRaw.map(b => new Bet(b));
+        //    console.log("bets",bets)
+        //     //@ts-ignore
+        //     const matchIds = matches.map((m) => m.matchId);
+        //     const allFancyNames = bets.map((b) => b.selectionName).filter(Boolean);
+        //     const [fancyResults, ledgerDataRaw] = await Promise.all([
+        //       Fancy.find({ matchId: { $in: matchIds }, fancyName: { $in: allFancyNames } }),
+        //       ledger.find({ ChildId: { $in: childData.map(c => c._id) } })
+        //     ]);
+        //     const shareMap = new Map(childData.map(c => [c._id, c.share || 0]));
+        //     // If no child ledger data, fallback to parent
+        //     let ledgerData = ledgerDataRaw;
+        //     if (ledgerData.length === 0) {
+        //       ledgerData = await ledger.find({ ParentId: { $in: childData.map(c => ObjectId(c._id)) } });
+        //     }
+        //     const updatedLedgerData = ledgerData.map((entry) => {
+        //       const obj = entry.toObject();
+        //       const share = shareMap.get(obj.ChildId?.toString()) || 0;
+        //       return {
+        //         ...obj,
+        //         superShare: share,
+        //       };
+        //     });
+        //     // Build maps for quick access
+        //     const betsByMatch = new Map();
+        //     const ledgersByBetId = new Map();
+        //     const fancyMap = new Map();
+        //     bets.forEach((bet) => {
+        //       const mId = bet.matchId;
+        //       if (!betsByMatch.has(mId)) betsByMatch.set(mId, []);
+        //       betsByMatch.get(mId).push(bet);
+        //     });
+        //     updatedLedgerData.forEach((ledgerEntry) => {
+        //       const betId = ledgerEntry.betId;
+        //       if (!ledgersByBetId.has(betId)) ledgersByBetId.set(betId, []);
+        //       ledgersByBetId.get(betId).push(ledgerEntry);
+        //     });
+        //     fancyResults.forEach((fancy: any) => {
+        //       fancyMap.set(`${fancy.matchId}_${fancy.fancyName}`, convertDecimalFields(fancy.toObject()));
+        //     });
+        //     const matchesWithBets = matches.map((match: any) => {
+        //       const relatedBets = betsByMatch.get(match.matchId) || [];
+        //       const enrichedBets = relatedBets.map((bet) => {
+        //         const cleanedBet = convertDecimalFields(bet);
+        //         const fancyKey = `${cleanedBet.matchId}_${cleanedBet.selectionName}`;
+        //         return {
+        //           ...cleanedBet,
+        //           fancy: fancyMap.get(fancyKey),
+        //         };
+        //       });
+        //       const relatedBetIds = relatedBets.map((b) => b.id);
+        //       const ledgers = relatedBetIds.flatMap((id) => ledgersByBetId.get(id) || []);
+        //       return {
+        //         ...match.toObject(),
+        //         bets: enrichedBets,
+        //         ledgers,
+        //       };
+        //     });
+        //     return this.success(res, {
+        //       status: true,
+        //       users: usersWithThisAsParent,
+        //       userIds,
+        //       bets,
+        //       matches: matchesWithBets,
+        //     });
+        //   } catch (e: any) {
+        //     return this.fail(res, e);
+        //   }
+        // };
         this.marketDetails = (req, res) => __awaiter(this, void 0, void 0, function* () {
             function convertDecimalFields(obj) {
                 const converted = Object.assign({}, obj);
@@ -1361,20 +1503,13 @@ class BetController extends ApiController_1.ApiController {
             }
             try {
                 const user = req.user;
+                // 🔹 Get child users of this user
                 const usersWithThisAsParent = yield User_1.User.find({
                     parentStr: ObjectId(user._id),
                     role: "user",
                 });
                 const userIds = usersWithThisAsParent.map((u) => u._id);
-                // const [bets, matches, childData] = await Promise.all([
-                //   Bet.find({
-                //     userId: { $in: userIds },
-                //     bet_on: { $ne: "CASINO" as BetOn },
-                //     status: { $ne: "deleted" },
-                //   }),
-                //   Match.find({}),
-                //   User.find({ parentId: user._id }),
-                // ]);
+                // 🔹 Aggregation version (bets = plain objects)
                 const [bets, matches, childData] = yield Promise.all([
                     Bet_1.Bet.aggregate([
                         {
@@ -1405,7 +1540,7 @@ class BetController extends ApiController_1.ApiController {
                                             },
                                         },
                                     },
-                                    { $project: { _id: 0, username: 1 } },
+                                    { $project: { username: 1, _id: 0 } },
                                 ],
                                 as: "parentData",
                             },
@@ -1418,36 +1553,42 @@ class BetController extends ApiController_1.ApiController {
                             },
                         },
                     ]),
-                    Match_1.Match.find({}),
-                    User_1.User.find({ parentId: user._id }),
+                    Match_1.Match.find({}).lean(),
+                    User_1.User.find({ parentId: user._id }).lean(),
                 ]);
-                // const bets = betsRaw.map(b => new Bet(b));
-                console.log("bets", bets);
-                //@ts-ignore
+                console.log("✅ Bets are plain objects now");
+                // 🔹 Collect IDs and fancy names
                 const matchIds = matches.map((m) => m.matchId);
                 const allFancyNames = bets.map((b) => b.selectionName).filter(Boolean);
+                // 🔹 Fancy + Ledger fetch
                 const [fancyResults, ledgerDataRaw] = yield Promise.all([
-                    Fancy_1.Fancy.find({ matchId: { $in: matchIds }, fancyName: { $in: allFancyNames } }),
-                    allledager_1.ledger.find({ ChildId: { $in: childData.map(c => c._id) } })
+                    Fancy_1.Fancy.find({
+                        matchId: { $in: matchIds },
+                        fancyName: { $in: allFancyNames },
+                    }).lean(),
+                    allledager_1.ledger.find({ ChildId: { $in: childData.map((c) => c._id) } }).lean(),
                 ]);
-                const shareMap = new Map(childData.map(c => [c._id.toString(), c.share || 0]));
-                // If no child ledger data, fallback to parent
+                const shareMap = new Map(childData.map((c) => [c._id.toString(), c.share || 0]));
+                // 🔹 Ledger fallback (ParentId search)
                 let ledgerData = ledgerDataRaw;
                 if (ledgerData.length === 0) {
-                    ledgerData = yield allledager_1.ledger.find({ ParentId: { $in: childData.map(c => c._id) } });
+                    ledgerData = yield allledager_1.ledger
+                        .find({ ParentId: { $in: childData.map((c) => ObjectId(c._id)) } })
+                        .lean();
                 }
+                // 🔹 Add superShare field
                 const updatedLedgerData = ledgerData.map((entry) => {
                     var _a;
-                    const obj = entry.toObject();
-                    const share = shareMap.get((_a = obj.ChildId) === null || _a === void 0 ? void 0 : _a.toString()) || 0;
-                    return Object.assign(Object.assign({}, obj), { superShare: share });
+                    const share = shareMap.get((_a = entry.ChildId) === null || _a === void 0 ? void 0 : _a.toString()) || 0;
+                    return Object.assign(Object.assign({}, entry), { superShare: share });
                 });
-                // Build maps for quick access
+                // 🔹 Build Maps
                 const betsByMatch = new Map();
                 const ledgersByBetId = new Map();
                 const fancyMap = new Map();
                 bets.forEach((bet) => {
-                    const mId = bet.matchId;
+                    var _a;
+                    const mId = (_a = bet.matchId) === null || _a === void 0 ? void 0 : _a.toString();
                     if (!betsByMatch.has(mId))
                         betsByMatch.set(mId, []);
                     betsByMatch.get(mId).push(bet);
@@ -1460,19 +1601,22 @@ class BetController extends ApiController_1.ApiController {
                     ledgersByBetId.get(betId).push(ledgerEntry);
                 });
                 fancyResults.forEach((fancy) => {
-                    fancyMap.set(`${fancy.matchId}_${fancy.fancyName}`, convertDecimalFields(fancy.toObject()));
+                    fancyMap.set(`${fancy.matchId}_${fancy.fancyName}`, convertDecimalFields(fancy));
                 });
+                // 🔹 Merge Bets, Ledgers & Fancy with Matches
                 const matchesWithBets = matches.map((match) => {
-                    const relatedBets = betsByMatch.get(match.matchId) || [];
+                    var _a;
+                    const relatedBets = betsByMatch.get((_a = match.matchId) === null || _a === void 0 ? void 0 : _a.toString()) || [];
                     const enrichedBets = relatedBets.map((bet) => {
                         const cleanedBet = convertDecimalFields(bet);
                         const fancyKey = `${cleanedBet.matchId}_${cleanedBet.selectionName}`;
                         return Object.assign(Object.assign({}, cleanedBet), { fancy: fancyMap.get(fancyKey) });
                     });
-                    const relatedBetIds = relatedBets.map((b) => { var _a; return (_a = b.id) === null || _a === void 0 ? void 0 : _a.toString(); });
+                    const relatedBetIds = relatedBets.map((b) => { var _a; return (_a = b._id) === null || _a === void 0 ? void 0 : _a.toString(); });
                     const ledgers = relatedBetIds.flatMap((id) => ledgersByBetId.get(id) || []);
-                    return Object.assign(Object.assign({}, match.toObject()), { bets: enrichedBets, ledgers });
+                    return Object.assign(Object.assign({}, match), { bets: enrichedBets, ledgers });
                 });
+                // ✅ Final API Response
                 return this.success(res, {
                     status: true,
                     users: usersWithThisAsParent,
@@ -1482,6 +1626,7 @@ class BetController extends ApiController_1.ApiController {
                 });
             }
             catch (e) {
+                console.error("❌ marketDetails error:", e);
                 return this.fail(res, e);
             }
         });
@@ -1800,11 +1945,55 @@ class BetController extends ApiController_1.ApiController {
                 const userIds = usersWithThisAsParent.map((u) => u._id);
                 // console.log(userIds,"user ids in market casino")
                 // Step 3: Fetch bets for those users, where betOn !== "CASINO"
-                const bets = yield Bet_1.Bet.find({
-                    userId: { $in: userIds },
-                    bet_on: "CASINO",
-                    status: { $ne: "deleted" },
-                });
+                // const bets = await Bet.find({
+                //   userId: { $in: userIds },
+                //   bet_on: "CASINO" as BetOn,
+                //   status: { $ne: "deleted" },
+                // });
+                const bets = yield Bet_1.Bet.aggregate([
+                    {
+                        $match: {
+                            userId: { $in: userIds },
+                            bet_on: "CASINO",
+                            status: { $ne: "deleted" },
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "users",
+                            let: { parentIds: "$parentStr" },
+                            pipeline: [
+                                {
+                                    $match: {
+                                        $expr: {
+                                            $in: [
+                                                "$_id",
+                                                {
+                                                    $map: {
+                                                        input: "$$parentIds",
+                                                        as: "id",
+                                                        in: { $toObjectId: "$$id" },
+                                                    },
+                                                },
+                                            ],
+                                        },
+                                    },
+                                },
+                                { $project: { _id: 0, username: 1 } },
+                            ],
+                            as: "parentData",
+                        },
+                    },
+                    {
+                        $addFields: {
+                            parentData: {
+                                $map: { input: "$parentData", as: "p", in: "$$p.username" },
+                            },
+                        },
+                    },
+                    // 👇 Add this to sort newest first
+                    { $sort: { createdAt: 1 } },
+                ]);
                 // const matches = await  Match.find({});
                 // console.log(matches,"maatches")
                 // Step 5: Combine bets into matches

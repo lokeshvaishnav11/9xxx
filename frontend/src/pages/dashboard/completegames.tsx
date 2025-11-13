@@ -3,7 +3,7 @@ import "./newprofile.css"
 import accountService from '../../services/account.service';
 import { AxiosResponse } from 'axios';
 import moment from 'moment';
-import { dateFormat } from '../../utils/helper';
+import { betDateFormat, dateFormat } from '../../utils/helper';
 import { selectUserData } from '../../redux/actions/login/loginSlice';
 import { useAppSelector } from '../../redux/hooks';
 import UserService from "../../services/user.service";
@@ -201,7 +201,7 @@ const Completegames = () => {
                                                   {betsForSelection
                                                     ?.map((b: any, i: number) => (
                                                       <tr key={i} className="text-center">
-                                                        <td className="px-3 py-2">{moment(b?.betClickTime).format(dateFormat)}</td>
+                                                        <td className="px-3 py-2">{moment(b?.betClickTime).format(betDateFormat)}</td>
                                                         <td className="px-3 py-2">{b?.selectionId}</td>
                                                         {marketName === "Fancy" ?
                                                           <td className="pt-2 pb-1 px-3 py-2 ">
