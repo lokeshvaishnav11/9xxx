@@ -235,18 +235,9 @@ const MatchDetail = (props: any) => {
               </Fragment>
             )}
 
-            {userState?.user?.role== RoleType.user &&<div className='card m-b-10 my-bet'>
-              <div className='card-header'>
-                <h6 className='card-title d-inline-block'>My Bet</h6>
-                <a
-                  href='#'
-                  onClick={showAllBet}
-                  className='card-title d-inline-block float-right'
-                >
-                  View All
-                </a>
-              </div>
-              <div className='card-body'>
+            {userState?.user?.role== RoleType.user && <div className=''>
+             
+              <div className=''>
                 <MyBetComponent />
               </div>
             </div>}

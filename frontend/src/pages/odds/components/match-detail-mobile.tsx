@@ -199,17 +199,15 @@ const shared = useParams().share
               </Fragment>
             )}
 
-             <div className='card m-b-10 my-bet'>
-              <div className='card-header'>
-                <h6 className='card-title d-inline-block'>My Bet</h6>
-              </div>
-              <div className='card-body'>
+             <div className=''>
+             
+              <div className=''>
                 <MyBetComponent />
               </div>
             </div>
 
             <div className='card m-b-10 my-bet'>
-            <h6 className="p-2 w-100 m-0 bg-info text-white text-center">Declared Bets</h6>
+           
               <div className='card-body'>
                 <MyBetComponent22 />
               </div>

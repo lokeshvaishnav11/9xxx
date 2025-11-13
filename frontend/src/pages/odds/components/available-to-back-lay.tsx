@@ -98,11 +98,11 @@ export const AvailableToBackLay = React.memo(
 
             <span className="odd d-block">
               {market.oddsType == OddsType.BM
-                ? (back.price * 100 - 100).toFixed(2)
-                  ? (back.price * 100 - 100).toFixed(2)
+                ? (back.price * 100 - 100).toFixed(0)
+                  ? (back.price * 100 - 100).toFixed(0)
                   : "-"
-                : (back.price * 100 - 100).toFixed(2)
-                  ? (back.price * 100 - 100).toFixed(2)
+                : (back.price * 100 - 100).toFixed(0)
+                  ? (back.price * 100 - 100).toFixed(0)
                   : "-"}
             </span>
 
@@ -153,11 +153,11 @@ export const AvailableToBackLay = React.memo(
               // display: "inline-block",
             }}>
               {market.oddsType == OddsType.BM
-                ? (lay.price * 100 - 100).toFixed(2)
-                  ? (lay.price * 100 - 100).toFixed(2)
+                ? (lay.price * 100 - 100).toFixed(0)
+                  ? (lay.price * 100 - 100).toFixed(0)
                   : "-"
-                : (lay.price * 100 - 100).toFixed(2)
-                  ? (lay.price * 100 - 100).toFixed(2)
+                : (lay.price * 100 - 100).toFixed(0)
+                  ? (lay.price * 100 - 100).toFixed(0)
                   : "-"}
             </span>
 

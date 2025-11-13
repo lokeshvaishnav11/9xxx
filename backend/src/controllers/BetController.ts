@@ -140,7 +140,7 @@ export class BetController extends ApiController {
 
       return this.success(res, { list: bets });
     } catch (e: any) {
-      console.log(e,"FGHJKL")
+      console.log(e, "FGHJKL")
       return this.fail(res, e);
     }
   };
@@ -1341,43 +1341,43 @@ export class BetController extends ApiController {
     }
   };
 
- betList32 = async (req: Request, res: Response): Promise<Response> => {
-  console.log(req.body, "req.body");
+  betList32 = async (req: Request, res: Response): Promise<Response> => {
+    console.log(req.body, "req.body");
 
-  try {
-    const { userId } = req.body;
+    try {
+      const { userId } = req.body;
 
-    if (!userId) {
-      return res.status(400).json({ message: "userId is required" });
+      if (!userId) {
+        return res.status(400).json({ message: "userId is required" });
+      }
+
+
+
+      // Agar admin ya subadmin hai to unke child users ke bets
+
+
+      // Sirf pending bets leke aa
+      const bets = await Bet.find({
+        userId: ObjectId(userId),
+        status: "pending",
+      })
+        .sort({ createdAt: -1 })
+        .lean();
+
+      console.log(bets, "Pending bets fetched");
+
+      return res.status(200).json({
+        success: true,
+        bets,
+      });
+    } catch (e: any) {
+      console.error(e);
+      return res.status(500).json({
+        success: false,
+        message: e.message || "Something went wrong",
+      });
     }
-
-  
-
-    // Agar admin ya subadmin hai to unke child users ke bets
-   
-
-    // Sirf pending bets leke aa
-    const bets = await Bet.find({
-      userId:ObjectId(userId),
-      status: "pending",
-    })
-      .sort({ createdAt: -1 })
-      .lean();
-
-    console.log(bets, "Pending bets fetched");
-
-    return res.status(200).json({
-      success: true,
-      bets,
-    });
-  } catch (e: any) {
-    console.error(e);
-    return res.status(500).json({
-      success: false,
-      message: e.message || "Something went wrong",
-    });
-  }
-};
+  };
 
 
 
@@ -1617,15 +1617,64 @@ export class BetController extends ApiController {
 
       const userIds = usersWithThisAsParent.map((u) => u._id);
 
+      // const [bets, matches, childData] = await Promise.all([
+      //   Bet.find({
+      //     userId: { $in: userIds },
+      //     bet_on: { $ne: "CASINO" as BetOn },
+      //     status: { $ne: "deleted" },
+      //   }),
+      //   Match.find({}),
+      //   User.find({ parentId: user._id }),
+      // ]);
       const [bets, matches, childData] = await Promise.all([
-        Bet.find({
-          userId: { $in: userIds },
-          bet_on: { $ne: "CASINO" as BetOn },
-          status: { $ne: "deleted" },
-        }),
+        Bet.aggregate([
+          {
+            $match: {
+              userId: { $in: userIds },
+              bet_on: { $ne: "CASINO" },
+              status: { $ne: "deleted" },
+            },
+          },
+          {
+            $lookup: {
+              from: "users",
+              let: { parentIds: "$parentStr" },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $in: [
+                        "$_id",
+                        {
+                          $map: {
+                            input: "$$parentIds",
+                            as: "id",
+                            in: { $toObjectId: "$$id" },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+                { $project: { _id: 0, username: 1 } },
+              ],
+              as: "parentData",
+            },
+          },
+          {
+            $addFields: {
+              parentData: {
+                $map: { input: "$parentData", as: "p", in: "$$p.username" },
+              },
+            },
+          },
+        ]),
         Match.find({}),
         User.find({ parentId: user._id }),
       ]);
+      // const bets = betsRaw.map(b => new Bet(b));
+
+     console.log("bets",bets)
       //@ts-ignore
       const matchIds = matches.map((m) => m.matchId);
       const allFancyNames = bets.map((b) => b.selectionName).filter(Boolean);
@@ -1677,7 +1726,7 @@ export class BetController extends ApiController {
         const relatedBets = betsByMatch.get(match.matchId) || [];
 
         const enrichedBets = relatedBets.map((bet) => {
-          const cleanedBet = convertDecimalFields(bet.toObject());
+          const cleanedBet = convertDecimalFields(bet);
           const fancyKey = `${cleanedBet.matchId}_${cleanedBet.selectionName}`;
           return {
             ...cleanedBet,
@@ -1772,7 +1821,7 @@ export class BetController extends ApiController {
         // console.log(fancyLookup,"fancy lokkk")
 
         const enrichedBets = relatedBets.map((bet) => {
-          const plainBet = bet.toObject();
+          const plainBet = bet;
           const cleanedBet = convertDecimalFields(plainBet);
           const fancyRaw = fancyLookup[cleanedBet.selectionName];
           const cleanedFancy = fancyRaw ? convertDecimalFields(fancyRaw.toObject()) : undefined;
@@ -2637,29 +2686,29 @@ export class BetController extends ApiController {
       //   };
       // }
       if (startDate && startDate !== "") {
-  // Normalize format
-  const formatDate = (dateStr, isEnd = false) => {
-    // Agar "T" hai to HTML datetime-local ka format hai (YYYY-MM-DDTHH:mm:ss)
-    if (dateStr.includes("T")) {
-      // HTML format ko space-based datetime me convert karo
-      return dateStr.replace("T", " ");
-    } else {
-      // Agar "T" nahi hai to seconds ke hisab se default add karo
-      return isEnd ? `${dateStr} 23:59:59` : `${dateStr} 00:00:00`;
-    }
-  };
+        // Normalize format
+        const formatDate = (dateStr, isEnd = false) => {
+          // Agar "T" hai to HTML datetime-local ka format hai (YYYY-MM-DDTHH:mm:ss)
+          if (dateStr.includes("T")) {
+            // HTML format ko space-based datetime me convert karo
+            return dateStr.replace("T", " ");
+          } else {
+            // Agar "T" nahi hai to seconds ke hisab se default add karo
+            return isEnd ? `${dateStr} 23:59:59` : `${dateStr} 00:00:00`;
+          }
+        };
 
-  const formattedStart = formatDate(startDate);
-  const formattedEnd = formatDate(endDate, true);
+        const formattedStart = formatDate(startDate);
+        const formattedEnd = formatDate(endDate, true);
 
-  filter = {
-    ...filter,
-    createdAt: {
-      $gte: new Date(formattedStart),
-      $lte: new Date(formattedEnd),
-    },
-  };
-}
+        filter = {
+          ...filter,
+          createdAt: {
+            $gte: new Date(formattedStart),
+            $lte: new Date(formattedEnd),
+          },
+        };
+      }
 
       if (reportType && reportType != "") {
         filter = {

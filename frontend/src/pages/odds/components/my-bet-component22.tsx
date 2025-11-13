@@ -84,7 +84,8 @@ const groupedMyAllBet = getMyAllBet?.reduce((acc: any, bet: any) => {
   }, [getMyAllBet])
 
   return (
-    <div className='table-responsive-new' style={{height:"200px", overflowY:"scroll"}}>
+   <>{getMyAllBet?.length > 0 &&  <div className='table-responsive-new' style={{height:"200px", overflowY:"scroll"}}>
+     <h6 className="p-2 w-100 m-0 bg-info text-white text-center">Declared Bets</h6>
       <table className='table coupon-table scorall mybet'>
         <thead>
           <tr style={{background:"#76d68f"}}>
@@ -108,7 +109,7 @@ const groupedMyAllBet = getMyAllBet?.reduce((acc: any, bet: any) => {
     <React.Fragment key={runnerName}>
       {/* Group Header Row */}
       <tr>
-        <td colSpan={8} style={{ backgroundColor: "darkgoldenrod", color: "black", padding: "8px 10px", textAlign: "left" }}>
+        <td colSpan={8} style={{ backgroundColor: "#ccc641", color: "black", padding: "8px 10px", textAlign: "left" }}>
           {runnerName}
         </td>
       </tr>
@@ -162,7 +163,7 @@ const groupedMyAllBet = getMyAllBet?.reduce((acc: any, bet: any) => {
 </tbody>
 
       </table>
-    </div>
+    </div>}</>
   )
 }
 

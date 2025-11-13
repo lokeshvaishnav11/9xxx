@@ -19,6 +19,7 @@ interface LedgerItem {
 }
 
 interface MatchItem {
+  parentData: any;
   parentNameStr: any;
   volume: any;
   profitLoss: any;
@@ -512,7 +513,9 @@ const ClientBetsLedger = () => {
                   <tbody className="small">
                     {marketonlymatch?.map((bet, index) => (
                       <tr key={index}>
-                        <td className="p-1 pt-2 small pr-0">{bet?.userName}/{bet?.parentNameStr}</td>
+                         <td style={{fontSize:"10px"}} className="p-1 pt-2 "> {bet?.parentData
+    .filter((item:any) => item !== userState.user.username)  
+    .join("/")}/{bet?.userName}</td>
                         <td
                           className={`pt-2 pb-1 ${bet?.profitLoss < 0
                               ? "text-red-500"
@@ -671,9 +674,10 @@ const ClientBetsLedger = () => {
                                 ?.filter((bet) => bet?.selectionId === sendid)
                                 .map((bet, index) => (
                                   <tr key={index}>
-                                    <td className="p-1 pt-2 small pr-0">
-                                      {bet.userName}/{bet?.parentNameStr}
-                                    </td>
+                                      <td style={{fontSize:"10px"}} className="p-1 pt-2 "> {bet?.parentData
+    .filter((item:any) => item !== userState.user.username)  
+    .join("/")}/{bet?.userName}</td>
+
                                     <td className="pt-2 pb-1">{bet?.odds}</td>
                                     <td className="pt-2 pb-1">{bet?.volume}</td>
 

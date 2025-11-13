@@ -1,3 +1,12 @@
+
+
+
+
+
+
+
+
+
 // import React, { MouseEvent } from 'react'
 // import { toast } from 'react-toastify'
 // import UserService from '../../../services/user.service'
@@ -33,21 +42,22 @@
 
 //   const { socketUser } = useWebsocketUser()
 //   const ref = React.useRef<any>(null)
+
 //   React.useEffect(() => {
-//     const filterObj = filterdata
+//     const filterObj = { ...filterdata }
 //     if (!matchId) {
-//       filterObj.startDate = moment().subtract(7, 'days').format('YYYY-MM-DD')
-//       filterObj.endDate = moment().format('YYYY-MM-DD')
+//       filterObj.startDate = moment().subtract(7, 'days').format('YYYY-MM-DDTHH:mm:ss')
+//       filterObj.endDate = moment().format('YYYY-MM-DDTHH:mm:ss')
 //     }
 //     setfilterdata(filterObj)
 //     getbethistory(page)
 //   }, [])
 
 //   React.useEffect(() => {
-//     const filterObj = filterdata
+//     const filterObj = { ...filterdata }
 //     if (!matchId) {
-//       filterObj.startDate = moment().subtract(7, 'days').format('YYYY-MM-DD')
-//       filterObj.endDate = moment().format('YYYY-MM-DD')
+//       filterObj.startDate = moment().subtract(7, 'days').format('YYYY-MM-DDTHH:mm:ss')
+//       filterObj.endDate = moment().format('YYYY-MM-DDTHH:mm:ss')
 //     }
 //     filterObj.type = params.type
 //     setfilterdata(filterObj)
@@ -57,7 +67,7 @@
 //   React.useEffect(() => {
 //     if (submitClicked) {
 //       getbethistory(1)
-//       setSubmitClicked(false) // Reset submitClicked state
+//       setSubmitClicked(false)
 //     }
 //   }, [submitClicked])
 
@@ -68,7 +78,7 @@
 //         setPage(page)
 //       })
 //       .catch((e) => {
-//         const error = e.response.data.message
+//         const error = e.response?.data?.message || 'Something went wrong'
 //         toast.error(error)
 //       })
 //   }
@@ -84,63 +94,62 @@
 //   const handleformchange = (event: any) => {
 //     setfilterdata({ ...filterdata, [event.target.name]: event.target.value })
 //   }
+
 //   const handleSubmitform = (event: any) => {
 //     event.preventDefault()
 //     setSubmitClicked(true)
 //   }
+
 //   const handlePageClick = (event: any) => {
 //     getbethistory(event.selected + 1)
 //   }
-//   const onTrash = (e: MouseEvent<HTMLAnchorElement>, bet: IBet) => {
-//     e.preventDefault();
 
-//     // Check if bet._id exists before proceeding
+//   const onTrash = (e: MouseEvent<HTMLAnchorElement>, bet: IBet) => {
+//     e.preventDefault()
+
 //     if (!bet._id) {
-//       toast.error("Invalid bet data. Unable to delete.");
-//       return;
+//       toast.error('Invalid bet data. Unable to delete.')
+//       return
 //     }
 
-//     // Replace confirm with a custom modal for better UX (Optional)
-//     const userConfirmed = window.confirm('Are you sure you want to delete?');
+//     const userConfirmed = window.confirm('Are you sure you want to delete?')
 
 //     if (userConfirmed) {
-//       betService.deleteCurrentBet(bet._id).then((res: AxiosResponse) => {
-//         const { success, message } = res.data.data;
+//       betService
+//         .deleteCurrentBet(bet._id)
+//         .then((res: AxiosResponse) => {
+//           const { success, message } = res.data.data
 
-//         if (success) {
-//           // Notify backend via socket
-//           socketUser.emit('betDelete', { betId: bet._id, userId: bet.userId });
-
-//           // Show success toast notification
-//           toast.success(message);
-
-//           // Update state safely
-//           setbethistory((prevState: any) => ({
-//             ...prevState,
-//             docs: prevState.docs.filter(({ _id }: IBet) => _id !== bet._id),
-//           }));
-//         } else {
-//           toast.error('Failed to delete bet.');
-//         }
-//       }).catch((err) => {
-//         console.error('Error deleting bet:', err);
-//         toast.error('An error occurred while deleting the bet.');
-//       });
+//           if (success) {
+//             socketUser.emit('betDelete', { betId: bet._id, userId: bet.userId })
+//             toast.success(message)
+//             setbethistory((prevState: any) => ({
+//               ...prevState,
+//               docs: prevState.docs.filter(({ _id }: IBet) => _id !== bet._id),
+//             }))
+//           } else {
+//             toast.error('Failed to delete bet.')
+//           }
+//         })
+//         .catch((err) => {
+//           console.error('Error deleting bet:', err)
+//           toast.error('An error occurred while deleting the bet.')
+//         })
 //     }
-//   };
+//   }
 
 //   const handleSelectAll = () => {
-//     setSelectAll(!selectAll) // Toggle the state of "Select All" checkbox
+//     setSelectAll(!selectAll)
 //     const updatedHistory = bethistory.docs.map((item: any) => ({
 //       ...item,
-//       selected: !selectAll, // Set the selected state of each item based on the new state of "Select All" checkbox
+//       selected: !selectAll,
 //     }))
 //     setbethistory({ ...bethistory, docs: updatedHistory })
 //   }
 
 //   const handleSelectItem = (item: IBet) => {
 //     const updatedHistory = bethistory.docs.map((historyItem: any) =>
-//       historyItem === item ? { ...historyItem, selected: !historyItem.selected } : historyItem,
+//       historyItem === item ? { ...historyItem, selected: !historyItem.selected } : historyItem
 //     )
 //     setbethistory({ ...bethistory, docs: updatedHistory })
 //   }
@@ -153,15 +162,15 @@
 
 //   const deleteBulk = () => {
 //     const select = bethistory.docs.reduce((selected: boolean, item: IBet) => {
-//       if (item.selected) {
-//         selected = true
-//       }
+//       if (item.selected) selected = true
 //       return selected
 //     }, false)
+
 //     if (selectAll || select) {
 //       const selectedItems = bethistory.docs
 //         .filter((item: IBet) => item.selected)
 //         .map((item: IBet) => item._id)
+
 //       if (selectedItems.length > 0) {
 //         betService.deleteBets({ ids: selectedItems }).then((res) => {
 //           if (res.data.data.success) {
@@ -178,11 +187,13 @@
 //       toast.error('Please select one item')
 //     }
 //   }
-//   console.log(sportList, "spoers list")
 
 //   return (
 //     <>
-//       {!hideHeader && mobileSubheader.subheaderdesktopadmin(params.type == 'deleted' ? 'Deleted Bet History' : 'Unsettled Bet History')}
+//       {!hideHeader &&
+//         mobileSubheader.subheaderdesktopadmin(
+//           params.type === 'deleted' ? 'Deleted Bet History' : 'Unsettled Bet History'
+//         )}
 //       <div className='container-fluid'>
 //         <div className='row'>
 //           <div className={!isMobile ? 'col-md-12 mt-1' : 'col-md-12 padding-custom'}>
@@ -202,39 +213,21 @@
 //                         ref={ref}
 //                       />
 //                     </div>
+
 //                     <div className='col-6 col-lg-2 mbc-5'>
 //                       <div className='form-group mb-0'>
 //                         <label className='label'>Search By Name</label>
 //                         <input
-//                           type={'text'}
-//                           className={'mx-input'}
-//                           name={'name'}
+//                           type='text'
+//                           className='mx-input'
+//                           name='name'
 //                           onChange={handleformchange}
-//                           placeholder={'Search By Name'}
+//                           placeholder='Search By Name'
 //                         />
 //                       </div>
 //                     </div>
-//                     {/* <div className='col-6 col-lg-2 mbc-5'>
-//                       <div className='form-group mb-0'>
-//                         <label className='label'>Sport</label>
-//                         <select
-//                           name='reportType'
-//                           onChange={handleformchange}
-//                           className='custom-select ng-untouched ng-pristine ng-valid'
-//                         >
-//                           <option value=''>Select Sport</option>
-                          
-//                           {sportList.sports
-//                           .filter((sport: any) => sport.sportId === 4)
-//                           .map((sport: any) => (
-//                             <option key={sport.sportId} value={sport.sportId}>
-//                               {sport.name}{' '}
-//                             </option>
-//                             //only show the cricket here
-//                           ))}
-//                         </select>
-//                       </div>
-//                     </div> */}
+
+//                     {/* Hardcoded Sport Dropdown */}
 //                     <div className='col-6 col-lg-2 mbc-5'>
 //                       <div className='form-group mb-0'>
 //                         <label className='label'>Sport</label>
@@ -250,21 +243,7 @@
 //                       </div>
 //                     </div>
 
-//                     {/* <div className='col-6 col-lg-2 mbc-5'>
-//                       <div className='form-group mb-0'>
-//                         <label className='label'>Bet Type</label>
-//                         <select
-//                           name='bet_status'
-//                           onChange={handleformchange}
-//                           className='custom-select ng-untouched ng-pristine ng-valid'
-//                         >
-//                           <option value='ALL'>Bet Type </option>
-//                           <option value='matched'>Matched </option>
-//                           <option value='unmatched'>Un-Matched </option>
-//                           <option value='deleted'>Deleted </option>
-//                         </select>
-//                       </div>
-//                     </div> */}
+//                     {/* Start Date with seconds */}
 //                     <div className='col-6 col-lg-2 mbc-5'>
 //                       <div className='form-group mb-0'>
 //                         <label className='label'>Start Date</label>
@@ -273,9 +252,10 @@
 //                             <input
 //                               name='startDate'
 //                               type='datetime-local'
+//                               step='1' // allows seconds
 //                               autoComplete='off'
 //                               onChange={handleformchange}
-//                               defaultValue={filterdata.startDate}
+//                               defaultValue={moment(filterdata.startDate).format('YYYY-MM-DDTHH:mm:ss')}
 //                               placeholder='Select Date'
 //                               className='mx-input ng-pristine ng-valid ng-touched'
 //                             />
@@ -283,6 +263,8 @@
 //                         </div>
 //                       </div>
 //                     </div>
+
+//                     {/* End Date with seconds */}
 //                     <div className='col-6 col-lg-2 mbc-5'>
 //                       <div className='form-group mb-0'>
 //                         <label className='label'>End Date</label>
@@ -291,8 +273,9 @@
 //                             <input
 //                               name='endDate'
 //                               type='datetime-local'
+//                               step='1' // allows seconds
 //                               autoComplete='off'
-//                               defaultValue={filterdata.endDate}
+//                               defaultValue={moment(filterdata.endDate).format('YYYY-MM-DDTHH:mm:ss')}
 //                               onChange={handleformchange}
 //                               placeholder='Select Date'
 //                               className='mx-input ng-untouched ng-pristine ng-valid'
@@ -301,19 +284,21 @@
 //                         </div>
 //                       </div>
 //                     </div>
+
 //                     <div className='col-12 col-lg-1 mbc-5'>
 //                       <label className='label'>&nbsp;</label>
-
 //                       <button type='submit' className='btn btn-primary btn-block'>
 //                         Submit
 //                       </button>
 //                     </div>
+
 //                     <div className='col-12 col-lg-1 mbc-5'>
 //                       <label className='label'>&nbsp;</label>
 //                       <button type='button' onClick={reset} className='btn btn-primary btn-block'>
 //                         Reset
 //                       </button>
 //                     </div>
+
 //                     {userState?.user?.role === RoleType.admin && (
 //                       <div className='col-12 col-lg-1 mbc-5'>
 //                         <label className='label'>&nbsp;</label>
@@ -329,6 +314,7 @@
 //                   </div>
 //                 </form>
 //               </div>
+
 //               <div className='card-body'>
 //                 <BetListComponent
 //                   bethistory={bethistory}
@@ -348,10 +334,8 @@
 //     </>
 //   )
 // }
+
 // export default UnsetteleBetHistoryAdmin
-
-
-
 
 
 
@@ -593,43 +577,71 @@ const UnsetteleBetHistoryAdmin = ({ hideHeader, matchId }: any) => {
                       </div>
                     </div>
 
-                    {/* Start Date with seconds */}
+                    {/* Start Date with mobile/desktop conditional */}
                     <div className='col-6 col-lg-2 mbc-5'>
                       <div className='form-group mb-0'>
                         <label className='label'>Start Date</label>
                         <div className='mx-datepicker'>
                           <div className='mx-input-wrapper'>
-                            <input
-                              name='startDate'
-                              type='datetime-local'
-                              step='1' // allows seconds
-                              autoComplete='off'
-                              onChange={handleformchange}
-                              defaultValue={moment(filterdata.startDate).format('YYYY-MM-DDTHH:mm:ss')}
-                              placeholder='Select Date'
-                              className='mx-input ng-pristine ng-valid ng-touched'
-                            />
+                            {isMobile ? (
+                              <input
+                                name='startDate'
+                                type='datetime-local'
+                                autoComplete='off'
+                                onChange={handleformchange}
+                                defaultValue={moment(filterdata.startDate).format('YYYY-MM-DDTHH:mm')}
+                                placeholder='Select Date'
+                                className='mx-input ng-pristine ng-valid ng-touched'
+                              />
+                            ) : (
+                              <input
+                                name='startDate'
+                                type='datetime-local'
+                                step='1'
+                                autoComplete='off'
+                                onChange={handleformchange}
+                                defaultValue={moment(filterdata.startDate).format(
+                                  'YYYY-MM-DDTHH:mm:ss'
+                                )}
+                                placeholder='Select Date'
+                                className='mx-input ng-pristine ng-valid ng-touched'
+                              />
+                            )}
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* End Date with seconds */}
+                    {/* End Date with mobile/desktop conditional */}
                     <div className='col-6 col-lg-2 mbc-5'>
                       <div className='form-group mb-0'>
                         <label className='label'>End Date</label>
                         <div className='mx-datepicker'>
                           <div className='mx-input-wrapper'>
-                            <input
-                              name='endDate'
-                              type='datetime-local'
-                              step='1' // allows seconds
-                              autoComplete='off'
-                              defaultValue={moment(filterdata.endDate).format('YYYY-MM-DDTHH:mm:ss')}
-                              onChange={handleformchange}
-                              placeholder='Select Date'
-                              className='mx-input ng-untouched ng-pristine ng-valid'
-                            />
+                            {isMobile ? (
+                              <input
+                                name='endDate'
+                                type='datetime-local'
+                                autoComplete='off'
+                                onChange={handleformchange}
+                                defaultValue={moment(filterdata.endDate).format('YYYY-MM-DDTHH:mm')}
+                                placeholder='Select Date'
+                                className='mx-input ng-pristine ng-valid ng-touched'
+                              />
+                            ) : (
+                              <input
+                                name='endDate'
+                                type='datetime-local'
+                                step='1'
+                                autoComplete='off'
+                                onChange={handleformchange}
+                                defaultValue={moment(filterdata.endDate).format(
+                                  'YYYY-MM-DDTHH:mm:ss'
+                                )}
+                                placeholder='Select Date'
+                                className='mx-input ng-pristine ng-valid ng-touched'
+                              />
+                            )}
                           </div>
                         </div>
                       </div>
@@ -686,4 +698,3 @@ const UnsetteleBetHistoryAdmin = ({ hideHeader, matchId }: any) => {
 }
 
 export default UnsetteleBetHistoryAdmin
-

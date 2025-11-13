@@ -1366,15 +1366,63 @@ class BetController extends ApiController_1.ApiController {
                     role: "user",
                 });
                 const userIds = usersWithThisAsParent.map((u) => u._id);
+                // const [bets, matches, childData] = await Promise.all([
+                //   Bet.find({
+                //     userId: { $in: userIds },
+                //     bet_on: { $ne: "CASINO" as BetOn },
+                //     status: { $ne: "deleted" },
+                //   }),
+                //   Match.find({}),
+                //   User.find({ parentId: user._id }),
+                // ]);
                 const [bets, matches, childData] = yield Promise.all([
-                    Bet_1.Bet.find({
-                        userId: { $in: userIds },
-                        bet_on: { $ne: "CASINO" },
-                        status: { $ne: "deleted" },
-                    }),
+                    Bet_1.Bet.aggregate([
+                        {
+                            $match: {
+                                userId: { $in: userIds },
+                                bet_on: { $ne: "CASINO" },
+                                status: { $ne: "deleted" },
+                            },
+                        },
+                        {
+                            $lookup: {
+                                from: "users",
+                                let: { parentIds: "$parentStr" },
+                                pipeline: [
+                                    {
+                                        $match: {
+                                            $expr: {
+                                                $in: [
+                                                    "$_id",
+                                                    {
+                                                        $map: {
+                                                            input: "$$parentIds",
+                                                            as: "id",
+                                                            in: { $toObjectId: "$$id" },
+                                                        },
+                                                    },
+                                                ],
+                                            },
+                                        },
+                                    },
+                                    { $project: { _id: 0, username: 1 } },
+                                ],
+                                as: "parentData",
+                            },
+                        },
+                        {
+                            $addFields: {
+                                parentData: {
+                                    $map: { input: "$parentData", as: "p", in: "$$p.username" },
+                                },
+                            },
+                        },
+                    ]),
                     Match_1.Match.find({}),
                     User_1.User.find({ parentId: user._id }),
                 ]);
+                // const bets = betsRaw.map(b => new Bet(b));
+                console.log("bets", bets);
                 //@ts-ignore
                 const matchIds = matches.map((m) => m.matchId);
                 const allFancyNames = bets.map((b) => b.selectionName).filter(Boolean);
@@ -1417,7 +1465,7 @@ class BetController extends ApiController_1.ApiController {
                 const matchesWithBets = matches.map((match) => {
                     const relatedBets = betsByMatch.get(match.matchId) || [];
                     const enrichedBets = relatedBets.map((bet) => {
-                        const cleanedBet = convertDecimalFields(bet.toObject());
+                        const cleanedBet = convertDecimalFields(bet);
                         const fancyKey = `${cleanedBet.matchId}_${cleanedBet.selectionName}`;
                         return Object.assign(Object.assign({}, cleanedBet), { fancy: fancyMap.get(fancyKey) });
                     });
@@ -1485,7 +1533,7 @@ class BetController extends ApiController_1.ApiController {
                     }, {});
                     // console.log(fancyLookup,"fancy lokkk")
                     const enrichedBets = relatedBets.map((bet) => {
-                        const plainBet = bet.toObject();
+                        const plainBet = bet;
                         const cleanedBet = convertDecimalFields(plainBet);
                         const fancyRaw = fancyLookup[cleanedBet.selectionName];
                         const cleanedFancy = fancyRaw ? convertDecimalFields(fancyRaw.toObject()) : undefined;

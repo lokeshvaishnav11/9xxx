@@ -594,7 +594,7 @@ const ClientBetsUser = () => {
                                                         : "text-green-500"
                                                         }`}
                                                 >
-                                                    {(bet?.profitLoss).toFixed()}
+                                                    {(bet?.profitLoss)?.toFixed()}
                                                 </td>
                                                 <td
                                                     className="pt-2 pb-1 text-nowrap"

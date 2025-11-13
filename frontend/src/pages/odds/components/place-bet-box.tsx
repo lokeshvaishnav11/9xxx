@@ -194,15 +194,35 @@ const PlaceBetBox = ({ stake }: { stake: IUserBetStake }) => {
               { return null }
               if (index > 13) return null;
             return (
+              // <div className="col-4 d-flex justify-content-center" key={`btn-${index}`}>
+              //   <button
+              //     type="button"
+              //     onClick={() => onStack(stake[`value${index}`])}
+              //     className="btn btn-secondary m-1 w-100"
+              //   >
+              //     {stake[`name${index}`]}
+              //   </button>
+              // </div>
               <div className="col-4 d-flex justify-content-center" key={`btn-${index}`}>
-                <button
-                  type="button"
-                  onClick={() => onStack(stake[`value${index}`])}
-                  className="btn btn-secondary m-1 w-100"
-                >
-                  {stake[`name${index}`]}
-                </button>
-              </div>
+  <button
+    type="button"
+    onClick={() => onStack(stake[`value${index}`])}
+    className="btn btn-secondary p-3 m-1 w-100"
+    style={{
+      fontSize: "1.4rem",      // text को बड़ा बनाता है
+      fontWeight: "bold",      // text को bold करता है
+      textAlign: "center",     // text center में
+      height: "45px",          // button height बड़ा
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      color:"black"
+    }}
+  >
+    {stake[`name${index}`]}
+  </button>
+</div>
+
             );
           })}
         </div>
