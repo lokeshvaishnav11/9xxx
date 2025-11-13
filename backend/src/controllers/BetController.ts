@@ -1821,7 +1821,7 @@ export class BetController extends ApiController {
         // console.log(fancyLookup,"fancy lokkk")
 
         const enrichedBets = relatedBets.map((bet) => {
-          const plainBet = bet;
+          const plainBet = bet.toObject();
           const cleanedBet = convertDecimalFields(plainBet);
           const fancyRaw = fancyLookup[cleanedBet.selectionName];
           const cleanedFancy = fancyRaw ? convertDecimalFields(fancyRaw.toObject()) : undefined;
