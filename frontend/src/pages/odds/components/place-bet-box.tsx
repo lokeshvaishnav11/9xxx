@@ -212,11 +212,12 @@ const PlaceBetBox = ({ stake }: { stake: IUserBetStake }) => {
       fontSize: "1.4rem",      // text को बड़ा बनाता है
       fontWeight: "bold",      // text को bold करता है
       textAlign: "center",     // text center में
-      height: "45px",          // button height बड़ा
+      height: "35px",          // button height बड़ा
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      color:"black"
+      color:"black",
+      borderRadius:'8px'
     }}
   >
     {stake[`name${index}`]}

@@ -368,13 +368,13 @@ class SportsController extends ApiController {
 
   async fancyData(match: IMatch) {
     const fancy = await sportsService.getSession(match.matchId, match.sportId)
-    const fancyone = fancy?.data?.sports?.filter((m: any) =>
-      (m.gtype === "session" || m.gtype === "fancy1") &&
-      (m.RunnerName && !m.RunnerName.includes(" run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" Caught out ")) && (m.RunnerName && !m.RunnerName.includes(" ball No ")) && (m.RunnerName && !m.RunnerName.includes(" Run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" run bhav")) && (m.RunnerName.includes(".3 over ")) &&(m.RunnerName && m.RunnerName.includes(" 2")) && (m.RunnerName && m.RunnerName.includes(' ball run ') && (m.RunnerName && m.RunnerName.includes(' ')))
-    )
+    // const fancyone = fancy?.data?.sports?.filter((m: any) =>
+    //   (m.gtype === "session" || m.gtype === "fancy1") &&
+    //   (m.RunnerName && !m.RunnerName.includes(" run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" Caught out ")) && (m.RunnerName && !m.RunnerName.includes(" ball No ")) && (m.RunnerName && !m.RunnerName.includes(" Run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" run bhav")) && (m.RunnerName.includes(".3 over ")) &&(m.RunnerName && m.RunnerName.includes(" 2")) && (m.RunnerName && m.RunnerName.includes(' ball run ')))
+    // )
 
     if (fancy.data.sports) {
-      await fancyone.map(async (market: any) => {
+      await fancy.data.sports.map(async (market: any) => {
         let type = ''
         if (market.RunnerName.includes(' ball run ')) {
           type = 'ballRun'
@@ -617,63 +617,140 @@ class SportsController extends ApiController {
   }
 
   // Get Fancy List
-  async getFancyList(req: Request, res: Response): Promise<Response> {
-    try {
-      const { matchId, gtype }: any = req.query
-      const strings = ['wkt', 'Wkts', 'Fours', 'Sixes']
+  // async getFancyList(req: Request, res: Response): Promise<Response> {
+  //   try {
+  //     const { matchId, gtype }: any = req.query
+  //     const strings = ['wkt', 'Wkts', 'Fours', 'Sixes']
 
-      const filters = {
-        $nor: strings.map((string) => ({ fancyName: { $regex: string } })),
-        gtype,
+  //     const filters = {
+  //       $nor: strings.map((string) => ({ fancyName: { $regex: string } })),
+  //       gtype,
+  //     }
+  //     let filter: any = { gtype }
+
+  //     if (gtype == 'session') {
+  //       filter = filters
+  //     } else if (gtype == 'fancy1') {
+  //       filter = { gtype }
+  //     } else if (gtype === 'wkt') {
+  //       filter = {
+  //         $or: [{ fancyName: { $regex: gtype } }, { fancyName: { $regex: strings[1] } }],
+  //         gtype: { $ne: 'fancy1' },
+  //       }
+  //     } else if (!gtype?.includes(strings)) {
+  //       filter = { fancyName: { $regex: gtype }, gtype: { $ne: 'fancy1' } }
+  //     }
+
+  //     const fancy = await Fancy.find({
+  //       matchId,
+  //       active: true,
+  //       // ...filter,
+  //     })
+  //       .sort({ sr_no: 1, marketId: 1 })
+
+  //     const priorityOrder = [
+  //       ' over runs ',
+  //       ' over run ',
+  //       ' fall of wicket ',
+  //       '  run',
+  //       ' boundaries',
+  //       ' pship boundaries ',
+  //     ];
+  //     // const  fancy = await Fancy.find()
+
+  //     // console.log(fancy,"hello worldz")
+  //     const sortedFancy = fancy.sort((a :any, b:any) => {
+  //       const indexA = priorityOrder.findIndex((name) => a?.fancyName?.includes(name));
+  //       const indexB = priorityOrder.findIndex((name) => b?.fancyName?.includes(name));
+
+  //       const rankA = indexA === -1 ? 999 : indexA;
+  //       const rankB = indexB === -1 ? 999 : indexB;
+
+  //       return rankA - rankB;
+  //     });
+
+  //     return this.success(res, sortedFancy)
+  //   } catch (e: any) {
+  //     return this.fail(res, e)
+  //   }
+  // }
+
+async getFancyList(req: Request, res: Response): Promise<Response> {
+  try {
+    const { matchId, gtype }: any = req.query;
+
+    const fancy = await Fancy.find({
+      matchId,
+      active: true,
+    }).sort({ sr_no: 1, marketId: 1 });
+
+    // Priority groups
+    const priorityOrder = [
+      " over run ",      // 1st priority (SINGULAR)
+      " over runs ",     // 2nd priority (PLURAL)
+      " fall of wicket ",
+      "  run",
+      " boundaries",
+      " pship boundaries ",
+    ];
+
+    // Common sessions ASC
+    const commonSessions = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+
+    const extractSessionNumber = (name: string) => {
+      const match = name?.match(/\b(\d+)\b/);
+      return match ? parseInt(match[1]) : null;
+    };
+
+    const sortedFancy = fancy.sort((a: any, b: any) => {
+      const nameA = a?.fancyName?.toLowerCase() || "";
+      const nameB = b?.fancyName?.toLowerCase() || "";
+
+      // Get priority rank (lower = higher rank)
+      const indexA = priorityOrder.findIndex((p) => nameA.includes(p));
+      const indexB = priorityOrder.findIndex((p) => nameB.includes(p));
+
+      const rankA = indexA === -1 ? 999 : indexA;
+      const rankB = indexB === -1 ? 999 : indexB;
+
+      // 1️⃣ Sort first by priority group
+      if (rankA !== rankB) return rankA - rankB;
+
+      // 2️⃣ For "over run" AND "over runs" → apply session number logic
+      const isOverRunA =
+        nameA.includes(" over run ") || nameA.includes(" over runs ");
+      const isOverRunB =
+        nameB.includes(" over run ") || nameB.includes(" over runs ");
+
+      if (isOverRunA || isOverRunB) {
+        const numA = extractSessionNumber(nameA) || -1;
+        const numB = extractSessionNumber(nameB) || -1;
+
+        const aCommon = commonSessions.includes(numA);
+        const bCommon = commonSessions.includes(numB);
+
+        // 3️⃣ Common sessions at top
+        if (aCommon && !bCommon) return -1;
+        if (!aCommon && bCommon) return 1;
+
+        // 4️⃣ Both common → ASC
+        if (aCommon && bCommon) return numA - numB;
+
+        // 5️⃣ Both uncommon → DESC
+        return numB - numA;
       }
-      let filter: any = { gtype }
 
-      if (gtype == 'session') {
-        filter = filters
-      } else if (gtype == 'fancy1') {
-        filter = { gtype }
-      } else if (gtype === 'wkt') {
-        filter = {
-          $or: [{ fancyName: { $regex: gtype } }, { fancyName: { $regex: strings[1] } }],
-          gtype: { $ne: 'fancy1' },
-        }
-      } else if (!gtype?.includes(strings)) {
-        filter = { fancyName: { $regex: gtype }, gtype: { $ne: 'fancy1' } }
-      }
+      // 6️⃣ fallback alphabetical sorting
+      return nameA.localeCompare(nameB);
+    });
 
-      const fancy = await Fancy.find({
-        matchId,
-        active: true,
-        // ...filter,
-      })
-        .sort({ sr_no: 1, marketId: 1 })
-
-      const priorityOrder = [
-        ' over runs ',
-        ' over run ',
-        ' fall of wicket ',
-        '  run',
-        ' boundaries',
-        ' pship boundaries ',
-      ];
-      // const  fancy = await Fancy.find()
-
-      // console.log(fancy,"hello worldz")
-      const sortedFancy = fancy.sort((a :any, b:any) => {
-        const indexA = priorityOrder.findIndex((name) => a?.fancyName?.includes(name));
-        const indexB = priorityOrder.findIndex((name) => b?.fancyName?.includes(name));
-
-        const rankA = indexA === -1 ? 999 : indexA;
-        const rankB = indexB === -1 ? 999 : indexB;
-
-        return rankA - rankB;
-      });
-
-      return this.success(res, sortedFancy)
-    } catch (e: any) {
-      return this.fail(res, e)
-    }
+    return this.success(res, sortedFancy);
+  } catch (e: any) {
+    return this.fail(res, e);
   }
+}
+
+
 
   // async addFancyToDb(req: Request, res: Response): Promise<Response> {
   //   try {
