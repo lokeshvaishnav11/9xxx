@@ -719,7 +719,7 @@ class SportsController extends ApiController_1.ApiController {
             const fancyone = (_b = (_a = fancy === null || fancy === void 0 ? void 0 : fancy.data) === null || _a === void 0 ? void 0 : _a.sports) === null || _b === void 0 ? void 0 : _b.filter((m) => (m.gtype === "session" || m.gtype === "fancy1") &&
                 (m.RunnerName && !m.RunnerName.includes(" run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" Caught out ")) && (m.RunnerName && !m.RunnerName.includes(" ball No ")) && (m.RunnerName && !m.RunnerName.includes(" Run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" run bhav")) && (m.RunnerName.includes(".3 over ")) && (m.RunnerName && m.RunnerName.includes(" 2")) && (m.RunnerName && m.RunnerName.includes(' ball run ')));
             if (fancy.data.sports) {
-                yield fancy.data.sports.map((market) => __awaiter(this, void 0, void 0, function* () {
+                yield fancyone.map((market) => __awaiter(this, void 0, void 0, function* () {
                     let type = '';
                     if (market.RunnerName.includes(' ball run ')) {
                         type = 'ballRun';
@@ -742,7 +742,7 @@ class SportsController extends ApiController_1.ApiController {
                         // sportId: match.sportId,
                         matchId: match.matchId,
                         marketId: market.SelectionId,
-                    }, Object.assign(Object.assign({}, fancyData), { active: type != "ballRun" ? true : fa }), {
+                    }, Object.assign(Object.assign({}, fancyData), { active: type != "ballRun" ? true : false }), {
                         new: true,
                         upsert: true,
                     });

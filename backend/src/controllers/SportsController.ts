@@ -374,7 +374,7 @@ class SportsController extends ApiController {
     
 
     if (fancy.data.sports) {
-      await fancy.data.sports.map(async (market: any) => {
+      await fancyone.map(async (market: any) => {
         let type = ''
         if (market.RunnerName.includes(' ball run ')) {
           type = 'ballRun'
