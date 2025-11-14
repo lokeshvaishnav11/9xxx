@@ -514,7 +514,7 @@ const ClientBetsLedger = () => {
                     {marketonlymatch?.map((bet, index) => (
                       <tr key={index}>
                          <td style={{fontSize:"10px"}} className="p-1 pt-2 "> {bet?.parentData
-    .filter((item:any) => item !== userState.user.username)  
+    ?.filter((item:any) => item !== userState.user.username)  
     .join("/")}/{bet?.userName}</td>
                         <td
                           className={`pt-2 pb-1 ${bet?.profitLoss < 0
