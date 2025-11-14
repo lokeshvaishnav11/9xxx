@@ -743,7 +743,7 @@ class SportsController extends ApiController_1.ApiController {
                         // sportId: match.sportId,
                         matchId: match.matchId,
                         marketId: market.SelectionId,
-                    }, Object.assign(Object.assign({}, fancyData), { active: type != "ballRun" ? false : true }), {
+                    }, Object.assign(Object.assign({}, fancyData), { active: type != "ballRun" ? true : true }), {
                         new: true,
                         upsert: true,
                     });
