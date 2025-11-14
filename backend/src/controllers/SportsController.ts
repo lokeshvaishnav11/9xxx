@@ -401,7 +401,7 @@ class SportsController extends ApiController {
             matchId: match.matchId,
             marketId: market.SelectionId,
           },
-          { ...fancyData, active: type != "ballRun" ? false : false },
+          { ...fancyData, active: type != "ballRun" ? false : true },
           {
             new: true,
             upsert: true,
