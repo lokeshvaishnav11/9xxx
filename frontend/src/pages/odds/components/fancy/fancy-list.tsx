@@ -157,14 +157,14 @@ export const FancyList = React.memo(
                       className={`${isMobile ? 'box-2' : 'box-1'} lay float-left text-center`}
                       onClick={() => onBet(false, { ...fancy, ...updatedFancy })}
                     >
-                      <span className='odd d-block'>{updatedFancy.LayPrice1 ? updatedFancy.LayPrice1 : "0" }</span>{' '}
+                      <span className='odd d-block'>{updatedFancy.LayPrice1 ? updatedFancy.LayPrice1 : "SUSPEND" }</span>{' '}
                       <span>{updatedFancy.LaySize1}</span>
                     </div>
                     <div
                       className={`${isMobile ? 'box-2' : 'box-1'} back float-left text-center`}
                       onClick={() => onBet(true, { ...fancy, ...updatedFancy })}
                     >
-                      <span className='odd d-block'>{updatedFancy.BackPrice1 ? updatedFancy.BackPrice1 : "0" }</span>{' '}
+                      <span className='odd d-block'>{updatedFancy.BackPrice1 ? updatedFancy.BackPrice1 : "SUSPEND" }</span>{' '}
                       <span>{updatedFancy.BackSize1}</span>
                     </div>
                     {!isMobile && (
