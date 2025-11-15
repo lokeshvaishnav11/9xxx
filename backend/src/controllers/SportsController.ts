@@ -675,6 +675,81 @@ class SportsController extends ApiController {
   //   }
   // }
 
+// async getFancyList(req: Request, res: Response): Promise<Response> {
+//   try {
+//     const { matchId, gtype }: any = req.query;
+
+//     const fancy = await Fancy.find({
+//       matchId,
+//       active: true,
+//     }).sort({ sr_no: 1, marketId: 1 });
+
+//     // Priority groups
+//     const priorityOrder = [
+//       " over run ",      // 1st priority (SINGULAR)
+//       " over runs ",     // 2nd priority (PLURAL)
+//       " Fall of ",
+//       "  run",
+//       " Boundaries",
+//       " pship Boundaries ",
+//     ];
+
+//     // Common sessions ASC
+//     const commonSessions = [10, 15, 20, 25, 30, 35, 40, 45, 50];
+
+//     const extractSessionNumber = (name: string) => {
+//       const match = name?.match(/\b(\d+)\b/);
+//       return match ? parseInt(match[1]) : null;
+//     };
+
+//     const sortedFancy = fancy.sort((a: any, b: any) => {
+//       const nameA = a?.fancyName?.toLowerCase() || "";
+//       const nameB = b?.fancyName?.toLowerCase() || "";
+
+//       // Get priority rank (lower = higher rank)
+//       const indexA = priorityOrder.findIndex((p) => nameA.includes(p));
+//       const indexB = priorityOrder.findIndex((p) => nameB.includes(p));
+
+//       const rankA = indexA === -1 ? 999 : indexA;
+//       const rankB = indexB === -1 ? 999 : indexB;
+
+//       // 1️⃣ Sort first by priority group
+//       if (rankA !== rankB) return rankA - rankB;
+
+//       // 2️⃣ For "over run" AND "over runs" → apply session number logic
+//       const isOverRunA =
+//         nameA.includes(" over run ") || nameA.includes(" over runs ");
+//       const isOverRunB =
+//         nameB.includes(" over run ") || nameB.includes(" over runs ");
+
+//       if (isOverRunA || isOverRunB) {
+//         const numA = extractSessionNumber(nameA) || -1;
+//         const numB = extractSessionNumber(nameB) || -1;
+
+//         const aCommon = commonSessions.includes(numA);
+//         const bCommon = commonSessions.includes(numB);
+
+//         // 3️⃣ Common sessions at top
+//         if (aCommon && !bCommon) return -1;
+//         if (!aCommon && bCommon) return 1;
+
+//         // 4️⃣ Both common → ASC
+//         if (aCommon && bCommon) return numA - numB;
+
+//         // 5️⃣ Both uncommon → DESC
+//         return numB - numA;
+//       }
+
+//       // 6️⃣ fallback alphabetical sorting
+//       return nameA.localeCompare(nameB);
+//     });
+
+//     return this.success(res, sortedFancy);
+//   } catch (e: any) {
+//     return this.fail(res, e);
+//   }
+// }
+
 async getFancyList(req: Request, res: Response): Promise<Response> {
   try {
     const { matchId, gtype }: any = req.query;
@@ -684,18 +759,16 @@ async getFancyList(req: Request, res: Response): Promise<Response> {
       active: true,
     }).sort({ sr_no: 1, marketId: 1 });
 
-    // Priority groups
     const priorityOrder = [
-      " over run ",      // 1st priority (SINGULAR)
-      " over runs ",     // 2nd priority (PLURAL)
-      " fall of wicket ",
-      "  run",
-      " boundaries",
-      " pship boundaries ",
+      " over run ",
+      " over runs ",
+      "fall of",
+      " run",
+      "boundaries",
+      "pship boundaries",
     ];
 
-    // Common sessions ASC
-    const commonSessions = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+    const commonSessions = [10, 15, 20, 25, 30, 35, 40, 45, 50];
 
     const extractSessionNumber = (name: string) => {
       const match = name?.match(/\b(\d+)\b/);
@@ -706,17 +779,13 @@ async getFancyList(req: Request, res: Response): Promise<Response> {
       const nameA = a?.fancyName?.toLowerCase() || "";
       const nameB = b?.fancyName?.toLowerCase() || "";
 
-      // Get priority rank (lower = higher rank)
       const indexA = priorityOrder.findIndex((p) => nameA.includes(p));
       const indexB = priorityOrder.findIndex((p) => nameB.includes(p));
-
       const rankA = indexA === -1 ? 999 : indexA;
       const rankB = indexB === -1 ? 999 : indexB;
 
-      // 1️⃣ Sort first by priority group
       if (rankA !== rankB) return rankA - rankB;
 
-      // 2️⃣ For "over run" AND "over runs" → apply session number logic
       const isOverRunA =
         nameA.includes(" over run ") || nameA.includes(" over runs ");
       const isOverRunB =
@@ -729,18 +798,15 @@ async getFancyList(req: Request, res: Response): Promise<Response> {
         const aCommon = commonSessions.includes(numA);
         const bCommon = commonSessions.includes(numB);
 
-        // 3️⃣ Common sessions at top
         if (aCommon && !bCommon) return -1;
         if (!aCommon && bCommon) return 1;
 
-        // 4️⃣ Both common → ASC
         if (aCommon && bCommon) return numA - numB;
 
-        // 5️⃣ Both uncommon → DESC
-        return numB - numA;
+        // ⭐ NEW → both uncommon → ASCENDING
+        return numA - numB;
       }
 
-      // 6️⃣ fallback alphabetical sorting
       return nameA.localeCompare(nameB);
     });
 

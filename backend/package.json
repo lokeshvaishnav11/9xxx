@@ -52,6 +52,7 @@
     "express-validator": "^6.14.2",
     "lodash": "^4.17.21",
     "memory-cache": "^0.2.0",
+    "moment-timezone": "^0.6.0",
     "mongoosastic": "^5.0.0",
     "mongoosastic-ts": "^6.0.0",
     "mongoose": "^5.13.14",
