@@ -266,6 +266,7 @@ const ClientBetsUser = () => {
 
             const finalLedger: any = Object.entries(grouped).map(
                 ([ChildId, values]) => {
+                    console.log("value", values)
                     // const match = values.matchPlusMinus;
                     // const session = values.sessionPlusMinus;
                     const match = values.matchPlusMinus;
@@ -285,8 +286,8 @@ const ClientBetsUser = () => {
                     finalTotals.sCom += fancyc;
                     finalTotals.tCom += ctotal;
                     finalTotals.gTotal += total;
-                    finalTotals.upDownShare += values.updownTotal;
-                    finalTotals.balance += total + values.updownTotal;
+                    finalTotals.upDownShare += (total * values.ss) / 100;
+                    finalTotals.balance += total;
 
                     return {
                         client: values.username,
@@ -299,8 +300,9 @@ const ClientBetsUser = () => {
                         sCom: fancyc,
                         tCom: ctotal,
                         gTotal: total,
-                        upDownShare: values.updownTotal,
-                        balance: total + values.updownTotal,
+                        upDownShare: (total * values.ss) / 100,
+                        balance: values.updownTotal,
+                        FinalBal: total - (total * values.ss) / 100,
                     };
                 }
             );
@@ -950,6 +952,22 @@ const ClientBetsUser = () => {
                                                     >
                                                         G.Total
                                                     </th>
+                                                    <th
+                                                        className="navbar-bet99 text-dark pt-2 pb-2 small sorting_disabled"
+                                                        rowSpan={1}
+                                                        colSpan={1}
+                                                        style={{ width: "55px" }}
+                                                    >
+                                                        Up/Down
+                                                    </th>
+                                                    <th
+                                                        className="navbar-bet99 text-dark pt-2 pb-2 small sorting_disabled"
+                                                        rowSpan={1}
+                                                        colSpan={1}
+                                                        style={{ width: "55px" }}
+                                                    >
+                                                        Final
+                                                    </th>
                                                     {/* <th
                     className="navbar-bet99 text-dark pt-2 pb-2 small sorting_disabled"
                     rowSpan={1}
@@ -1043,6 +1061,28 @@ const ClientBetsUser = () => {
                                                                     }
                                                                 >
                                                                     {row.gTotal.toFixed(2)}
+                                                                </span>
+                                                            </td>
+                                                            <td className="ng-scope">
+                                                                <span
+                                                                    className={
+                                                                        row.gTotal < 0
+                                                                            ? "text-danger"
+                                                                            : "text-success"
+                                                                    }
+                                                                >
+                                                                    {row.upDownShare.toFixed(2)}
+                                                                </span>
+                                                            </td>
+                                                            <td className="ng-scope">
+                                                                <span
+                                                                    className={
+                                                                        row.FinalBal < 0
+                                                                            ? "text-danger"
+                                                                            : "text-success"
+                                                                    }
+                                                                >
+                                                                    {row.FinalBal.toFixed(2)}
                                                                 </span>
                                                             </td>
 
@@ -1150,9 +1190,9 @@ const ClientBetsUser = () => {
                                             <th className="navbar-bet99 text-dark pt-1 pb-1 small">
                                                 G. Total
                                             </th>
-                                            {/* <th className="navbar-bet99 text-dark pt-1 pb-1 small">
-                        UP. Share
-                      </th> */}
+                                            <th className="navbar-bet99 text-dark pt-1 pb-1 small">
+                                                Up/Down
+                                            </th>
                                             <th className="navbar-bet99 text-dark pt-1 pb-1 small">
                                                 Final
                                             </th>
@@ -1221,20 +1261,21 @@ const ClientBetsUser = () => {
                                                     {ledgerTotal?.gTotal?.toFixed(2)}
                                                 </span>
                                             </td>
-                                            {/* <td className="pt-1 pb-1">
-                        <span
-                          ng-class="totalPandL.my_share > 0 ? 'text-success' : 'text-danger'"
-                          className="ng-binding text-danger"
-                        >
-                          {ledgerTotal?.upDownShare?.toFixed(2)}
-                        </span>
-                      </td> */}
+                                            <td className="pt-1 pb-1">
+                                                <span
+                                                    ng-class="totalPandL.my_share > 0 ? 'text-success' : 'text-danger'"
+                                                    className="ng-binding text-danger"
+                                                >
+                                                    {ledgerTotal?.upDownShare?.toFixed(2)}
+                                                </span>
+                                            </td>
                                             <td className="pt-1 pb-1">
                                                 <span
                                                     ng-class="totalPandL.net_amt > 0 ? 'text-success' : 'text-danger'"
                                                     className="ng-binding text-danger"
                                                 >
-                                                    {ledgerTotal?.balance?.toFixed(2)}
+                                                    {ledgerTotal?.balance?.toFixed(2) - ledgerTotal?.upDownShare?.toFixed(2)}
+
                                                 </span>
                                             </td>
                                         </tr>

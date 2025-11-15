@@ -277,7 +277,7 @@ const ClientBetsLedger = () => {
           finalTotals.sCom += fancyc;
           finalTotals.tCom += ctotal;
           finalTotals.gTotal += total;
-          finalTotals.upDownShare += (total*values.ss)/100,
+          finalTotals.upDownShare += (total*values.ss)/100;
           finalTotals.balance += total;
 
           return {
