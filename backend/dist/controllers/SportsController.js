@@ -1035,8 +1035,8 @@ class SportsController extends ApiController_1.ApiController {
                     active: true,
                 }).sort({ sr_no: 1, marketId: 1 });
                 const priorityOrder = [
-                    " over run ",
                     " over runs ",
+                    " over run ",
                     "fall of",
                     " run",
                     "boundaries",
