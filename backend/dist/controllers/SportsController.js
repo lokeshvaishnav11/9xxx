@@ -1042,7 +1042,7 @@ class SportsController extends ApiController_1.ApiController {
                     "boundaries",
                     "pship boundaries",
                 ];
-                const commonSessions = [10, 15, 20, 25, 30, 35, 40, 45, 50];
+                const commonSessions = [6, 10, 15, 20, 25, 30, 35, 40, 45, 50];
                 const extractSessionNumber = (name) => {
                     const match = name === null || name === void 0 ? void 0 : name.match(/\b(\d+)\b/);
                     return match ? parseInt(match[1]) : null;

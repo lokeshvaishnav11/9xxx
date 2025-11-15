@@ -75,7 +75,7 @@ const Login = () => {
             <img src='/imgs/d006 copy.png' className='logo-login' />
           </div>
           <div className='featured-box-login featured-box-secundary default'>
-            <h4 className='text-center'>
+            <h4 className='text-center' style={{color:"#11283E"}}>
               LOGIN<i className='fas fa-hand-point-down'></i>
             </h4>
             <form
@@ -117,7 +117,7 @@ const Login = () => {
                 )}
               </div>
               <div className='form-group text-center mb-0'>
-                <SubmitButton type='submit' className='btn btn-submit btn-login mb-10'>
+                <SubmitButton type='submit' className='btn btn-submit btn-login mb-10' style={{backgroundColor:"#11283E"}}>
                   Login
                   {userState.status === 'loading' ? (
                     <i className='ml-2 fas fa-spinner fa-spin'></i>
@@ -125,7 +125,7 @@ const Login = () => {
                     <i className='ml-2 fas fa-sign-in-alt'></i>
                   )}
                 </SubmitButton>
-                <SubmitButton type='submit' onClick={() => handleSubmitDemoLogin()} className='btn btn-submit btn-login mb-10'>
+                <SubmitButton type='submit' onClick={() => handleSubmitDemoLogin()} className='btn btn-submit btn-login mb-10' style={{backgroundColor:"#11283E"}}>
                   Login with Demo ID
                   {userState.status === 'loading' ? (
                     <i className='ml-2 fas fa-spinner fa-spin'></i>

@@ -227,7 +227,7 @@ const shared = useParams().share
         </Tabs>
         <div className='csmobileround' style={{ top: '16px' }}>
           <span onClick={() => settvstatus(tavstatus ? false : true)}>
-            Live TV
+           <i className='fa fa-tv' />   Live TV
           </span>
         </div>
       </div>

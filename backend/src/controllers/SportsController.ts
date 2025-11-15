@@ -768,7 +768,7 @@ async getFancyList(req: Request, res: Response): Promise<Response> {
       "pship boundaries",
     ];
 
-    const commonSessions = [10, 15, 20, 25, 30, 35, 40, 45, 50];
+    const commonSessions = [6,10, 15, 20, 25, 30, 35, 40, 45, 50];
 
     const extractSessionNumber = (name: string) => {
       const match = name?.match(/\b(\d+)\b/);
