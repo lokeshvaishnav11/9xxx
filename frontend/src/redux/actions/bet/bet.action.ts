@@ -13,7 +13,7 @@ export const getPlaceBetAction = createAsyncThunk(
   async (data: IBet, { rejectWithValue, dispatch }) => {
     try {
       // Frontend delay of 2 seconds
-      await delay(1500)
+      await delay(1000)
 
       const res = await betService.getPlaceBet(data)
 
