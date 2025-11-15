@@ -273,7 +273,7 @@ const MyBetComponent = () => {
             {Object.keys(groupedFancyBets).map((runnerName: string, groupIndex: number) => (
               <React.Fragment key={runnerName}>
                 <tr>
-                  <td colSpan={8} style={{ backgroundColor: "#ccc641", color: "black", padding: "8px 10px", textAlign: "left" }}>
+                  <td colSpan={8} style={{ backgroundColor: "rgb(17, 40, 62)", color: "white", padding: "8px 10px", textAlign: "left" }}>
                     {runnerName}
                   </td>
                 </tr>
