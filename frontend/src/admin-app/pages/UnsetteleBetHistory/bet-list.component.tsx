@@ -5,6 +5,7 @@ import User, { RoleType } from '../../../models/User'
 import { selectUserData } from '../../../redux/actions/login/loginSlice'
 import { useAppSelector } from '../../../redux/hooks'
 import { CONSTANTS } from '../../../utils/constants'
+import { betDateFormat } from '../../../utils/helper'
 
 interface BetListProps {
   bethistory: any
@@ -62,8 +63,8 @@ const BetListComponent = ({
         <td className='text-center wnwrap'>{Item.status=='completed'?Item?.profitLoss?.toFixed(2):Item.pnl?.toFixed(2)}</td>
         <td className='text-center wnwrap'>
           {Item.createdAt &&
-            moment(Item?.createdAt).format(
-              'YYYY-MM-DD HH:mm:ss',
+            moment.utc(Item?.betClickTime).format(
+              betDateFormat
             )}
         </td>
         {isTrash && (

@@ -2,10 +2,11 @@ import React from 'react'
 import ReactPaginate from 'react-paginate'
 import { toast } from 'react-toastify'
 import UserService from '../../services/user.service'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import mobileSubheader from '../_layout/elements/mobile-subheader'
 import { isMobile } from 'react-device-detect'
 import { IBetOn } from '../../models/IBet'
+import { betDateFormat } from '../../utils/helper'
 
 const UnsetteleBetHistory = () => {
   const [bethistory, setbethistory] = React.useState<any>({})
@@ -44,20 +45,21 @@ const UnsetteleBetHistory = () => {
           <td className='text-center wnwrap'>{Item.marketName}</td>
           <td className='text-center wnwrap'>{Item.odds}</td>
           <td className='text-center wnwrap'>{Item.stack}</td>
-          {/* <td className='text-center wnwrap'>
+          <td className='text-center wnwrap'>
             {Item.createdAt &&
               moment(Item.createdAt.replace('T', ' ').replace('Z', '')).format(
                 'YYYY-MM-DD HH:mm:ss',
               )}
 
 
-          </td> */}
+          </td>
 
-          <td className="text-center wnwrap">
-  {Item.createdAt &&
+          {/* <td className="text-center wnwrap">
+  {/* {Item.createdAt &&
     new Date(Item.createdAt)
-      .toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', hour12: false })}
-</td>
+      .toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', hour12: false })} */}
+      {moment.utc(Item.betClickTime).format(betDateFormat) }sss
+{/* </td>  */}
 
         </tr>
       </>
