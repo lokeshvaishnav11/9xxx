@@ -153,7 +153,6 @@ const groupedMyAllBet = getMyAllBet?.reduce((acc: any, bet: any) => {
           <td className='no-wrap'>
             {moment
               .utc(bet.betClickTime)
-              .utcOffset('+05:30')
               .format('DD/MM/YYYY hh:mm:ss A')}
           </td>
         </tr>
