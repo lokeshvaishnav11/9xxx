@@ -39,7 +39,7 @@ interface MatchItem {
   betClickTime: any;
   selectionName: any;
   matchedDate: any;
-  resultstring:any;
+  resultstring: any;
 }
 
 type GroupedLedger = {
@@ -112,8 +112,8 @@ const ClientBetsLedger = () => {
           (bet: any) => bet.selectionId === selectionId
         );
 
-          // Match bets for opposite team
-  const oppositeBets = bmbets.filter((bet: any) => bet.selectionId !== selectionId);
+        // Match bets for opposite team
+        const oppositeBets = bmbets.filter((bet: any) => bet.selectionId !== selectionId);
 
         // Step 5: Sum up the stack values
         // const totalStack = matchedBets.reduce(
@@ -127,18 +127,18 @@ const ClientBetsLedger = () => {
           (sum: number, bet: any) =>
             sum +
             (bet?.isBack
-              ? -((bet?.stack || 0)  * (1 - bet?.odds))
+              ? -((bet?.stack || 0) * (1 - bet?.odds))
               : (bet?.stack || 0) * (1 - bet?.odds)),
           0
-  
+
         );
 
         const oppositeProfitLoss = oppositeBets.reduce(
           (sum: number, bet: any) =>
-            sum + (bet?.isBack ? ((-bet?.stack) || 0 ) : (bet?.stack || 0)),
+            sum + (bet?.isBack ? ((-bet?.stack) || 0) : (bet?.stack || 0)),
           0
         );
-      
+
 
 
         console.log(totalStack, "sum of stack")
@@ -257,7 +257,7 @@ const ClientBetsLedger = () => {
 
       const finalLedger: any = Object.entries(grouped).map(
         ([ChildId, values]) => {
-          console.log("value",values)
+          console.log("value", values)
           // const match = values.matchPlusMinus;
           // const session = values.sessionPlusMinus;
           const match = values.matchPlusMinus;
@@ -277,7 +277,7 @@ const ClientBetsLedger = () => {
           finalTotals.sCom += fancyc;
           finalTotals.tCom += ctotal;
           finalTotals.gTotal += total;
-          finalTotals.upDownShare += (total*values.ss)/100;
+          finalTotals.upDownShare += (total * values.ss) / 100;
           finalTotals.balance += total;
 
           return {
@@ -291,9 +291,9 @@ const ClientBetsLedger = () => {
             sCom: fancyc,
             tCom: ctotal,
             gTotal: total,
-            upDownShare: (total*values.ss)/100,
-            balance:  values.updownTotal,
-            FinalBal:total - (total*values.ss)/100,
+            upDownShare: (total * values.ss) / 100,
+            balance: values.updownTotal,
+            FinalBal: total - (total * values.ss) / 100,
           };
         }
       );
@@ -361,20 +361,20 @@ const ClientBetsLedger = () => {
           {moment(marketData2[0]?.matchDateTime).format(betDateFormat)}
         </span>
 
-        
+
       </h6>
 
 
       <h6 style={{ fontSize: "20px" }} className="text-center mt-3">
         <span className="text-center small bg-secondary  text-white p-1">
-        <i className="fas fa-trophy"></i>  {(marketData2[0]?.resultstring ? marketData2[0]?.resultstring : "" )}
+          <i className="fas fa-trophy"></i>  {(marketData2[0]?.resultstring ? marketData2[0]?.resultstring : "")}
         </span>
-        </h6>
-        
-    
+      </h6>
 
-    
-     
+
+
+
+
 
       <div className="container">
         <div className="res-table d-none"></div>
@@ -463,13 +463,13 @@ const ClientBetsLedger = () => {
                       <tr key={index}>
                         <td className="pt-1 pb-1">{team?.runnerName}</td>
                         <td
-                          className={`pt-1 pb-1 ${(((team?.totalStack || 0) + (team?.profitLoss || 0)) * (shared * 0.01)) > 0 
-                              ? "text-red-500"
-                              : "text-green-500"
+                          className={`pt-1 pb-1 ${(((team?.totalStack || 0) + (team?.profitLoss || 0)) * (shared * 0.01)) > 0
+                            ? "text-red-500"
+                            : "text-green-500"
                             }`}
                         >
-                        {/* <p>{team?.profitLoss}</p> */}
-                        {(((team?.totalStack || 0) + (team?.profitLoss || 0)) * (shared * 0.01)).toFixed(2)}
+                          {/* <p>{team?.profitLoss}</p> */}
+                          {(((team?.totalStack || 0) + (team?.profitLoss || 0)) * (shared * 0.01)).toFixed(2)}
 
                         </td>{" "}
                         {/* Or any amount if available */}
@@ -515,13 +515,13 @@ const ClientBetsLedger = () => {
                   <tbody className="small">
                     {marketonlymatch?.map((bet, index) => (
                       <tr key={index}>
-                         <td style={{fontSize:"10px"}} className="p-1 pt-2 "> {bet?.parentData
-    ?.filter((item:any) => item !== userState.user.username)  
-    .join("/")}/{bet?.userName}</td>
+                        <td style={{ fontSize: "10px" }} className="p-1 pt-2 "> {bet?.parentData
+                          ?.filter((item: any) => item !== userState.user.username)
+                          .join("/")}/{bet?.userName}</td>
                         <td
                           className={`pt-2 pb-1 ${bet?.profitLoss < 0
-                              ? "text-red-500"
-                              : "text-green-500"
+                            ? "text-red-500"
+                            : "text-green-500"
                             }`}
                         >
                           {bet?.stack}
@@ -582,19 +582,20 @@ const ClientBetsLedger = () => {
               )}
             </td> */}
 
-<td
-                                      className={`pt-2 pb-1 ${bet?.profitLoss < 0
-                                          ? "text-red-500"
-                                          : "text-green-500"
-                                        }`}
-                                    >
-                                      {(bet?.profitLoss).toFixed()}
-                                    </td>
+                        <td
+                          className={`pt-2 pb-1 ${bet?.profitLoss < 0
+                            ? "text-red-500"
+                            : "text-green-500"
+                            }`}
+                        >
+                          {(bet?.profitLoss).toFixed()}
+                        </td>
                         <td
                           className="pt-2 pb-1 text-nowrap"
                           style={{ fontSize: "xx-small" }}
                         >
-                          {moment(bet?.betClickTime).format(betDateFormat)} 
+                          {moment.utc(bet?.betClickTime).format("MMMM Do, h:mm:ss A")}
+
                         </td>
                         <td
                           className="pt-2 pb-1"
@@ -676,9 +677,9 @@ const ClientBetsLedger = () => {
                                 ?.filter((bet) => bet?.selectionId === sendid)
                                 .map((bet, index) => (
                                   <tr key={index}>
-                                      <td style={{fontSize:"10px"}} className="p-1 pt-2 "> {bet?.parentData
-    .filter((item:any) => item !== userState.user.username)  
-    .join("/")}/{bet?.userName}</td>
+                                    <td style={{ fontSize: "10px" }} className="p-1 pt-2 "> {bet?.parentData
+                                      .filter((item: any) => item !== userState.user.username)
+                                      .join("/")}/{bet?.userName}</td>
 
                                     <td className="pt-2 pb-1">{bet?.odds}</td>
                                     <td className="pt-2 pb-1">{bet?.volume}</td>
@@ -727,8 +728,8 @@ const ClientBetsLedger = () => {
     </td> */}
                                     <td
                                       className={`pt-2 pb-1 ${bet?.profitLoss < 0
-                                          ? "text-red-500"
-                                          : "text-green-500"
+                                        ? "text-red-500"
+                                        : "text-green-500"
                                         }`}
                                     >
                                       {bet?.stack}
@@ -736,8 +737,8 @@ const ClientBetsLedger = () => {
 
                                     <td
                                       className={`pt-2 pb-1 ${bet?.profitLoss < 0
-                                          ? "text-red-500"
-                                          : "text-green-500"
+                                        ? "text-red-500"
+                                        : "text-green-500"
                                         }`}
                                     >
                                       {bet?.profitLoss}
@@ -747,7 +748,8 @@ const ClientBetsLedger = () => {
                                       className="pt-2 pb-1 text-nowrap"
                                       style={{ fontSize: "xx-small" }}
                                     >
-                                      {moment(bet?.betClickTime).format(betDateFormat)} 
+                                      {moment.utc(bet?.betClickTime).format("MMMM Do, h:mm:ss A")}
+
                                       {/* ( {new Date(bet?.betClickTime).toLocaleTimeString()}) */}
                                     </td>
                                     <td
@@ -1105,7 +1107,7 @@ const ClientBetsLedger = () => {
                         G. Total
                       </th>
                       <th className="navbar-bet99 text-dark pt-1 pb-1 small">
-                        UP/Down 
+                        UP/Down
                       </th>
                       <th className="navbar-bet99 text-dark pt-1 pb-1 small">
                         Final

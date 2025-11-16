@@ -2,7 +2,7 @@ import React from 'react'
 import "./newprofile.css"
 import accountService from '../../services/account.service';
 import { AxiosResponse } from 'axios';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { betDateFormat, dateFormat } from '../../utils/helper';
 import { selectUserData } from '../../redux/actions/login/loginSlice';
 import { useAppSelector } from '../../redux/hooks';
@@ -201,7 +201,8 @@ const Completegames = () => {
                                                   {betsForSelection
                                                     ?.map((b: any, i: number) => (
                                                       <tr key={i} className="text-center">
-                                                        <td className="px-3 py-2">{moment(b?.betClickTime).format(betDateFormat)}</td>
+                                                        <td className="px-3 py-2">                                                                                {moment.utc(b?.betClickTime).format("MMMM Do, h:mm:ss A")}
+                                                        </td>
                                                         <td className="px-3 py-2">{b?.selectionId}</td>
                                                         {marketName === "Fancy" ?
                                                           <td className="pt-2 pb-1 px-3 py-2 ">
@@ -388,7 +389,7 @@ const Completegames = () => {
                                                                  <p className="">
                                                                      {
                                                                          bets[0]?.betClickTime
-                                                                             ? moment(bets[0].betClickTime).format("MM/DD/YYYY h:mm a")
+                                                                             ? moment.utc(bets[0].betClickTime).format("MM/DD/YYYY h:mm a")
                                                                              : "-"
                                                                      }
                                                                  </p>
@@ -444,7 +445,7 @@ const Completegames = () => {
                                                                                                         {b?.profitLoss >= 0 ? "Win" : "Lost"}
                                                                                                     </span>
                                                                                                 </td>
-                                                                                                <td>{moment(b?.betClickTime).format("MM/DD/YYYY h:mm:ss a")}</td>
+                                                                                                <td>{moment.utc(b?.betClickTime).format("MM/DD/YYYY h:mm:ss a")}</td>
                                                                                             </tr>
                                                                                         ))}
                                                                                     </tbody>
