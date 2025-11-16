@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { selectUserData } from "../../../redux/actions/login/loginSlice";
 import { betDateFormat, dateFormat } from "../../../utils/helper";
-import moment from "moment";
+import moment from "moment-timezone";
 import { isMobile } from "react-device-detect";
 import UserService from "../../../services/user.service";
 import { FancyBook, selectBookFancy, setBookFancy } from "../../../redux/actions/bet/betSlice";
@@ -605,7 +605,9 @@ const ClientBetsUser = () => {
                                                     className="pt-2 pb-1 text-nowrap"
                                                     style={{ fontSize: "xx-small" }}
                                                 >
-                                                    {moment(bet?.betClickTime).format(betDateFormat)}
+                                                    {/* {moment(bet?.betClickTime).format(betDateFormat)} */}
+                                                    {moment.utc(bet?.betClickTime).format("MMMM Do, h:mm:ss A")}
+
                                                 </td>
                                                 {/* <td
                           className="pt-2 pb-1"
@@ -775,8 +777,9 @@ const ClientBetsUser = () => {
                                                                                 className="pt-2 pb-1 text-nowrap"
                                                                                 style={{ fontSize: "xx-small" }}
                                                                             >
-                                                                                {moment(bet?.betClickTime).format(betDateFormat)}
-                                                                                x                                                                        </td>
+                                                                                {moment.utc(bet?.betClickTime).format("MMMM Do, h:mm:ss A")}
+
+                                                                                                                                                       </td>
                                                                             {/* <td
                                       className="pt-2 pb-1"
                                       style={{ fontSize: "xx-small" }}

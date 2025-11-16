@@ -213,6 +213,10 @@ export const AvailableToBackLay = React.memo(({ selections, market, runner }: Pr
     if (market.oddsType === OddsType.BM && back.size === 0) return;
 
     if (back.price > 0 && back.size && userState.user.role === RoleType.user) {
+       const odds = back.price * 100 - 100;
+  if (allowSuspension && odds > 100) {
+    return; // ❌ Don't allow bet on suspended odds
+  }
       dispatch(
         betPopup({
           isOpen: true,

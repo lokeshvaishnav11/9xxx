@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectUserData } from "../../../redux/actions/login/loginSlice";
 import { betDateFormat, dateFormat } from "../../../utils/helper";
-import moment from "moment";
+import moment from "moment-timezone";
 import { isMobile } from "react-device-detect";
 import UserService from "../../../services/user.service";
 
