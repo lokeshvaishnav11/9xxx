@@ -286,7 +286,7 @@ export const AvailableToBackLay = React.memo(({ selections, market, runner }: Pr
           key={index}
           className={`${classforbox} text-center ${cls} ${blinkCls}`}
         >
-          <span className="odd d-block" style={{ width: "80px" }}>
+          <span className="odd d-block" style={{ width: "67px" }}>
             {(() => {
               const odds = lay.price * 100 - 100;
               if (allowSuspension && odds > 100) return "SUSPEND";
