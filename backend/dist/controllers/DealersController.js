@@ -1167,6 +1167,9 @@ class DealersController extends ApiController_1.ApiController {
                 if (!user) {
                     return this.fail(res, 'User does not exist!');
                 }
+                if (!currentUserData.isLogin) {
+                    return this.fail(res, 'You cannot change status ! contact upline');
+                }
                 // Find all users affected (main user + child users)
                 const usersToUpdate = yield User_1.User.find({
                     $or: [

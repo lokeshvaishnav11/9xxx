@@ -1264,8 +1264,8 @@ async deleteUser(req: Request, res: Response): Promise<Response> {
     if (!user) {
       return this.fail(res, 'User does not exist!');
     }
-    if( !currentUser.isLogin){
-          return this.success(res, {}, 'You cannot change status ! contact upline');
+    if( !currentUserData.isLogin){
+          return this.fail(res, 'You cannot change status ! contact upline');
 
     }
     // Find all users affected (main user + child users)
