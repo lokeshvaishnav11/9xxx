@@ -211,12 +211,12 @@ export const AvailableToBackLay = React.memo(({ selections, market, runner }: Pr
   const onBet = (isBack = false, back: { price: number; size: number }) => {
     const ipAddress = authService.getIpAddress();
     if (market.oddsType === OddsType.BM && back.size === 0) return;
+       const odds = back.price * 100 - 100;
+     if (allowSuspension && odds > 100) {
+    return; // ❌ Don't allow bet on suspended odds
+    }
 
     if (back.price > 0 && back.size && userState.user.role === RoleType.user) {
-       const odds = back.price * 100 - 100;
-  if (allowSuspension && odds > 100) {
-    return; // ❌ Don't allow bet on suspended odds
-  }
       dispatch(
         betPopup({
           isOpen: true,
@@ -263,7 +263,7 @@ export const AvailableToBackLay = React.memo(({ selections, market, runner }: Pr
           <span className="odd d-block">
             {(() => {
               const odds = back.price * 100 - 100;
-              if (allowSuspension && odds > 100) return "SUSPEND";
+              if (allowSuspension && odds > 100 || allowSuspension && odds ==0) return "SUSPEND";
               return odds.toFixed(0) || "-";
             })()}
           </span>
@@ -289,7 +289,7 @@ export const AvailableToBackLay = React.memo(({ selections, market, runner }: Pr
           <span className="odd d-block" style={{ width: "67px" }}>
             {(() => {
               const odds = lay.price * 100 - 100;
-              if (allowSuspension && odds > 100) return "SUSPEND";
+              if (allowSuspension && odds > 100 || allowSuspension && odds ==0) return "SUSPEND";
               return odds.toFixed(0) || "-";
             })()}
           </span>

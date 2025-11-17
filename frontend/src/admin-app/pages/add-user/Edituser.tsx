@@ -22,22 +22,20 @@ const validationSchema = Yup.object().shape({
   username: Yup.string()
     .trim("User name cannot include leading and trailing spaces")
     .strict(true),
-    // .required("Username is required")
-    // .matches(/^[A-Z][a-z0-9_-]{3,19}$/, "Must Contain One Uppercase"),
-  // transactionPassword: Yup.string().default('123456').required('Transaction Password is required'),
 
   share: Yup.string(),
-  
-  mcom: Yup.string()
-  .min(0, "M.Comm. cannot be less than 0")
-  .max(2, "M.Comm. cannot be more than 2"),
 
+  mcom: Yup.number()
+    .typeError("M.Comm. must be a number")
+    .min(0, "M.Comm. cannot be less than 0")
+    .max(2, "M.Comm. cannot be more than 2"),
 
-  scom: Yup.string()
-  .min(0, "S.Comm. cannot be less than 0")
-  .max(4, "S.Comm. cannot be more than 4"),
-
+  scom: Yup.number()
+    .typeError("S.Comm. must be a number")
+    .min(0, "S.Comm. cannot be less than 0")
+    .max(4, "S.Comm. cannot be more than 4"),
 });
+
 
 const EditUser = (data: any) => {
   console.log(data, "prorpsdatatfroeidt");
@@ -191,6 +189,8 @@ const EditUser = (data: any) => {
       scom:Number(formData.scom),
       partnership: {},
     };
+
+    console.log(payload,"ghjkl")
   
     if (formData.partnership) {
       Object.keys(formData.partnership).forEach((sportId) => {

@@ -1277,7 +1277,7 @@ const ClientBetsUser = () => {
                                                     ng-class="totalPandL.net_amt > 0 ? 'text-success' : 'text-danger'"
                                                     className="ng-binding text-danger"
                                                 >
-                                                    {ledgerTotal?.balance?.toFixed(2) - ledgerTotal?.upDownShare?.toFixed(2)}
+                                                    {(ledgerTotal?.balance?.toFixed(2) - ledgerTotal?.upDownShare?.toFixed(2)).toFixed(2)}
 
                                                 </span>
                                             </td>
