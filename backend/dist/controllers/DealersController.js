@@ -1167,6 +1167,7 @@ class DealersController extends ApiController_1.ApiController {
                 if (!user) {
                     return this.fail(res, 'User does not exist!');
                 }
+                console.log(currentUserData, "isLogin");
                 if (!currentUserData.isLogin) {
                     return this.fail(res, 'You cannot change status ! contact upline');
                 }
