@@ -1168,12 +1168,12 @@ const [userList, setUserList] = React.useState<any>({});
                       aria-labelledby="navbarDropdownMenuLink"
                       style={{background:"darkgoldenrod"}}
                     >
-                      <li>
+                      <li className="border-b pb-2">
                         <CustomLink
                         //  onClick={() => setDropdownOpen3(!dropdownOpen3)}
                         onClick={() => {toggleDrawer() ; setActiveMenu("My");}}
                           to="/my-ledger"
-                          className={`dropdown-item ${activeMenu === "My" ? "bg-active" : ""}`}
+                          className={`dropdown-item border-b ${activeMenu === "My" ? "bg-active" : ""}`}
                         >
                           <b className="text-white md:text-lg text-xs md:flex md:flex-row flex flex-col items-center gap-1">
                             <ListIcon className="text-yellow-600" />
@@ -1182,12 +1182,12 @@ const [userList, setUserList] = React.useState<any>({});
                         </CustomLink>
                       </li>
 
-                      <li>
+                      <li className="border-b pb-2">
                         <CustomLink
                           to="/all-settlement"
                           // onClick={() => setDropdownOpen3(!dropdownOpen3)}
                           onClick={() => {toggleDrawer() ; setActiveMenu("All");}}
-                          className={`dropdown-item ${activeMenu === "All" ? "bg-active" : ""}`}
+                          className={`dropdown-item border-b border-white/30 ${activeMenu === "All" ? "bg-active" : ""}`}
                         >
                           <b className="text-white md:text-lg text-xs md:flex md:flex-row flex flex-col items-center gap-1">
                             <ListIcon className="text-yellow-600" />
@@ -1200,12 +1200,12 @@ const [userList, setUserList] = React.useState<any>({});
                         </CustomLink>
                       </li>
 
-                      <li>
+                      <li className="border-b pb-2">
                         <CustomLink
                           to="/total-profit"
                           // onClick={() => setDropdownOpen3(!dropdownOpen3)}
                           onClick={() => {toggleDrawer() ; setActiveMenu("Total");}}
-                          className={`dropdown-item ${activeMenu === "Total" ? "bg-active" : ""}`}
+                          className={`dropdown-item  border-b border-white/30 ${activeMenu === "Total" ? "bg-active" : ""}`}
 
                         >
                           <b className="text-white md:text-lg text-xs md:flex md:flex-row flex flex-col items-center gap-1">
@@ -1215,7 +1215,7 @@ const [userList, setUserList] = React.useState<any>({});
                         </CustomLink>
                       </li>
 
-                      <li>
+                      <li className="pb-2">
                         <CustomLink
                           to="/ledger-client"
                           // onClick={() => setDropdownOpen3(!dropdownOpen3)}

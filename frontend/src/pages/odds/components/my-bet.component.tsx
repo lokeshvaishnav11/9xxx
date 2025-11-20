@@ -269,6 +269,35 @@ const MyBetComponent = () => {
           </thead>
 
           <tbody className='scorall'>
+           {/* ✅ Match Bets Section (unchanged) */}
+            <tr>
+              <td colSpan={8} style={{ backgroundColor: "darkgoldenrod", color: "black", padding: "8px 10px", textAlign: "left" }}>
+                Match Bets
+              </td>
+            </tr>
+
+            {matchBets.map((bet: IBet, index: number) => (
+              <tr className={bet.isBack ? 'back' : 'lay'} key={bet._id}>
+                <td className='no-wrap text-center p-2'> {index + 1} </td>
+                {userState.user.role !== RoleType.user && <td className='no-wrap text-center p-2'>{bet.userName}</td>}
+                <td className='no-wrap text-center p-2' >
+                  {bet.selectionName} / {bet.marketName === 'Fancy' && bet.gtype !== 'fancy1' ? bet.volume.toFixed(2) : bet.odds.toFixed(2)}
+                </td>
+                <td className='no-wrap text-center p-2'> {bet.odds.toFixed(2)} </td>
+                <td className='no-wrap text-center p-2'> {bet.stack} </td>
+                <td className='no-wrap text-center p-2'> {bet?.selectionName} </td>
+                <td className='no-wrap text-center p-2'> {bet.isBack ? "Yes" : "No"} </td>
+                <td className='no-wrap text-center p-2'> {bet?.result?.result ? bet?.result?.result : "YES"} </td>
+
+                {/* <td className='no-wrap text-center p-2'>{moment.utc(bet.betClickTime).utcOffset('+05:30').format('DD/MM/YYYY hh:mm:ss A')} </td> */}
+                <td className='no-wrap text-center p-2'>
+                  {moment(bet.betClickTime).format("DD/MM/YYYY hh:mm:ss A")}
+                </td>
+
+
+              </tr>
+            ))}
+
             {/* ✅ Grouped Fancy Bets */}
             {Object.keys(groupedFancyBets).map((runnerName: string, groupIndex: number) => (
               <React.Fragment key={runnerName}>
@@ -299,34 +328,7 @@ const MyBetComponent = () => {
               </React.Fragment>
             ))}
 
-            {/* ✅ Match Bets Section (unchanged) */}
-            <tr>
-              <td colSpan={8} style={{ backgroundColor: "darkgoldenrod", color: "black", padding: "8px 10px", textAlign: "left" }}>
-                Match Bets
-              </td>
-            </tr>
-
-            {matchBets.map((bet: IBet, index: number) => (
-              <tr className={bet.isBack ? 'back' : 'lay'} key={bet._id}>
-                <td className='no-wrap text-center p-2'> {index + 1} </td>
-                {userState.user.role !== RoleType.user && <td className='no-wrap text-center p-2'>{bet.userName}</td>}
-                <td className='no-wrap text-center p-2' >
-                  {bet.selectionName} / {bet.marketName === 'Fancy' && bet.gtype !== 'fancy1' ? bet.volume.toFixed(2) : bet.odds.toFixed(2)}
-                </td>
-                <td className='no-wrap text-center p-2'> {bet.odds.toFixed(2)} </td>
-                <td className='no-wrap text-center p-2'> {bet.stack} </td>
-                <td className='no-wrap text-center p-2'> {bet?.selectionName} </td>
-                <td className='no-wrap text-center p-2'> {bet.isBack ? "Yes" : "No"} </td>
-                <td className='no-wrap text-center p-2'> {bet?.result?.result ? bet?.result?.result : "YES"} </td>
-
-                {/* <td className='no-wrap text-center p-2'>{moment.utc(bet.betClickTime).utcOffset('+05:30').format('DD/MM/YYYY hh:mm:ss A')} </td> */}
-                <td className='no-wrap text-center p-2'>
-                  {moment(bet.betClickTime).format("DD/MM/YYYY hh:mm:ss A")}
-                </td>
-
-
-              </tr>
-            ))}
+           
           </tbody>
         </table>
       </div>}</>
