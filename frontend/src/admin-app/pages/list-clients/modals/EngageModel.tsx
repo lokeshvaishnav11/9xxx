@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useEffect } from "react";
+import moment from "moment-timezone";
 
 type EngageRow = {
   matchName: string;
@@ -394,8 +395,7 @@ const EngageModal: React.FC<EngageModalProps> = ({
                               {Number(r.stack).toLocaleString()}
                             </span>
                           </td>
-                          <td style={styles.td}>{formatDate(r.betClickTime
-)}</td>
+                          <td style={styles.td}> {moment.utc(r?.betClickTime).format("MMMM Do, h:mm:ss A")}</td>
                         </tr>
                       );
                     })

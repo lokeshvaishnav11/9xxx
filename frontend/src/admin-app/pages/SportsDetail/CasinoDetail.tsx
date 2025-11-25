@@ -229,7 +229,7 @@
 import React from 'react';
 import accountService from '../../../services/account.service';
 import { AxiosResponse } from 'axios';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectUserData } from '../../../redux/actions/login/loginSlice';
 
@@ -403,7 +403,7 @@ const CasinoDetail = () => {
                                               </span>
                                             </td>
                                             <td>
-                                              {moment(b?.betClickTime).format(
+                                              {moment.utc(b?.betClickTime).format(
                                                 "MM/DD/YYYY h:mm:ss a"
                                               )}
                                             </td>
