@@ -370,7 +370,7 @@ class SportsController extends ApiController {
     const fancy = await sportsService.getSession(match.matchId, match.sportId)
     const fancyone = fancy?.data?.sports?.filter((m: any) =>
       (m.gtype === "session" || m.gtype === "fancy1") &&
-      (m.RunnerName && !m.RunnerName.includes(" run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" Caught out ")) && (m.RunnerName && !m.RunnerName.includes(" ball No ")) && (m.RunnerName && !m.RunnerName.includes(" Run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" run bhav")) && (m.RunnerName.includes(".3 over ")) && (m.RunnerName && m.RunnerName.includes(' ball run ')))
+      (m.RunnerName && !m.RunnerName.includes(" run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" Caught out ")) && (m.RunnerName && !m.RunnerName.includes(" ball No ")) && (m.RunnerName && !m.RunnerName.includes(" Run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" run bhav")) && (m.RunnerName.includes(".3 over ")) && (m.RunnerName && m.RunnerName.includes(' ball run ')) && (m.RunnerName && ! m.RunnerName.includes(' Nextman ')) && (m.RunnerName && ! m.RunnerName.includes('Power Surge ')))
     
 
     if (fancy.data.sports) {
@@ -993,7 +993,7 @@ async getFancyList(req: Request, res: Response): Promise<Response> {
   async addFancyToDb(req: Request, res: Response): Promise<Response> {
     try {
       const { fancy } = req.body
-      if (fancy.gtype == "khado" || fancy.gtype == "oddeven" || fancy.gtype == "meter" || fancy.RunnerName.includes(' run bhav ') || fancy.RunnerName.includes(" Caught out ") || fancy.RunnerName.includes(' ball No ') || fancy.RunnerName.includes(' Run bhav ') || fancy.RunnerName.includes(' run bhav') || fancy.RunnerName.includes('.3 over ') || fancy.RunnerName.includes(' ball run ') ) {
+      if (fancy.gtype == "khado" || fancy.gtype == "oddeven" || fancy.gtype == "meter" || fancy.RunnerName.includes(' run bhav ') || fancy.RunnerName.includes(" Caught out ") || fancy.RunnerName.includes(' ball No ') || fancy.RunnerName.includes(' Run bhav ') || fancy.RunnerName.includes(' run bhav') || fancy.RunnerName.includes('.3 over ') || fancy.RunnerName.includes(' ball run ') || fancy.RunnerName.includes(' Nextman ') || fancy.RunnerName.includes('Power Surge ')) {
         return this.fail(res, 'not fancy added')
       }
       let type = ''
