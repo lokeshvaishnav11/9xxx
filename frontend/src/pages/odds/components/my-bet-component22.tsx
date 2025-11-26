@@ -133,7 +133,7 @@ const groupedMyAllBet = getMyAllBet?.reduce((acc: any, bet: any) => {
           <td className='no-wrap text-center'>
             {bet.marketName === 'Fancy' && bet.gtype !== 'fancy1'
               ? bet.volume.toFixed(2)
-              : bet.odds}
+              : (bet.odds*100 - 100).toFixed(2)}
           </td>
 
           <td className='no-wrap'>

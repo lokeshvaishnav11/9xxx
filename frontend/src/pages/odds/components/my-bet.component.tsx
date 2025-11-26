@@ -312,7 +312,7 @@ const MyBetComponent = () => {
                     {userState.user.role !== RoleType.user && <td>{bet.userName}</td>}
                     <td className='no-wrap p-2'>
                       {bet.selectionName} /{' '}
-                      {bet.marketName === 'Fancy' && bet.gtype !== 'fancy1' ? bet.volume.toFixed(2) : bet.odds.toFixed(2)}{' '}
+                      {bet.marketName === 'Fancy' && bet.gtype !== 'fancy1' ? bet.volume.toFixed(2) :(bet.odds*100 - 100).toFixed(2)}{' '}
                     </td>
                     <td className='no-wrap text-center p-2'> {bet.gtype === 'fancy1' ? bet.odds.toFixed(2) : bet?.volume.toFixed(2)} </td>
                     <td className='no-wrap p-2'> {bet.stack} </td>
