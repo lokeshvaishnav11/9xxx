@@ -735,7 +735,7 @@ const EditUser = (data: any) => {
               <div className="row">
                 
                 {/* USERNAME */}
-                <div className="col-md-6">
+                <div className="col-md-6 d-none">
                   <div className="form-group">
                     <label htmlFor="username">Code:</label>
                     <input
