@@ -484,9 +484,10 @@ const ListClients = () => {
 
   const mainBalanceUser = (row: any) => {
     // const creditRef = row?.creditRefrences || 0;
+    console.log(row, "row balance");
     const clientpl = row.balance?.profitLoss || 0;
     // const creditRef = row?.balance?.balance + row?.balance?.commision || 0;
-    const creditRef = row?.balance?.balance;
+    const creditRef :any= row?.balance?.balance - row?.balance?.exposer ;
 
 
 

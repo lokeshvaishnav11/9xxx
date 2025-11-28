@@ -717,7 +717,7 @@ class SportsController extends ApiController_1.ApiController {
         return __awaiter(this, void 0, void 0, function* () {
             const fancy = yield sports_service_1.default.getSession(match.matchId, match.sportId);
             const fancyone = (_b = (_a = fancy === null || fancy === void 0 ? void 0 : fancy.data) === null || _a === void 0 ? void 0 : _a.sports) === null || _b === void 0 ? void 0 : _b.filter((m) => (m.gtype === "session" || m.gtype === "fancy1") &&
-                (m.RunnerName && !m.RunnerName.includes(" run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" Caught out ")) && (m.RunnerName && !m.RunnerName.includes(" ball No ")) && (m.RunnerName && !m.RunnerName.includes(" Run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" run bhav")) && (m.RunnerName.includes(".3 over ")) && (m.RunnerName && m.RunnerName.includes(" 2")) && (m.RunnerName && m.RunnerName.includes(' ball run ')));
+                (m.RunnerName && !m.RunnerName.includes(" run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" Caught out ")) && (m.RunnerName && !m.RunnerName.includes(" ball No ")) && (m.RunnerName && !m.RunnerName.includes(" Run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" run bhav")) && (m.RunnerName.includes(".3 over ")) && (m.RunnerName && m.RunnerName.includes(' ball run ')) && (m.RunnerName && !m.RunnerName.includes(' Nextman ')) && (m.RunnerName && !m.RunnerName.includes('Power Surge ')));
             if (fancy.data.sports) {
                 yield fancyone.map((market) => __awaiter(this, void 0, void 0, function* () {
                     let type = '';
@@ -1236,7 +1236,7 @@ class SportsController extends ApiController_1.ApiController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { fancy } = req.body;
-                if (fancy.gtype == "khado" || fancy.gtype == "oddeven" || fancy.gtype == "meter" || fancy.RunnerName.includes(' run bhav ') || fancy.RunnerName.includes(" Caught out ") || fancy.RunnerName.includes(' ball No ') || fancy.RunnerName.includes(' Run bhav ') || fancy.RunnerName.includes(' run bhav') || fancy.RunnerName.includes('.3 over ') || fancy.RunnerName.includes(' 2') || fancy.RunnerName.includes(' ball run ')) {
+                if (fancy.gtype == "khado" || fancy.gtype == "oddeven" || fancy.gtype == "meter" || fancy.RunnerName.includes(' run bhav ') || fancy.RunnerName.includes(" Caught out ") || fancy.RunnerName.includes(' ball No ') || fancy.RunnerName.includes(' Run bhav ') || fancy.RunnerName.includes(' run bhav') || fancy.RunnerName.includes('.3 over ') || fancy.RunnerName.includes(' ball run ') || fancy.RunnerName.includes(' Nextman ') || fancy.RunnerName.includes('Power Surge ')) {
                     return this.fail(res, 'not fancy added');
                 }
                 let type = '';

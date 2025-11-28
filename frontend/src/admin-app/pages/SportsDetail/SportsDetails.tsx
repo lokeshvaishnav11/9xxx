@@ -523,7 +523,7 @@ const SportsDetails = () => {
                             l?.parentName === userState.user.username &&
                             l?.profit !== undefined
                         )
-                        ?.reduce((sum: any, l:any) => sum + l.profit, 0) || 0;
+                        ?.reduce((sum: any, l:any) => sum + l.amount, 0) || 0;
                     return (
                       <span
                         className={`pt-2 pb-1 ${
@@ -531,6 +531,7 @@ const SportsDetails = () => {
                         }`}
                       >
                         {total.toFixed(2)}
+                   
                       </span>
                     );
                   })()}
@@ -548,7 +549,7 @@ const SportsDetails = () => {
     {grandUpdown.toFixed(2)}
   </span></td>
   <td className=" font-weight-bold"><span className={grandpl >= 0 ? "text-success" : "text-danger"}>
-    {grandUpdown.toFixed(2)}
+    {grandpl.toFixed(2)}
   </span></td>
           </tr>
         </tbody>

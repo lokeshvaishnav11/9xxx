@@ -159,7 +159,7 @@ class DealersController extends ApiController_1.ApiController {
             console.log(req.body, "req.body");
             try {
                 session.startTransaction();
-                const { _id, username, partnership, share, mcom, scom } = req.body; // Make sure you're sending 'ownPartnership' from frontend
+                const { _id, username, code, partnership, share, mcom, scom } = req.body; // Make sure you're sending 'ownPartnership' from frontend
                 console.log(req.body, "req.body");
                 const userToUpdate = yield User_1.User.findById(_id).session(session);
                 console.log(userToUpdate, "usertoupdate");
@@ -172,6 +172,7 @@ class DealersController extends ApiController_1.ApiController {
                 userToUpdate.share = share;
                 userToUpdate.mcom = mcom;
                 userToUpdate.scom = scom;
+                userToUpdate.code = code;
                 //      // Update ownRatio for keys '1' and '2'
                 // ['1', '2'].forEach(key => {
                 //   if (partnership[key]?.ownRatio !== undefined) {
