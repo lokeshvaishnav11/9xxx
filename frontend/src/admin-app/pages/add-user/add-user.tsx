@@ -151,35 +151,56 @@ console.log(isallowed, "is disallowed or not");
  
 
 
+  // let fword = "";
+
+  // switch (thetype) {
+  //   case "sadmin":
+  //     fword = "SB";
+  //     break;
+  //     case "suadmin":
+  //     fword = "AD";
+  //     break;
+  //   case "smdl":
+  //     fword = "MA";
+  //     break;
+  //   case "mdl":
+  //     fword = "SA";
+  //     break;
+  //   case "dl":
+  //     fword = "A";
+  //     break;
+  //   case "user":
+  //     fword = "C";
+  //     break;
+  //   default:
+  //     fword = "";
+  //     break;
+  // }
+
+  // const randomNumber = Math.floor(Math.random() * (99999 - 19999 + 1)) + 19999;
+  // const sendcode = fword + randomNumber;
+  // console.log(sendcode, "the first code");
+
+  const [sendcode, setSendcode] = React.useState("");
+
+React.useEffect(() => {
   let fword = "";
 
   switch (thetype) {
-    case "sadmin":
-      fword = "SB";
-      break;
-      case "suadmin":
-      fword = "AD";
-      break;
-    case "smdl":
-      fword = "MA";
-      break;
-    case "mdl":
-      fword = "SA";
-      break;
-    case "dl":
-      fword = "A";
-      break;
-    case "user":
-      fword = "C";
-      break;
-    default:
-      fword = "";
-      break;
+    case "sadmin": fword = "SB"; break;
+    case "suadmin": fword = "AD"; break;
+    case "smdl": fword = "MA"; break;
+    case "mdl": fword = "SA"; break;
+    case "dl": fword = "A"; break;
+    case "user": fword = "C"; break;
+    default: fword = "";
   }
 
   const randomNumber = Math.floor(Math.random() * (99999 - 19999 + 1)) + 19999;
-  const sendcode = fword + randomNumber;
-  console.log(sendcode, "the first code");
+  setSendcode(fword + randomNumber);
+
+}, [thetype]);  // 👈 Only regenerate when account type changes
+
 
   const {
     register,
