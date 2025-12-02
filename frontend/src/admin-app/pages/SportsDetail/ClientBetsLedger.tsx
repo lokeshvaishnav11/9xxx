@@ -19,6 +19,7 @@ interface LedgerItem {
 }
 
 interface MatchItem {
+  userCode: any;
   parentData: any;
   parentNameStr: any;
   volume: any;
@@ -515,16 +516,21 @@ const ClientBetsLedger = () => {
                   <tbody className="small">
                     {marketonlymatch?.map((bet, index) => (
                       <tr key={index}>
-                          <td style={{ fontSize: "10px" }} className="p-1 pt-2">
-                                      {
-                                        bet?.parentData
-                                          ?.slice(
-                                            bet?.parentData.indexOf(userState.user.username) + 1
-                                          )
-                                          .join("/")
-                                      }
-                                      /{bet?.userName}
-                                    </td>
+                        <td style={{
+                                      fontSize: "10px",
+                                      minWidth: "180px",
+                                      whiteSpace: "normal",
+                                      wordBreak: "break-word",
+                                    }} className="p-1 pt-2">
+                          {
+                            bet?.parentData
+                              ?.slice(
+                                bet?.parentData.indexOf(userState.user.username) + 1
+                              )
+                              .join("/")
+                          }
+                          /{bet?.userName}({bet?.userCode})
+                        </td>
                         <td
                           className={`pt-2 pb-1 ${bet?.profitLoss < 0
                             ? "text-red-500"
@@ -684,7 +690,12 @@ const ClientBetsLedger = () => {
                                 ?.filter((bet) => bet?.selectionId === sendid)
                                 .map((bet, index) => (
                                   <tr key={index}>
-                                    <td style={{ fontSize: "10px" }} className="p-1 pt-2">
+                                    <td style={{
+                                      fontSize: "10px",
+                                      minWidth: "180px",
+                                      whiteSpace: "normal",
+                                      wordBreak: "break-word",
+                                    }} className="p-1 pt-2">
                                       {
                                         bet?.parentData
                                           ?.slice(
@@ -692,7 +703,7 @@ const ClientBetsLedger = () => {
                                           )
                                           .join("/")
                                       }
-                                      /{bet?.userName}
+                                      /{bet?.userName}({bet?.userCode})
                                     </td>
 
                                     <td className="pt-2 pb-1">{bet?.odds}</td>

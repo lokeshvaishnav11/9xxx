@@ -22,7 +22,7 @@ const CommisionLenden: React.FC = () => {
   const [optionuser, setOptionuser] = React.useState<string>("all");
 
   const [startDate, setStartDate] = React.useState<string>("");
-const [endDate, setEndDate] = React.useState<string>("");
+  const [endDate, setEndDate] = React.useState<string>("");
 
 
   React.useEffect(() => {
@@ -123,7 +123,7 @@ const [endDate, setEndDate] = React.useState<string>("");
 
     result.push({
       name: "TOTAL",
-      cname:"All",
+      cname: "All",
       milaCasinoComm: totalMilaCasino,
       milaSportsComm: totalMilaSports,
       milaTotalComm: totalMilaCasino + totalMilaSports,
@@ -132,7 +132,7 @@ const [endDate, setEndDate] = React.useState<string>("");
       denaTotalComm: totalDenaCasino + totalDenaSports,
     });
 
-    console.log(result,"ressss")
+    console.log(result, "ressss")
 
     return result;
   };
@@ -140,21 +140,21 @@ const [endDate, setEndDate] = React.useState<string>("");
 
   const handleDateFilter = () => {
     if (!startDate || !endDate) return;
-  
+
     const start = new Date(startDate);
     const end = new Date(endDate);
     end.setHours(23, 59, 59, 999); // Include full end day
-  
+
     const filteredData = allEntries[0]?.filter((entry: any) => {
       const entryDate = new Date(entry.createdAt);
       return entryDate >= start && entryDate <= end;
     }) || [];
-  
+
     // Reprocess only with filtered entries
     const updatedCommissionData = processCommissionTable([filteredData]);
     setCommissionData(updatedCommissionData);
   };
-  
+
 
   const renderUserDetails = (childId: string) => {
     console.log(childId, "cjhild");
@@ -212,26 +212,26 @@ const [endDate, setEndDate] = React.useState<string>("");
   };
 
 
-//  date filter in particular user too 
+  //  date filter in particular user too 
   // const renderUserDetails = (childId: string) => {
   //   const sourceArray = allEntries[0] || [];
-  
+
   //   const filtered = sourceArray.filter((item: any) => {
   //     const matchesUser = item.username === childId;
   //     if (!startDate || !endDate) return matchesUser;
-  
+
   //     const entryDate = new Date(item.createdAt);
   //     const start = new Date(startDate);
   //     const end = new Date(endDate);
   //     end.setHours(23, 59, 59, 999);
-  
+
   //     return matchesUser && entryDate >= start && entryDate <= end;
   //   });
   //   ...
   // };
-  
 
-  console.log(commissionData,"commsiondata")
+
+  console.log(commissionData, "commsiondata")
 
   // const settled = (name:any) =>{
   //   betService.comreset(name).then((res)=>{
@@ -242,9 +242,9 @@ const [endDate, setEndDate] = React.useState<string>("");
 
   const settled = async (name: string) => {
     try {
-      const res = await betService.comreset({name});
+      const res = await betService.comreset({ name });
       console.log("Reset response:", res);
-      if(res.data.status){
+      if (res.data.status) {
         window.location.reload()
       }
       // Optionally, show success toast or refresh data
@@ -253,7 +253,7 @@ const [endDate, setEndDate] = React.useState<string>("");
       // Optionally, show error toast
     }
   };
-  
+
 
   return (
     <div>
@@ -261,36 +261,36 @@ const [endDate, setEndDate] = React.useState<string>("");
 
 
       <div className="row p-4">
-	   <div className="col-6 mt-1">
-	      <label className="small"> Start Date</label>
-	      {/* <input type="date" className="form-control start_date "  name="start_date"/> */}
-        <input
-  type="date"
-  className="form-control start_date"
-  name="start_date"
-  value={startDate}
-  onChange={(e) => setStartDate(e.target.value)}
-/>
+        <div className="col-6 mt-1">
+          <label className="small"> Start Date</label>
+          {/* <input type="date" className="form-control start_date "  name="start_date"/> */}
+          <input
+            type="date"
+            className="form-control start_date"
+            name="start_date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
 
-	   </div>
-	   <div className="col-6 mt-1">
-	      <label className="small"> End Date</label>
-	      {/* <input type="date" className="form-control end_date "  name="end_date"/> */}
-        <input
-  type="date"
-  className="form-control end_date"
-  name="end_date"
-  value={endDate}
-  onChange={(e) => setEndDate(e.target.value)}
-/>
-	   </div>
+        </div>
+        <div className="col-6 mt-1">
+          <label className="small"> End Date</label>
+          {/* <input type="date" className="form-control end_date "  name="end_date"/> */}
+          <input
+            type="date"
+            className="form-control end_date"
+            name="end_date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
+        </div>
 
-     <button className="btn btn-primary mt-2 mx-3" onClick={handleDateFilter}>
-  Submit
-</button>
+        <button className="btn btn-primary mt-2 mx-3" onClick={handleDateFilter}>
+          Submit
+        </button>
 
-	  
-	</div>
+
+      </div>
 
       <select
         id="select-tools-sa"
@@ -313,14 +313,14 @@ const [endDate, setEndDate] = React.useState<string>("");
               {optionuser === "all" ? (
                 <>
                   <tr>
-                    <th style={{borderRightColor:"darkgoldenrod", borderRightWidth:"20px"}} colSpan={4}>MILA HAI</th>
-                    <th  colSpan={4}>DENA HAI</th>
+                    <th style={{ borderRightColor: "darkgoldenrod", borderRightWidth: "20px" }} colSpan={4}>MILA HAI</th>
+                    <th colSpan={4}>DENA HAI</th>
                   </tr>
                   <tr>
                     <th>Name</th>
                     <th >M Comm</th>
                     <th>S Comm</th>
-                    <th style={{borderRightColor:"darkgoldenrod", borderRightWidth:"20px"}}>Total Comm</th>
+                    <th style={{ borderRightColor: "darkgoldenrod", borderRightWidth: "20px" }}>Total Comm</th>
                     <th>M Comm</th>
                     <th>S Comm</th>
                     <th>Total Comm</th>
@@ -340,9 +340,9 @@ const [endDate, setEndDate] = React.useState<string>("");
               )}
             </thead>
             <tbody>
-              {optionuser === "all"
+              {/* {optionuser === "all"
                 ? commissionData?.filter((row, index, self) => index === self.findIndex((r) => r.name === row.name))?.map((row) => (
-                    <tr  key={row.name}>
+                    {row.milaTotalComm.toFixed(2) >0 && row.denaTotalComm.toFixed(2) > 0 && ( <tr  key={row.name}>
                       <td className="">{row.name}{`(${row.cname})`}<button onClick={() => settled(row.name)} className="bg-yellow-400 mt-1.5 px-2 py-1.5 rounded-md">Reset</button></td>
                       <td className="">{row.milaCasinoComm.toFixed(2)}</td>
                       <td>{row.milaSportsComm.toFixed(2)}</td>
@@ -350,9 +350,39 @@ const [endDate, setEndDate] = React.useState<string>("");
                       <td>{row.denaCasinoComm.toFixed(2)}</td>
                       <td>{row.denaSportsComm.toFixed(2)}</td>
                       <td>{row.denaTotalComm.toFixed(2)}</td>
-                    </tr>
+                    </tr>)}
+                  ))
+                : renderUserDetails(optionuser)} */}
+              {optionuser === "all"
+                ? commissionData
+                  ?.filter((row, index, self) => index === self.findIndex((r) => r.name === row.name))
+                  ?.map((row) => (
+                    Number(row?.milaTotalComm.toFixed(2)) + Number(row?.denaTotalComm.toFixed(2)) > 0 &&
+                     (
+                      <tr key={row.name}>
+                        <td className="">
+                          {row.name}
+                          {`(${row.cname})`}
+                          <button
+                            onClick={() => settled(row.name)}
+                            className="bg-yellow-400 mt-1.5 px-2 py-1.5 rounded-md"
+                          >
+                            Reset
+                          </button>
+                        </td>
+                        <td className="">{row.milaCasinoComm.toFixed(2)}</td>
+                        <td>{row.milaSportsComm.toFixed(2)}</td>
+                        <td style={{ borderRightColor: "darkgoldenrod", borderRightWidth: "20px" }}>
+                          {row.milaTotalComm.toFixed(2)}
+                        </td>
+                        <td>{row.denaCasinoComm.toFixed(2)}</td>
+                        <td>{row.denaSportsComm.toFixed(2)}</td>
+                        <td>{row.denaTotalComm.toFixed(2)}</td>
+                      </tr>
+                    )
                   ))
                 : renderUserDetails(optionuser)}
+
             </tbody>
           </table>
         </div>

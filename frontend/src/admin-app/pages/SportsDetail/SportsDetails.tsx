@@ -86,11 +86,14 @@ const SportsDetails = () => {
     return marketData.reduce((total, match,) => {
       const matchTotal = match.ledgers
         ?.filter((l) => l?.parentName === userState.user.username && l?.profit !== undefined)
-        ?.reduce((sum:any, l:any) => sum + l.profit, 0) || 0;
-  
+        ?.reduce((sum:any, l:any) => sum + l?.fammount, 0) || 0;
+       
       return total + matchTotal;
     }, 0);
+    
   }, [marketData, userState.user.username]);
+
+  console.log(grandpl,"hello world pl")
 
 
  
@@ -523,14 +526,15 @@ const SportsDetails = () => {
                             l?.parentName === userState.user.username &&
                             l?.profit !== undefined
                         )
-                        ?.reduce((sum: any, l:any) => sum + l.amount, 0) || 0;
+                        ?.reduce((sum: any, l:any) => sum + l.fammount, 0) || 0;
+                        console.log(total,"total pl here")
                     return (
                       <span
                         className={`pt-2 pb-1 ${
                           total >= 0 ? "text-success" : "text-danger"
                         }`}
                       >
-                        {total.toFixed(2)}
+                        {total.toFixed(2)} 
                    
                       </span>
                     );

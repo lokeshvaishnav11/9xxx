@@ -244,11 +244,11 @@ const AccountStatementAdminDeposit = () => {
             } className="red wnwrap">
               {stmt.credit < 0 && stmt.credit.toFixed(2)}
             </td>
-            <td style={
+            {/* <td style={
               stmt.debit >= 0
                 ? { backgroundColor: "green", color: "white" }
                 : { backgroundColor: "red", color: "white" }
-            } className="green wnwrap">{stmt.closing}</td>
+            } className="green wnwrap">{stmt.closing}</td> */}
             <td style={
               stmt.debit >= 0
                 ? { backgroundColor: "green", color: "white" }
@@ -374,7 +374,7 @@ const AccountStatementAdminDeposit = () => {
                       </th>
                       <th className="text-black" style={{ width: '10%', background: "darkgoldenrod", textAlign: 'center' }}>Credit </th>
                       <th className="text-black" style={{ width: '10%', background: "darkgoldenrod", textAlign: 'center' }}>Debit</th>
-                      <th className="text-black" style={{ width: '10%', background: "darkgoldenrod", textAlign: 'center' }}>Balance</th>
+                      {/* <th className="text-black" style={{ width: '10%', background: "darkgoldenrod", textAlign: 'center' }}>Balance</th> */}
                       <th className="text-black" style={{ width: '10%', background: "darkgoldenrod", textAlign: 'center' }}>From</th>
                       <th className="text-black" style={{ width: '45%', background: "darkgoldenrod", textAlign: 'center' }}>Remark</th>
                     </tr>

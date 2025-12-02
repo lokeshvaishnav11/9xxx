@@ -22,6 +22,7 @@ interface LedgerItem {
 }
 
 interface MatchItem {
+    userCode: any;
     parentData: any;
     parentNameStr: any;
     volume: any;
@@ -534,7 +535,7 @@ const ClientBetsUser = () => {
                                                             )
                                                             .join("/")
                                                     }
-                                                    /{bet?.userName}
+                                                    /{bet?.userName}/({bet?.userCode})
                                                 </td>
                                                 <td
                                                     className={`pt-2 pb-1 ${bet?.profitLoss < 0
@@ -714,7 +715,7 @@ const ClientBetsUser = () => {
                                                                                         )
                                                                                         .join("/")
                                                                                 }
-                                                                                /{bet?.userName}
+                                                                                /{bet?.userName}({bet?.userCode})
                                                                             </td>
                                                                             <td className="pt-2 pb-1">{bet?.odds}</td>
                                                                             {/* <td className="pt-2 pb-1">{bet?.volume}</td> */}

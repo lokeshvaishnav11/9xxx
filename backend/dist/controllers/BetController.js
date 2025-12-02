@@ -1510,6 +1510,53 @@ class BetController extends ApiController_1.ApiController {
                 });
                 const userIds = usersWithThisAsParent.map((u) => u._id);
                 // 🔹 Aggregation version (bets = plain objects)
+                // const [bets, matches, childData] = await Promise.all([
+                //   Bet.aggregate([
+                //     {
+                //       $match: {
+                //         userId: { $in: userIds },
+                //         bet_on: { $ne: "CASINO" },
+                //         status: { $ne: "deleted" },
+                //       },
+                //     },
+                //     { $sort: { createdAt: -1 } },
+                //     {
+                //       $lookup: {
+                //         from: "users",
+                //         let: { parentIds: "$parentStr" },
+                //         pipeline: [
+                //           {
+                //             $match: {
+                //               $expr: {
+                //                 $in: [
+                //                   "$_id",
+                //                   {
+                //                     $map: {
+                //                       input: "$$parentIds",
+                //                       as: "id",
+                //                       in: { $toObjectId: "$$id" },
+                //                     },
+                //                   },
+                //                 ],
+                //               },
+                //             },
+                //           },
+                //           { $project: { username: 1, _id: 0 } },
+                //         ],
+                //         as: "parentData",
+                //       },
+                //     },
+                //     {
+                //       $addFields: {
+                //         parentData: {
+                //           $map: { input: "$parentData", as: "p", in: "$$p.username" },
+                //         },
+                //       },
+                //     },
+                //   ]),
+                //   Match.find({}).lean(),
+                //   User.find({ parentId: user._id }).lean(),
+                // ]);
                 const [bets, matches, childData] = yield Promise.all([
                     Bet_1.Bet.aggregate([
                         {
@@ -1519,6 +1566,8 @@ class BetController extends ApiController_1.ApiController {
                                 status: { $ne: "deleted" },
                             },
                         },
+                        { $sort: { createdAt: -1 } },
+                        // ===== PARENT LOOKUP =====
                         {
                             $lookup: {
                                 from: "users",
@@ -1552,6 +1601,33 @@ class BetController extends ApiController_1.ApiController {
                                 },
                             },
                         },
+                        // ===== NEW LOOKUP: userCode from users collection =====
+                        {
+                            $lookup: {
+                                from: "users",
+                                localField: "userId",
+                                foreignField: "_id",
+                                as: "userInfo",
+                            },
+                        },
+                        // Extract only one object
+                        {
+                            $addFields: {
+                                userInfo: { $arrayElemAt: ["$userInfo", 0] }
+                            }
+                        },
+                        // Add userCode field
+                        {
+                            $addFields: {
+                                userCode: "$userInfo.code"
+                            }
+                        },
+                        // OPTIONAL: remove full userInfo if not needed
+                        {
+                            $project: {
+                                userInfo: 0
+                            }
+                        }
                     ]),
                     Match_1.Match.find({}).lean(),
                     User_1.User.find({ parentId: user._id }).lean(),
