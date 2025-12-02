@@ -8,7 +8,7 @@ const Page404 = () => {
 
   const redirectToHome = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
-    navigate.go('/admin/login')
+    navigate.go('/login')
   }
   React.useEffect(() => {
     setTimeout(() => {

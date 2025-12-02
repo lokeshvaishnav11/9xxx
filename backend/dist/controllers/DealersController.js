@@ -710,6 +710,172 @@ class DealersController extends ApiController_1.ApiController {
             return this.success(res, Object.assign({}, users[0]));
         });
     }
+    getUserList2(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { username, page, search, type, status } = req.query;
+            console.log(req.query, "req.query");
+            const pageNo = page ? page : '1';
+            const pageLimit = 999999;
+            const currentUser = req.user;
+            console.log(currentUser, "curen");
+            const select = {
+                _id: 1,
+                username: 1,
+                share: 1,
+                password: 1,
+                pshare: 1,
+                mcom: 1,
+                scom: 1,
+                code: 1,
+                parentId: 1,
+                role: 1,
+                creditRefrences: 1,
+                exposerLimit: 1,
+                isLogin: 1,
+                betLock: 1,
+                betLock2: 1,
+                partnership: 1,
+                parentStr: 1,
+                'balance.balance': 1,
+                'balance.exposer': 1,
+                'balance.profitLoss': 1,
+                'balance.mainBalance': 1,
+                'balance.casinoexposer': 1,
+                'balance.commision': 1,
+            };
+            // const aggregateFilter = [
+            //   {
+            //     $lookup: {
+            //       from: 'balances',
+            //       localField: '_id',
+            //       foreignField: 'userId',
+            //       as: 'balance',
+            //     },
+            //   },
+            //   {
+            //     $unwind: '$balance',
+            //   },
+            //   {
+            //     $project: select,
+            //   },
+            // ]
+            const aggregateFilter = [
+                {
+                    $lookup: {
+                        from: 'balances',
+                        localField: '_id',
+                        foreignField: 'userId',
+                        as: 'balance',
+                    },
+                },
+                {
+                    $unwind: '$balance',
+                },
+                {
+                    $lookup: {
+                        from: 'users',
+                        let: { userId: '$_id' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: { $eq: ['$parentId', '$$userId'] }
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    from: 'balances',
+                                    localField: '_id',
+                                    foreignField: 'userId',
+                                    as: 'childBalanceData'
+                                }
+                            },
+                            { $unwind: { path: '$childBalanceData', preserveNullAndEmptyArrays: true } },
+                            {
+                                $group: {
+                                    _id: null,
+                                    totalChildBalance: { $sum: '$childBalanceData.balance' }
+                                }
+                            }
+                        ],
+                        as: 'childBalanceArray'
+                    }
+                },
+                {
+                    $addFields: {
+                        childBalance: {
+                            $ifNull: [{ $arrayElemAt: ['$childBalanceArray.totalChildBalance', 0] }, 0]
+                        }
+                    }
+                },
+                {
+                    $project: Object.assign(Object.assign({}, select), { childBalance: 1 })
+                }
+            ];
+            let filters = [];
+            if (username && search !== 'true') {
+                const user = yield this.getUser(username);
+                if (!user) {
+                    return res.status(404).json({ message: 'User not found' });
+                }
+                filters = (0, aggregation_pipeline_pagination_1.paginationPipeLine)(pageNo, [
+                    {
+                        $match: {
+                            parentStr: { $elemMatch: { $eq: mongoose_2.Types.ObjectId(user._id) } }
+                        }
+                    },
+                    ...aggregateFilter,
+                ], pageLimit);
+            }
+            else if (search === 'true' && type) {
+                //if (username) const user: IUserModel | null = await this.getUser(username)
+                filters = (0, aggregation_pipeline_pagination_1.paginationPipeLine)(pageNo, [
+                    {
+                        $match: {
+                            role: type,
+                            parentStr: { $elemMatch: { $eq: mongoose_2.Types.ObjectId(currentUser._id) } },
+                        },
+                    },
+                    ...aggregateFilter,
+                ], pageLimit);
+            }
+            else if (username && search === 'true') {
+                filters = (0, aggregation_pipeline_pagination_1.paginationPipeLine)(pageNo, [
+                    {
+                        $match: {
+                            username: new RegExp(username, 'i'),
+                            parentStr: { $elemMatch: { $eq: mongoose_2.Types.ObjectId(currentUser._id) } },
+                        },
+                    },
+                    ...aggregateFilter,
+                ], pageLimit);
+            }
+            else {
+                const { _id, role } = req === null || req === void 0 ? void 0 : req.user;
+                if (status) {
+                    filters = (0, aggregation_pipeline_pagination_1.paginationPipeLine)(pageNo, [
+                        {
+                            $match: {
+                                parentId: mongoose_2.Types.ObjectId(_id),
+                                isLogin: status === 'true',
+                            },
+                        },
+                        ...aggregateFilter,
+                    ], pageLimit);
+                }
+                else {
+                    if (role !== 'admin') {
+                        filters = (0, aggregation_pipeline_pagination_1.paginationPipeLine)(pageNo, [{ $match: { parentId: mongoose_2.Types.ObjectId(_id) } }, ...aggregateFilter], pageLimit);
+                    }
+                    else {
+                        console.log(_id);
+                        filters = (0, aggregation_pipeline_pagination_1.paginationPipeLine)(pageNo, [{ $match: { _id: mongoose_2.Types.ObjectId(_id) } }, ...aggregateFilter], pageLimit);
+                    }
+                }
+            }
+            const users = yield User_1.User.aggregate(filters);
+            return this.success(res, Object.assign({}, users[0]));
+        });
+    }
     // ye hai for chil ke childs dekh wala just upar walal
     // async getUserList(req: Request, res: Response): Promise<Response> {
     //   const { username, page, search, type, status } = req.query

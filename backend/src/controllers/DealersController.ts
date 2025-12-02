@@ -760,6 +760,202 @@ async deleteUser(req: Request, res: Response): Promise<Response> {
     return this.success(res, { ...users[0] })
   }
 
+
+   async getUserList2(req: Request, res: Response): Promise<Response> {
+    const { username, page, search, type, status } = req.query
+    console.log(req.query,"req.query")
+    const pageNo = page ? (page as string) : '1'
+    const pageLimit = 999999
+
+    const currentUser: any = req.user
+    console.log(currentUser,"curen")
+
+    const select = {
+      _id: 1,
+      username: 1,
+      share:1,
+      password:1,
+      pshare:1,
+      mcom:1,
+      scom:1,
+      code:1,
+      parentId: 1,
+      role: 1,
+      creditRefrences: 1,
+      exposerLimit: 1,
+      isLogin: 1,
+      betLock: 1,
+      betLock2: 1,
+      partnership: 1,
+      parentStr: 1,
+      'balance.balance': 1,
+      'balance.exposer': 1,
+      'balance.profitLoss': 1,
+      'balance.mainBalance': 1,
+      'balance.casinoexposer': 1,
+      'balance.commision':1,
+    }
+
+    // const aggregateFilter = [
+    //   {
+    //     $lookup: {
+    //       from: 'balances',
+    //       localField: '_id',
+    //       foreignField: 'userId',
+    //       as: 'balance',
+    //     },
+    //   },
+    //   {
+    //     $unwind: '$balance',
+    //   },
+    //   {
+    //     $project: select,
+    //   },
+    // ]
+    const aggregateFilter = [
+  {
+    $lookup: {
+      from: 'balances',
+      localField: '_id',
+      foreignField: 'userId',
+      as: 'balance',
+    },
+  },
+  {
+    $unwind: '$balance',
+  },
+  {
+    $lookup: {
+      from: 'users',
+      let: { userId: '$_id' },
+      pipeline: [
+        {
+          $match: {
+            $expr: { $eq: ['$parentId', '$$userId'] }
+          }
+        },
+        {
+          $lookup: {
+            from: 'balances',
+            localField: '_id',
+            foreignField: 'userId',
+            as: 'childBalanceData'
+          }
+        },
+        { $unwind: { path: '$childBalanceData', preserveNullAndEmptyArrays: true } },
+        {
+          $group: {
+            _id: null,
+            totalChildBalance: { $sum: '$childBalanceData.balance' }
+          }
+        }
+      ],
+      as: 'childBalanceArray'
+    }
+  },
+  {
+    $addFields: {
+      childBalance: {
+        $ifNull: [{ $arrayElemAt: ['$childBalanceArray.totalChildBalance', 0] }, 0]
+      }
+    }
+  },
+  {
+    $project: {
+      ...select,
+      childBalance: 1
+    }
+  }
+];
+
+    let filters: any = []
+
+    if (username && search !== 'true') {
+      const user: IUserModel | null = await this.getUser(username)
+    
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' })
+      }
+    
+      filters = paginationPipeLine(
+        pageNo,
+        [
+          {
+            $match: {
+              parentStr: { $elemMatch: { $eq: Types.ObjectId(user._id) } }
+            }
+          },
+          ...aggregateFilter,
+        ],
+        pageLimit,
+      )
+    }else if (search === 'true' && type) {
+      //if (username) const user: IUserModel | null = await this.getUser(username)
+      filters = paginationPipeLine(
+        pageNo,
+        [
+          {
+            $match: {
+              role: type,
+              parentStr: { $elemMatch: { $eq: Types.ObjectId(currentUser._id) } },
+            },
+          },
+          ...aggregateFilter,
+        ],
+        pageLimit,
+      )
+    } else if (username && search === 'true') {
+      filters = paginationPipeLine(
+        pageNo,
+        [
+          {
+            $match: {
+              username: new RegExp(username as string, 'i'),
+              parentStr: { $elemMatch: { $eq: Types.ObjectId(currentUser._id) } },
+            },
+          },
+          ...aggregateFilter,
+        ],
+        pageLimit,
+      )
+    } else {
+      const { _id, role }: any = req?.user
+      if (status) {
+        filters = paginationPipeLine(
+          pageNo,
+          [
+            {
+              $match: {
+                parentId: Types.ObjectId(_id),
+                isLogin: status === 'true',
+              },
+            },
+            ...aggregateFilter,
+          ],
+          pageLimit,
+        )
+      } else {
+        if (role !== 'admin') {
+          filters = paginationPipeLine(
+            pageNo,
+            [{ $match: { parentId: Types.ObjectId(_id) } }, ...aggregateFilter],
+            pageLimit,
+          )
+        } else {
+          console.log(_id)
+          filters = paginationPipeLine(
+            pageNo,
+            [{ $match: { _id: Types.ObjectId(_id) } }, ...aggregateFilter],
+            pageLimit,
+          )
+        }
+      }
+    }
+    const users = await User.aggregate(filters)
+    
+    return this.success(res, { ...users[0] })
+  }
+
   // ye hai for chil ke childs dekh wala just upar walal
 
 

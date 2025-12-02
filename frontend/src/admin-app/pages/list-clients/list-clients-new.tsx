@@ -53,6 +53,9 @@ import DeleteModal from "./modals/DeleteModal";
 import WalletIcon from "@mui/icons-material/Wallet";
 import { ClassNames } from "@emotion/react";
 import EngageModal from "./modals/EngageModel";
+import accountService from "../../../services/account.service";
+
+
 
 const ListClients = () => {
   const ref: any = React.createRef();
@@ -241,7 +244,7 @@ const ListClients = () => {
     page?: number;
   }) => {
     if (!obj.page) obj.page = 1;
-    userService.getUserList(obj).then((res: AxiosResponse<any>) => {
+    userService.getUserList2(obj).then((res: AxiosResponse<any>) => {
       setSearchObj(obj);
       console.log(res.data.data.items, "first data ");
       setUserList(res.data.data);
@@ -481,9 +484,10 @@ const ListClients = () => {
 
   const mainBalanceUser = (row: any) => {
     // const creditRef = row?.creditRefrences || 0;
+    console.log(row, "row balance");
     const clientpl = row.balance?.profitLoss || 0;
     // const creditRef = row?.balance?.balance + row?.balance?.commision || 0;
-    const creditRef = row?.balance?.balance;
+    const creditRef :any= row?.balance?.balance - row?.balance?.exposer ;
 
 
 
@@ -586,47 +590,45 @@ const ListClients = () => {
   };
 
 
-  const getRoleOptions = (): { key: RoleType; label: string }[] => {
-    const userRole = userState?.user?.role as RoleType;
-
-    const allRoles = {
-      admin: "Super Admin",
-      sadmin: "Sub Admin",
-      suadmin: "Admin",
-      smdl: "Master Agent",
-      mdl: "Super Agent Master",
-      dl: "Agent Master",
-      user: "Client Master",
+   const getRoleOptions = (): { key: RoleType; label: string }[] => {
+      const userRole = userState?.user?.role as RoleType;
+  
+      const allRoles = {
+        admin: "Super Admin",
+        sadmin: "Sub Admin",
+        suadmin: "Admin",
+        smdl: "Master Agent",
+        mdl: "Super Agent Master",
+        dl: "Agent Master",
+        user: "Client Master",
+      };
+  
+      const roleMap: Record<RoleType, RoleType[]> = {
+        [RoleType.admin]: [RoleType.sadmin,],
+        [RoleType.sadmin]: [RoleType.suadmin],
+        [RoleType.suadmin]: [RoleType.smdl,],
+  
+        [RoleType.smdl]: [RoleType.mdl,],
+        [RoleType.mdl]: [RoleType.dl,],
+        [RoleType.dl]: [RoleType.user],
+        [RoleType.user]: [],
+      };
+  
+      const allowedRoles = roleMap[userRole] || [];
+  
+      return allowedRoles.map((key) => ({
+        key,
+        label: allRoles[key],
+      }));
     };
 
-    const roleMap: Record<RoleType, RoleType[]> = {
-      [RoleType.admin]: [RoleType.sadmin,],
-      [RoleType.sadmin]: [RoleType.suadmin],
-      [RoleType.suadmin]: [RoleType.smdl,],
-
-      [RoleType.smdl]: [RoleType.mdl,],
-      [RoleType.mdl]: [RoleType.dl,],
-      [RoleType.dl]: [RoleType.user],
-      [RoleType.user]: [],
-    };
-
-    const allowedRoles = roleMap[userRole] || [];
-
-    return allowedRoles.map((key) => ({
-      key,
-      label: allRoles[key],
-    }));
-  };
-
-  console.log(getRoleOptions, "getrkollee")
+  console.log( getRoleOptions, "getrkollee")
 
   const unnmae = useParams().username;
-
-  const [engageModalOpen, setEngageModalOpen] = useState(false);
-  const [engageRows, setEngageRows] = useState<
-    { matchName: string; exposure: number; date: string }[]
-  >([]);
-
+   const [engageModalOpen, setEngageModalOpen] = useState(false);
+    const [engageRows, setEngageRows] = useState<
+      { matchName: string; exposure: number; date: string }[]
+    >([]);
   return (
     <>
       <div style={{}} className="container-fluid">
@@ -736,7 +738,7 @@ const ListClients = () => {
         </div> */}
         <div className="row">
           <div className="col-md-12 main-container">
-            <div className="listing-grid">
+            <div  className="listing-grid">
               <div className="detail-row ">
                 <div className=" row">
                   <div className="col-md-8 ">
@@ -748,7 +750,7 @@ const ListClients = () => {
                           <button
                             type="submit"
                             onClick={logOutAllUsers}
-                            className="btn btn-primary"
+                            className="btn btn-primary mb-2"
                           >
                             Logout All Users
                           </button>
@@ -851,7 +853,8 @@ const ListClients = () => {
                     </div> */}
                   </div>
                   <div className="float-right   col-md-4 grid gap-2 ">
-                    {userState?.user?.username === unnmae && getRoleOptions().some((role) => role.key === newtype) ? (
+                   
+
                       <p className="text-right">
                         {username ? (
                           <CustomLink
@@ -869,9 +872,8 @@ const ListClients = () => {
                           </CustomLink>
                         )}
                       </p>
-                    ) : (
-                      ""
-                    )}
+
+                  
 
                     <div className="flex item-center gap-1">
                       <input
@@ -927,7 +929,7 @@ const ListClients = () => {
                 </li>
               </ul> */}
               <div
-                style={{ overflowY: "scroll", paddingBottom: "50vh" }}
+                style={{ overflowY: "scroll", paddingBottom:"50vh" }}
                 className="table-responsive data-table "
                 ref={ref}
               >
@@ -983,8 +985,8 @@ const ListClients = () => {
                       {/* <th></th> */}
                       <th></th>
 
-                      <th>User</th>
                       <th>Name</th>
+                      <th>User</th>
                       <th>Mobile</th>
                       <th>Password</th>
 
@@ -1009,7 +1011,7 @@ const ListClients = () => {
                       {/* <th className="noExport">Actions</th> */}
                     </tr>
                   </thead>
-                  <tbody style={{ marginBottom: "87px" }}>
+                  <tbody style={{marginBottom:"87px"}}>
                     <tr className="hidden">
                       {/* <th className="noExport"></th> */}
                       {/* for user lock */}
@@ -1046,7 +1048,7 @@ const ListClients = () => {
                       <th></th>
                       <th className="noExport"></th>
                     </tr>
-                    {/* ?.slice() // create a shallow copy to avoid mutating original */}
+                     {/* ?.slice() // create a shallow copy to avoid mutating original */}
 
                     {users?.items?.sort((a: User, b: User) => {
                       // Sort so that items with betLock === true come first
@@ -1056,9 +1058,9 @@ const ListClients = () => {
 
                       return (b.isLogin === true) - (a.isLogin === true);
                     })
-                      ?.map((user: User, index: number) => {
-                        const shouldFilterByType =
-                          newtype && newtype.trim() !== "";
+                    ?.map((user: User, index: number) => {
+                      const shouldFilterByType =
+                        newtype && newtype.trim() !== "";
                         if (shouldFilterByType && user.role !== newtype) {
                           return null;
                         }
@@ -1071,9 +1073,9 @@ const ListClients = () => {
                         // )
                         //   return null;
 
-                        return (
-                          <tr key={user._id}>
-                            {/* <td>
+                      return (
+                        <tr key={user._id}>
+                          {/* <td>
                             <input
                               type={'checkbox'}
                               checked={user.selected || false}
@@ -1081,7 +1083,7 @@ const ListClients = () => {
                             />
                           </td> */}
 
-                            {/* <td>
+                          {/* <td>
                             {user.role !== RoleType.admin && (
                               <input
                                 className="form-control"
@@ -1108,110 +1110,110 @@ const ListClients = () => {
                             )}
                           </td> */}
 
-                            <td className="">
-                              {/* ye hai for login wala jisme admin ko hide rkhta hai aage bhi 3 lock hai total casino crick and login */}
-                              {user.role !== RoleType.admin && (
-                                <span
-                                  onClick={() =>
-                                    updateStatus(index, !user?.isLogin, "user")
-                                  }
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  {user?.isLogin ? (
-                                    <LockOpenIcon
-                                      style={{
-                                        backgroundColor: "green",
-                                        color: "white",
-                                        borderRadius: "2px",
-                                        padding: "2px",
-                                      }} />
-                                  ) : (
-                                    <LockIcon
-                                      style={{
-                                        backgroundColor: "red",
-                                        color: "white",
-                                        borderRadius: "2px",
-                                        padding: "2px",
-                                      }} />
-                                  )}
-                                </span>
-                              )}
-                            </td>
+                          <td className="">
+                            {/* ye hai for login wala jisme admin ko hide rkhta hai aage bhi 3 lock hai total casino crick and login */}
+                            {user.role !== RoleType.admin && (
+                              <span
+                                onClick={() =>
+                                  updateStatus(index, !user?.isLogin, "user")
+                                }
+                                style={{ cursor: "pointer" }}
+                              >
+                                {user?.isLogin ? (
+                                  <LockOpenIcon 
+                                  style={{
+                                    backgroundColor: "green",
+                                    color: "white",
+                                    borderRadius: "2px",
+                                    padding: "2px",
+                                  }} />
+                                ) : (
+                                  <LockIcon 
+                                  style={{
+                                    backgroundColor: "red",
+                                    color: "white",
+                                    borderRadius: "2px",
+                                    padding: "2px",
+                                  }} />
+                                )}
+                              </span>
+                            )}
+                          </td>
 
-                            <td className="hidden">
-                              {user.role !== RoleType.admin && (
-                                <span
-                                  // ye hain casino sbke liye superadmin ko toh vese bhi nhi dikhega
-                                  onClick={() =>
-                                    updateStatus(index, !user?.betLock, "bet")
-                                  }
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  {user?.betLock ? (
-                                    <LockOpenIcon
-                                      style={{
-                                        backgroundColor: "green",
-                                        color: "white",
-                                        borderRadius: "2px",
-                                        padding: "2px",
-                                      }}
-                                    />
-                                  ) : (
-                                    <LockIcon
-                                      style={{
-                                        backgroundColor: "red",
-                                        color: "white",
-                                        borderRadius: "2px",
-                                        padding: "2px",
-                                      }}
-                                    />
-                                  )}
-                                </span>
-                              )}
+                          <td className="hidden">
+                            {user.role !== RoleType.admin && (
+                              <span
+                                // ye hain casino sbke liye superadmin ko toh vese bhi nhi dikhega
+                                onClick={() =>
+                                  updateStatus(index, !user?.betLock, "bet")
+                                }
+                                style={{ cursor: "pointer" }}
+                              >
+                                {user?.betLock ? (
+                                  <LockOpenIcon
+                                    style={{
+                                      backgroundColor: "green",
+                                      color: "white",
+                                      borderRadius: "2px",
+                                      padding: "2px",
+                                    }}
+                                  />
+                                ) : (
+                                  <LockIcon
+                                    style={{
+                                      backgroundColor: "red",
+                                      color: "white",
+                                      borderRadius: "2px",
+                                      padding: "2px",
+                                    }}
+                                  />
+                                )}
+                              </span>
+                            )}
 
-                              {user.role !== RoleType.admin && (
-                                <span
-                                  className="hidden"
-                                  // sports ko hide kr rkha hai sbke liye  superadmin ko toh vese bhi nhi dikhega
-                                  onClick={() =>
-                                    updateStatus(index, !user?.betLock2, "bet2")
-                                  }
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  {user?.betLock2 ? (
-                                    <LockOpenIcon
-                                      style={{
-                                        backgroundColor: "green",
-                                        color: "white",
-                                        borderRadius: "2px",
-                                        padding: "2px",
-                                      }}
-                                    />
-                                  ) : (
-                                    <LockIcon
-                                      style={{
-                                        backgroundColor: "red",
-                                        color: "white",
-                                        borderRadius: "2px",
-                                        padding: "2px",
-                                      }}
-                                    />
-                                  )}
-                                </span>
-                              )}
+                            {user.role !== RoleType.admin && (
+                              <span
+                                className="hidden"
+                                // sports ko hide kr rkha hai sbke liye  superadmin ko toh vese bhi nhi dikhega
+                                onClick={() =>
+                                  updateStatus(index, !user?.betLock2, "bet2")
+                                }
+                                style={{ cursor: "pointer" }}
+                              >
+                                {user?.betLock2 ? (
+                                  <LockOpenIcon
+                                    style={{
+                                      backgroundColor: "green",
+                                      color: "white",
+                                      borderRadius: "2px",
+                                      padding: "2px",
+                                    }}
+                                  />
+                                ) : (
+                                  <LockIcon
+                                    style={{
+                                      backgroundColor: "red",
+                                      color: "white",
+                                      borderRadius: "2px",
+                                      padding: "2px",
+                                    }}
+                                  />
+                                )}
+                              </span>
+                            )}
 
-                              {user.role !== RoleType.user && (
-                                <button
-                                  className="vrx-lock btn btn-warning btn-sm m-0 mt-2 ml-2"
-                                  data-target="#ViewPartnerShip"
-                                  data-toggle="modal"
-                                >
-                                  <p>+</p>
-                                </button>
-                              )}
-                            </td>
+                            {user.role !== RoleType.user && (
+                              <button
+                                className="vrx-lock btn btn-warning btn-sm m-0 mt-2 ml-2"
+                                data-target="#ViewPartnerShip"
+                                data-toggle="modal"
+                              >
+                                <p>+</p>
+                              </button>
+                            )}
+                          </td>
 
-                            {/* <td>
+                          {/* <td>
                             <a
                               className="hover:text-white border-b pb-2"
                               onClick={() => {
@@ -1223,267 +1225,267 @@ const ListClients = () => {
                             </a>
                           </td> */}
 
-                            <td className="relative-btn" >
-                              {" "}
-                              <button
-                                className=""
-                                onClick={() => user._id && handleToggle(user._id)}
-                              >
-                                <ArrowDropDownIcon className="size-2" />
-                              </button>
+                          <td className="relative-btn" >
+                            {" "}
+                            <button
+                              className=""
+                              onClick={() => user._id && handleToggle(user._id)}
+                            >
+                              <ArrowDropDownIcon className="size-2" />
+                            </button>
 
 
-                              <div
-                                className={`actions-td ${expandedUserId === user._id ? "open" : ""
-                                  }`}
+                            <div
+                              className={`actions-td ${
+                                expandedUserId === user._id ? "open" : ""
+                              }`}
                               // ref={modalRef}
+                            >
+                              <p className="bg-gray-800 hidden text-white p-2">
+                                Action for the user - {user.username}
+                              </p>
+                              <button
+                                className="closed bg-gray-800 text-white"
+                                onClick={() =>
+                                  user._id && handleToggle(user._id)
+                                }
                               >
-                                <p className="bg-gray-800 hidden text-white p-2">
-                                  Action for the user - {user.username}
-                                </p>
-                                <button
-                                  className="closed bg-gray-800 text-white"
-                                  onClick={() =>
-                                    user._id && handleToggle(user._id)
-                                  }
+                                <CloseButton className="text-white" />
+                              </button>
+                              <div className="actions-container  p-4">
+                                <a
+                                  className="hover:text-white  border-b pb-2"
+                                  style={{ color: "#007bff" }}
+                                  onClick={() => {
+                                    openModal("d");
+                                    getUserDetail(user);
+                                  }}
                                 >
-                                  <CloseButton className="text-white" />
-                                </button>
-                                <div className="actions-container  p-4">
-                                  <a
-                                    className="hover:text-white  border-b pb-2"
-                                    style={{ color: "#007bff" }}
-                                    onClick={() => {
-                                      openModal("d");
-                                      getUserDetail(user);
-                                    }}
-                                  >
-                                    <BorderColorIcon /> Deposit Chips
-                                  </a>
-                                  <a
-                                    className="border-b pb-2"
-                                    style={{ color: "#007bff" }}
-                                    onClick={() => {
-                                      openModal("w");
-                                      getUserDetail(user);
+                                  <BorderColorIcon /> Deposit Chips
+                                </a>
+                                <a
+                                  className="border-b pb-2"
+                                  style={{ color: "#007bff" }}
+                                  onClick={() => {
+                                    openModal("w");
+                                    getUserDetail(user);
+                         
+                                  }}
+                                >
+                                  <BorderColorIcon /> Withdrawl Chips
+                                </a>
 
-                                    }}
-                                  >
-                                    <BorderColorIcon /> Withdrawl Chips
-                                  </a>
+                                {/* {isAdmin(user) && */}
+                                { userState?.user?.role == RoleType.admin && (
+                                <a
+                                  className="border-b pb-2"
+                                  style={{ color: "#28a745" }}
+                                  onClick={() => {
+                                    openModal("e");
+                                    getUserDetail(user);
+                                    setModalType("EXP");
+                                  }}
+                                >
+                                  <BorderColorIcon /> Exposer Limit
+                                </a>
+                                 )}
+                                {/* isAdmin(user) && */}
+                                {userState?.user?.role == RoleType.admin && (
+                                <a
+                                  className="border-b  pb-2"
+                                  style={{ color: "#28a745" }}
+                                  onClick={() => {
+                                    openModal("e");
+                                    getUserDetail(user);
+                                    setModalType("CRD");
+                                  }}
+                                >
+                                  <BorderColorIcon /> Number Limit Withdrawl
+                                </a>
+                                )}
+                                {/* {isAdmin(user) &&
+                                  user.role !== RoleType.admin && ( */}
+                                <a
+                                  className="border-b pb-2"
+                                  onClick={() => {
+                                    openModal("p");
+                                    getUserDetail(user);
+                                  }}
+                                >
+                                  <BorderColorIcon /> Change Password
+                                </a>
+                                {/* )} */}
+                                {/* {isAdmin(user) &&
+                                  user.role !== RoleType.admin && ( */}
+                                <a
+                                  className="border-b pb-2"
+                                  style={{ color: "#007bff" }}
+                                  onClick={() => {
+                                    openModal("s");
+                                    getUserDetail(user);
+                                  }}
+                                >
+                                  <BorderColorIcon /> Edit{" "}
+                                  {`(${user.username})`}
+                                </a>
 
-                                  {/* {isAdmin(user) && */}
-                                  {userState?.user?.role == RoleType.admin && (
-                                    <a
-                                      className="border-b pb-2"
-                                      style={{ color: "#28a745" }}
-                                      onClick={() => {
-                                        openModal("e");
-                                        getUserDetail(user);
-                                        setModalType("EXP");
-                                      }}
-                                    >
-                                      <BorderColorIcon /> Exposer Limit
-                                    </a>
-                                  )}
-                                  {/* isAdmin(user) && */}
-                                  {userState?.user?.role == RoleType.admin && (
-                                    <a
-                                      className="border-b  pb-2"
-                                      style={{ color: "#28a745" }}
-                                      onClick={() => {
-                                        openModal("e");
-                                        getUserDetail(user);
-                                        setModalType("CRD");
-                                      }}
-                                    >
-                                      <BorderColorIcon /> Number Limit Withdrawl
-                                    </a>
-                                  )}
-                                  {/* {isAdmin(user) &&
-                                  user.role !== RoleType.admin && ( */}
+                                {userState?.user?.role == RoleType.admin && (
                                   <a
-                                    className="border-b pb-2"
                                     onClick={() => {
-                                      openModal("p");
+                                      openModal("dt");
                                       getUserDetail(user);
                                     }}
+                                    style={{ color: "red" }}
+                                    className={`${user?.role !== RoleType.admin  ? "d-block" : "d-none"}`}
                                   >
-                                    <BorderColorIcon /> Change Password
-                                  </a>
-                                  {/* )} */}
-                                  {/* {isAdmin(user) &&
-                                  user.role !== RoleType.admin && ( */}
-                                  <a
-                                    className="border-b pb-2"
-                                    style={{ color: "#007bff" }}
-                                    onClick={() => {
-                                      openModal("s");
-                                      getUserDetail(user);
-                                    }}
-                                  >
-                                    <BorderColorIcon /> Edit{" "}
+                                    <PersonRemoveIcon /> Deactivate{" "}
                                     {`(${user.username})`}
                                   </a>
+                                )}
 
-                                  {userState?.user?.role == RoleType.admin && (
-                                    <a
-                                      onClick={() => {
-                                        openModal("dt");
-                                        getUserDetail(user);
-                                      }}
-                                      style={{ color: "red" }}
-                                      className={`${user?.role !== RoleType.admin ? "d-block" : "d-none"}`}
-                                    >
-                                      <PersonRemoveIcon /> Deactivate{" "}
-                                      {`(${user.username})`}
-                                    </a>
-                                  )}
+                                {/* )}  */}
+                                {userState?.user?.role == RoleType.admin && (
+                                <a
+                                  className="border-b pb-2"
+                                  // style={{ display: "none" }}
+                                  onClick={() => {
+                                    openModal("gs");
+                                    getUserDetail(user);
+                                  }}
+                                >
+                                  <BorderColorIcon /> Min Max Detail
+                                </a>
+                                )}
 
-                                  {/* )}  */}
-                                  {userState?.user?.role == RoleType.admin && (
-                                    <a
-                                      className="border-b pb-2"
-                                      // style={{ display: "none" }}
-                                      onClick={() => {
-                                        openModal("gs");
-                                        getUserDetail(user);
-                                      }}
-                                    >
-                                      <BorderColorIcon /> Min Max Detail
-                                    </a>
-                                  )}
+                                <CustomLink
+                                  to={`/accountstatement/${user?._id}`}
+                                  style={{ color: "#1e1e1e" }}
+                                  className="border-b pb-2"
+                                  onClick={() => {
+                                    openModal("");
+                                    getUserDetail(user);
+                                  }}
+                                >
+                                  <BorderColorIcon /> Account Statement
+                                </CustomLink>
 
-                                  <CustomLink
-                                    to={`/accountstatement/${user?._id}`}
-                                    style={{ color: "#1e1e1e" }}
-                                    className="border-b pb-2"
-                                    onClick={() => {
-                                      openModal("");
-                                      getUserDetail(user);
-                                    }}
+
+                                <CustomLink
+                                  to={`/accountstatement-deposit/${user?._id}`}
+                                  style={{ color: "#1e1e1e" }}
+                                  className="border-b pb-2"
+                                  onClick={() => {
+                                    openModal("");
+                                    getUserDetail(user);
+                                  }}
+                                >
+                                  <BorderColorIcon /> Limit Update Details
+                                </CustomLink>
+
+                                <CustomLink
+                                  to={`/operation/${user?.username}`}
+                                  style={{ color: "#1e1e1e" }}
+                                  className="border-b pb-2"
+                                  onClick={() => {
+                                    openModal("");
+                                    getUserDetail(user);
+                                  }}
+                                >
+                                  <BorderColorIcon /> Account Operation
+                                </CustomLink>
+
+                                {lockshow ? (
+                                  <div
+                                    style={{ width: "100%", height: "100%" }}
+                                    className="absolute top-0 left-0 p-1   max-w-mkd bg-white border rounded-md bg-opacity- f z-50"
                                   >
-                                    <BorderColorIcon /> Account Statement
-                                  </CustomLink>
+    
 
-
-                                  <CustomLink
-                                    to={`/accountstatement-deposit/${user?._id}`}
-                                    style={{ color: "#1e1e1e" }}
-                                    className="border-b pb-2"
-                                    onClick={() => {
-                                      openModal("");
-                                      getUserDetail(user);
-                                    }}
-                                  >
-                                    <BorderColorIcon /> Limit Update Details
-                                  </CustomLink>
-
-                                  <CustomLink
-                                    to={`/operation/${user?.username}`}
-                                    style={{ color: "#1e1e1e" }}
-                                    className="border-b pb-2"
-                                    onClick={() => {
-                                      openModal("");
-                                      getUserDetail(user);
-                                    }}
-                                  >
-                                    <BorderColorIcon /> Account Operation
-                                  </CustomLink>
-
-                                  {lockshow ? (
-                                    <div
-                                      style={{ width: "100%", height: "100%" }}
-                                      className="absolute top-0 left-0 p-1   max-w-mkd bg-white border rounded-md bg-opacity- f z-50"
-                                    >
-                                      {/* <div 
-    className="bg-gray-300 text-black rounded-t-lg  p-6
-           transform translate-y-full animate-slide-up"
-  > */}
-
-                                      <div className="col-12 mb-2 col-md-12 text-center">
-                                        <table className="table table-striped  table-bordered  lenden len">
-                                          <thead>
-                                            <tr>
-                                              <td>id</td>
-                                              <td>Game</td>
-                                              <td>Action</td>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            <tr>
-                                              <td>1</td>
-                                              <td>Casino</td>
-                                              <td>
-                                                <button
-                                                  onClick={() =>
-                                                    updateStatus(
-                                                      index,
-                                                      !user?.betLock,
-                                                      "bet"
-                                                    )
-                                                  }
-                                                  className={`btn ${user?.betLock
+                                    <div className="col-12 mb-2 col-md-12 text-center">
+                                      <table className="table table-striped  table-bordered  lenden len">
+                                        <thead>
+                                          <tr>
+                                            <td>id</td>
+                                            <td>Game</td>
+                                            <td>Action</td>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <td>1</td>
+                                            <td>Casino</td>
+                                            <td>
+                                              <button
+                                                onClick={() =>
+                                                  updateStatus(
+                                                    index,
+                                                    !user?.betLock,
+                                                    "bet"
+                                                  )
+                                                }
+                                                className={`btn ${
+                                                  user?.betLock
                                                     ? "btn-primary"
                                                     : "btn-danger"
-                                                    }`}
-                                                >
-                                                  {user?.betLock
-                                                    ? "Lock"
-                                                    : "Unlock"}
-                                                </button>
-                                              </td>
-                                            </tr>
+                                                }`}
+                                              >
+                                                {user?.betLock
+                                                  ? "Lock"
+                                                  : "Unlock"}
+                                              </button>
+                                            </td>
+                                          </tr>
 
-                                            <tr>
-                                              <td>2</td>
-                                              <td>Cricket</td>
-                                              <td>
-                                                <button
-                                                  onClick={() =>
-                                                    updateStatus(
-                                                      index,
-                                                      !user?.betLock2,
-                                                      "bet2"
-                                                    )
-                                                  }
-                                                  className={`btn ${user?.betLock2
+                                          <tr>
+                                            <td>2</td>
+                                            <td>Cricket</td>
+                                            <td>
+                                              <button
+                                                onClick={() =>
+                                                  updateStatus(
+                                                    index,
+                                                    !user?.betLock2,
+                                                    "bet2"
+                                                  )
+                                                }
+                                                className={`btn ${
+                                                  user?.betLock2
                                                     ? "btn-primary"
                                                     : "btn-danger"
-                                                    }`}
-                                                >
-                                                  {user?.betLock2
-                                                    ? "Lock"
-                                                    : "Unlock"}
-                                                </button>
-                                              </td>
-                                            </tr>
-                                          </tbody>
-                                        </table>
-                                      </div>
-
-                                      <button
-                                        onClick={() => setLockshow(!lockshow)}
-                                        className=" btn btn-danger text-white  rounded"
-                                      >
-                                        Close
-                                      </button>
-                                      {/* </div> */}
+                                                }`}
+                                              >
+                                                {user?.betLock2
+                                                  ? "Lock"
+                                                  : "Unlock"}
+                                              </button>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
                                     </div>
-                                  ) : (
-                                    ""
-                                  )}
 
-                                  {user.role !== RoleType.admin && (
-                                    <a
-                                      className="border-b pb-2"
+                                    <button
                                       onClick={() => setLockshow(!lockshow)}
+                                      className=" btn btn-danger text-white  rounded"
                                     >
-                                      <VisibilityIcon /> Block Games
-                                    </a>
-                                  )}
+                                      Close
+                                    </button>
+                                    {/* </div> */}
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
 
-                                  {/* {isAdmin(user) && (
+                                {user.role !== RoleType.admin && (
+                                  <a
+                                    className="border-b pb-2"
+                                    onClick={() => setLockshow(!lockshow)}
+                                  >
+                                    <VisibilityIcon /> Block Games
+                                  </a>
+                                )}
+
+                                {/* {isAdmin(user) && (
                                   <a
                                     onClick={() => {
                                       resetTxnPassword(user);
@@ -1492,64 +1494,57 @@ const ListClients = () => {
                                  <BorderColorIcon />    Transaction Password
                                   </a>
                                 )} */}
-                                </div>
                               </div>
-                            </td>
+                            </div>
+                          </td>
 
-                            <td>{user?.code}</td>
+                          <td>{user?.code}</td>
 
-                            <td className="">
-                              {user.role !== RoleType.user && (
-                                <CustomLink
-                                  className="text-blue"
-                                  // to={`/list-clients/${user.username}`}
-                                  to={`/list-clients/${user.username}/${user.role === "admin"
+                          <td className="">
+                            {user.role !== RoleType.user && (
+                              <CustomLink
+                                className="text-blue"
+                                // to={`/list-clients/${user.username}`}
+                                to={`/list-clients/${user.username}/${
+                                  user.role === "admin"
                                     ? "sadmin"
                                     : user.role === "sadmin"
-                                      ? "suadmin"
-                                      : user.role === "suadmin"
-                                        ? "smdl"
-                                        : user.role === "smdl"
-                                          ? "mdl"
-                                          : user.role === "mdl"
-                                            ? "dl"
-                                            : user.role === "dl"
-                                              ? "user"
-                                              : "user"
-                                    }`}
-                                >
-                                  <p className="">{user.username}</p>
-                                </CustomLink>
-                              )}
-                              {user.role === RoleType.user && (
-                                <p
-                                  style={{ padding: "5px 10px" }}
-                                  className="text-blue "
-                                >
-                                  {user.username}
-                                </p>
-                              )}
+                                    ? "suadmin" 
+                                    : user.role === "suadmin" 
+                                    ? "smdl"
+                                    : user.role === "smdl"
+                                    ? "mdl"
+                                    : user.role === "mdl"
+                                    ? "dl"
+                                    : user.role === "dl"
+                                    ? "user"
+                                    : "user"
+                                }`}
+                              >
+                                <p className="">{user.username}</p>
+                              </CustomLink>
+                            )}
+                            {user.role === RoleType.user && (
+                              <p
+                                style={{ padding: "5px 10px" }}
+                                className="text-blue "
+                              >
+                                {user.username}
+                              </p>
+                            )}
 
+                            
 
+                           
+                          </td>
 
-
-                            </td>
-
-                            <td>
-                              {/* <a
-                                href={`https://wa.me/?text=${encodeURIComponent(
-                                  `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLinks:\nAdmin Link: https://taj44.com/admin\nClient Link: https://taj44.com`
-                                )}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                title="Share on WhatsApp"
-                                style={{ display: "inline-flex", alignItems: "center" }}
-                              > */}
-                              <a
+                          {/* <td></td> */}
+                        <td>
+                             <a
                                 href={`https://wa.me/?text=${encodeURIComponent(
                                   user.username?.startsWith('C')
                                     ? `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLink:\nClient Link: https://delhi06.com`
-                                    : `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLinks:\nAdmin Link: https://delhi06/admin\nClient Link: https://delhi06.com`
+                                    : `Login Details:\nUsername: ${user.username}\nPassword: ${user.password}\n\nLinks:\nAdmin Link: https://delhi06.com/admin\nClient Link: https://delhi06.com`
                                 )}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -1568,49 +1563,58 @@ const ListClients = () => {
                                 />
                               </a>
                             </td>
+                          <td>
+                            {urole === "dl" || urole === "mdl" || urole === "smdl" || urole === "suadmin"
+                              ? "******"
+                              : user?.password}
+                          </td>
 
-
-
+                          {urole === "dl" || newtype === "user" ? (
+                            ""
+                          ) : (
                             <td>
-                              {urole === "dl" || urole === "mdl" || urole === "smdl" || urole === "suadmin"
-                                ? "******"
-                                : user?.password}
+                              {user?.pshare && user.share != null
+                                ? `${user.pshare - user.share}%` 
+                                : "0%"}
                             </td>
+                          )}
 
-                            {urole === "dl" || newtype === "user" ? (
-                              ""
-                            ) : (
-                              <td>
-                                {user?.pshare && user.share != null
-                                  ? `${user.pshare - user.share}%`
-                                  : "0%"}
-                              </td>
-                            )}
+                          {urole == "dl" || newtype === "user" ? (
+                            ""
+                          ) : (
+                            <td>{user?.share ? user?.share : "0"}%</td>
+                          )}
 
-                            {urole == "dl" || newtype === "user" ? (
-                              ""
-                            ) : (
-                              <td>{user?.share ? user?.share : "0"}%</td>
-                            )}
-
-                            {/* <td>
+                          {/* <td>
                             {user?.creditRefrences ? user.creditRefrences : 0}
                           </td> */}
 
-                            {urole === "dl" || newtype === "user" ? <td>{mainBalanceUser(user).toFixed(2)}</td> : <td>{mainBalance(user).toFixed(2)}</td>}
+                          { urole === "dl" || newtype === "user" ?  <td>{mainBalanceUser(user).toFixed(2)}</td> : <td>{mainBalance(user).toFixed(2)}</td>   }
+                         
+
+                          {/* {user.role === "user" ? (
+                            <td>{finalExposer(user?.balance)}</td>
+
+                          ) : (
+                            <td>{mainBalancechild(user).toFixed(2)}</td>
+                          )} */}
 
 
                             {user.role === "user" ? (
                               <td>
-                                <button
-                                  onClick={() => {
+                                {/* <button
+                                  onClick={async(user:any) => {
                                     // dummy data for modal
-                                    const dummy = [
-                                      { matchName: "Australia v India", exposure: 5000, date: "Oct 31, 2025 2:13:12 PM" },
-                                      { matchName: "Australia v India", exposure: 1000, date: "Oct 31, 2025 2:09:45 PM" },
-                                      { matchName: "Australia v India", exposure: 5000, date: "Oct 31, 2025 2:09:37 PM" },
-                                      { matchName: "Australia v India", exposure: 5000, date: "Oct 31, 2025 2:09:26 PM" },
-                                    ];
+                                    // const dummy = [
+                                    //   { matchName: "Australia v India", exposure: 5000, date: "Oct 31, 2025 2:13:12 PM" },
+                                    //   { matchName: "Australia v India", exposure: 1000, date: "Oct 31, 2025 2:09:45 PM" },
+                                    //   { matchName: "Australia v India", exposure: 5000, date: "Oct 31, 2025 2:09:37 PM" },
+                                    //   { matchName: "Australia v India", exposure: 5000, date: "Oct 31, 2025 2:09:26 PM" },
+                                    // ];
+                                    const data = {userId:user}
+                                    console.log(data,"data is here")
+                                    const res =await accountService.getBets32(data)
+                                    console.log(res,"res is here")
                                     setEngageRows(dummy);
                                     setEngageModalOpen(true);
                                   }}
@@ -1626,7 +1630,49 @@ const ListClients = () => {
                                   title="View Exposure Details"
                                 >
                                   {finalExposer(user?.balance)}
+                                </button> */}
+                                <button
+                                  onClick={async () => {
+                                    try {
+                                      // user object ko check kar le
+                                      if (!user || !user._id) {
+                                        console.error("User data missing!");
+                                        return;
+                                      }
+
+                                      const data = { userId: user._id };
+                                      console.log(data, "data being sent");
+
+                                      const res = await accountService.getBets32(data);
+                                      console.log(res, "response from getBets32");
+
+                                      // yahan assume kar rahe hain ki res.data ya res.results me array aata hai
+                                      if (res) {
+                                        setEngageRows(res?.data?.bets);
+                                      }  else {
+                                        console.warn("Unexpected response format:", res);
+                                        setEngageRows([]); // fallback empty array
+                                      }
+
+                                      setEngageModalOpen(true);
+                                    } catch (error) {
+                                      console.error("Error fetching exposure details:", error);
+                                    }
+                                  }}
+                                  style={{
+                                    background: "transparent",
+                                    border: "none",
+                                    color: "#0b66c3",
+                                    textDecoration: "underline",
+                                    cursor: "pointer",
+                                    fontSize: 13,
+                                    padding: 0,
+                                  }}
+                                  title="View Exposure Details"
+                                >
+                                  {finalExposer(user?.balance)}
                                 </button>
+
                               </td>
                             ) : (
                               <td>
@@ -1636,8 +1682,7 @@ const ListClients = () => {
                               </td>
                             )}
 
-
-                            {/* <td
+                          {/* <td
                             className={
                               user?.balance?.profitLoss &&
                               user?.balance?.profitLoss > 0
@@ -1648,7 +1693,7 @@ const ListClients = () => {
                             {user?.balance?.profitLoss?.toFixed(2) || 0}
                           </td> */}
 
-                            {/* <td>
+                          {/* <td>
                             {(
                               (user.balance?.balance || 0) -
                               (user.balance?.exposer || 0) -
@@ -1656,14 +1701,14 @@ const ListClients = () => {
                             ).toFixed(2)}
                           </td> */}
 
-                            {/* <td>{user.exposerLimit ? user.exposerLimit : 0}</td> */}
-                            <td>{user.mcom}%</td>
-                            <td>{user.scom}%</td>
+                          {/* <td>{user.exposerLimit ? user.exposerLimit : 0}</td> */}
+                          <td>{user.mcom}%</td>
+                          <td>{user.scom}%</td>
 
-                            <td>{RoleName[user.role!]}</td>
-                          </tr>
-                        );
-                      })}
+                          <td>{RoleName[user.role!]}</td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -1784,15 +1829,12 @@ const ListClients = () => {
           </div>
         </div>
       </div>
-
-      <EngageModal
-        open={engageModalOpen}
-        onClose={() => setEngageModalOpen(false)}
-        rows={engageRows}
-      />
+       <EngageModal
+              open={engageModalOpen}
+              onClose={() => setEngageModalOpen(false)}
+              rows={engageRows}
+            />
     </>
-
   );
 };
-
 export default ListClients;

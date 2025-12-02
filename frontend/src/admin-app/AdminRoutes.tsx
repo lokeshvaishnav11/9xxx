@@ -95,7 +95,7 @@ const AdminRoutes = () => {
             { path: 'odds/:matchId', element: <Odds /> },
             { path: 'odds/:matchId/:share', element: <Odds /> },
 
-            ...['list-clients', 'list-clients/:username', 'list-clients/:username/:type'].map((path) => ({
+            ...['list-clients/:username', 'list-clients/:username/:type'].map((path) => ({
               key: 'list-client',
               path: path,
               element: <ListClients />,

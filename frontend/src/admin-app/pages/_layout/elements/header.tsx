@@ -774,7 +774,22 @@ const [userList, setUserList] = React.useState<any>({});
 
                   <li className={` ${activeMenu === "User" ? "bg-active" : ""} nav-item dropdown border-b md:w-60 group relative`}>
                     <CustomLink
-                      to={"/list-clients"}
+                      // to={`/list-clients/${userState?.user?.username}/${userState?.user?.role === "admin"
+                      //     ? "sadmin"
+                      //     : userState?.user?.role === "sadmin"
+                      //     ? "suadmin"
+                      //     : userState?.user?.role === "suadmin"
+                      //     ? "smdl"
+                      //     : userState?.user?.role === "smdl"
+                      //     ? "mdl"
+                      //     : userState?.user?.role === "mdl"
+                      //     ? "dl"
+                      //     : userState?.user?.role === "dl"
+                      //     ? "user"
+                      //     : userState?.user?.role === "user"
+                      //     ? "Client Master"
+                      //     : ""}`}
+                      to={`/market-analysis`}
                       className="md:flex py-2  md:flex-row flex flex-col gap-2 items-center cursor-pointer"
                       onClick={() => {setDropdownOpen(!dropdownOpen); setActiveMenu("User");}}
                      
