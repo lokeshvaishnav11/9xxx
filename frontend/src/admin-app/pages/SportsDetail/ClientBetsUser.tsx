@@ -496,16 +496,37 @@ const ClientBetsUser = () => {
 
                 <div className="md:flex grid gap-2 md:mb-40 mb-2 ">
                     <div className="card md:mt-0 ">
-                        {isMobile ? (
-                            <button
-                                onClick={() => setShowmatch(!showmatch)}
-                                className="card-header p-0 text-center"
-                            >
-                                Display Match Bet
-                            </button>
-                        ) : (
-                            <div className="card-header p-0 text-center">MATCH</div>
-                        )}
+                       {isMobile ? (
+          <button
+            onClick={() => setShowmatch(!showmatch)}
+            className="card-header p-0 text-center"
+          >
+            Display Match Bet
+          </button>
+        ) : (
+          <div className="card-header p-0 text-center">MATCH</div>
+        )}
+        {isMobile ? (
+          <button
+            onClick={() => setSession(!session)}
+            className="card-header p-0 text-center w-100"
+          >
+            Display Session Bet
+          </button>
+        ) : (
+          ""
+        )}
+
+        {isMobile ? (
+          <button
+            onClick={() => setPlus(!plus)}
+            className="card-header p-0 text-center w-100"
+          >
+            Match & Session Plus Minus
+          </button>
+        ) : (
+          ""
+        )}
                         {showmatch ? (
                             <div
                                 style={{ height: "30vh" }}
@@ -639,7 +660,7 @@ const ClientBetsUser = () => {
                     </div>
 
                     <div>
-                        {isMobile ? (
+                        {/* {isMobile ? (
                             <button
                                 onClick={() => setSession(!session)}
                                 className="card-header p-0 text-center w-100"
@@ -648,7 +669,7 @@ const ClientBetsUser = () => {
                             </button>
                         ) : (
                             ""
-                        )}
+                        )} */}
 
                         {session ? (
                                      <div className="card-heade p-0 mb-20 " id="headig">
@@ -824,7 +845,7 @@ const ClientBetsUser = () => {
                 </div>
 
                 <div>
-                    {isMobile ? (
+                    {/* {isMobile ? (
                         <button
                             onClick={() => setPlus(!plus)}
                             className="card-header p-0 text-center w-100"
@@ -833,7 +854,7 @@ const ClientBetsUser = () => {
                         </button>
                     ) : (
                         ""
-                    )}
+                    )} */}
 
                     {plus ? (
                         <div>

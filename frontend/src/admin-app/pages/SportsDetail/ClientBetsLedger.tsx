@@ -483,7 +483,12 @@ const ClientBetsLedger = () => {
           </div>
         </div>
 
-        {isMobile ? (
+       
+
+        <div className="md:flex grid gap-2 md:mb-40 mb-2 ">
+          <div className="card md:mt-0 ">
+
+             {isMobile ? (
           <button
             onClick={() => setShowmatch(!showmatch)}
             className="card-header p-0 text-center"
@@ -514,9 +519,6 @@ const ClientBetsLedger = () => {
         ) : (
           ""
         )}
-
-        <div className="md:flex grid gap-2 md:mb-40 mb-2 ">
-          <div className="card md:mt-0 ">
 
             {showmatch ? (
               <div
