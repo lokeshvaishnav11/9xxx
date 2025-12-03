@@ -348,7 +348,7 @@ const ClientBetsUser = () => {
     });
 
     const [showmatch, setShowmatch] = React.useState(false);
-    const [session, setSession] = React.useState(false);
+    const [session, setSession] = React.useState(true);
     const [plus, setPlus] = React.useState(false);
 
     React.useEffect(() => {
@@ -527,7 +527,12 @@ const ClientBetsUser = () => {
                                     <tbody className="small">
                                         {marketonlymatch?.map((bet, index) => (
                                             <tr key={index}>
-                                                <td style={{ fontSize: "10px" }} className="p-1 pt-2">
+                                                <td style={{
+                                                    fontSize: "10px",
+                                                    minWidth: "180px",
+                                                    whiteSpace: "normal",
+                                                    wordBreak: "break-word",
+                                                }} className="p-1 pt-2">
                                                     {
                                                         bet?.parentData
                                                             ?.slice(
@@ -707,7 +712,12 @@ const ClientBetsUser = () => {
                                                                     ?.filter((bet) => bet?.selectionId === sendid)
                                                                     .map((bet, index) => (
                                                                         <tr key={index}>
-                                                                            <td style={{ fontSize: "10px" }} className="p-1 pt-2">
+                                                                            <td style={{
+                                                                                fontSize: "10px",
+                                                                                minWidth: "180px",
+                                                                                whiteSpace: "normal",
+                                                                                wordBreak: "break-word",
+                                                                            }} className="p-1 pt-2">
                                                                                 {
                                                                                     bet?.parentData
                                                                                         ?.slice(

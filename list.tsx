@@ -370,3 +370,171 @@ const ListClients = () => {
   );
 };
 export default ListClients;
+
+
+
+
+            {session ? (
+              <div className="card-heade p-0 mb-20 " id="headig">
+                {[
+                  //@ts-expect-error
+                  ...new Map(
+                    marketonlyf?.map((item) => [item?.selectionId, item])
+                  ).values(),
+                ].map((bet, index) => (
+                  <>
+                    <h6 className="mb-2" key={bet?.selectionId}>
+                      <button
+                        onClick={() =>
+                          setSendid((prev) =>
+                            prev === bet?.selectionId ? null : bet?.selectionId
+                          )
+                        }
+                        className="p-2 small badge navbar-bet99 w-100 text-left border text-dark ng-binding"
+                      >
+                        {bet?.selectionName}
+                        <span className="badge badge-light float-right ng-binding ng-scope">
+                          {/* {bet?.declared === 1 && ( */}
+                          <i className="fas fa-trophy"></i>
+                          {bet?.fancy?.result
+                            ? bet?.fancy?.result
+                            : bet?.oppsiteVol}
+                          {/* // )} */}
+                        </span>
+                      </button>
+                    </h6>
+                    {sendid === bet?.selectionId && (
+                      <div className="card mb-2">
+                        <div className="card-body p-0">
+                          <table className="table table-striped table-bordered table-hover">
+                            <thead className="small">
+                              <tr>
+                                <th className="pt-0 pb-0">Client</th>
+                                <th className="pt-0 pb-0">Yes/Not</th>
+                                <th className="pt-0 pb-0">Rate</th>
+
+                                <th className="pt-0 pb-0">-</th>
+                                <th className="pt-0 pb-0">Amount</th>
+                                <th className="pt-0 pb-0">PnL</th>
+
+                                <th className="pt-0 pb-0">Created</th>
+                                <th className="pt-0 pb-0">IP</th>
+                              </tr>
+                            </thead>
+                            <tbody className="small">
+                              {marketonlyf
+                                ?.filter((bet) => bet?.selectionId === sendid)
+                                .map((bet, index) => (
+                                  <tr key={index}>
+                                    <td style={{
+                                      fontSize: "10px",
+                                      minWidth: "180px",
+                                      whiteSpace: "normal",
+                                      wordBreak: "break-word",
+                                    }} className="p-1 pt-2">
+                                      {
+                                        bet?.parentData
+                                          ?.slice(
+                                            bet?.parentData.indexOf(userState.user.username) + 1
+                                          )
+                                          .join("/")
+                                      }
+                                      /{bet?.userName}({bet?.userCode})
+                                    </td>
+
+                                    <td className="pt-2 pb-1">{bet?.odds}</td>
+                                    <td className="pt-2 pb-1">{bet?.volume}</td>
+
+                                    <td className="pt-2 pb-1">
+                                      {bet?.isBack ? (
+                                        <button
+                                          className="btn-yes btn btn-sm p-1 ng-scope"
+                                          style={{ fontSize: "xx-small" }}
+                                        >
+                                          <span
+                                            className="badge badge-light"
+                                            style={{ fontSize: "xx-small" }}
+                                          >
+                                            YES
+                                          </span>
+                                        </button>
+                                      ) : (
+                                        <button
+                                          className="btn-not btn btn-sm p-1 ng-scope"
+                                          style={{ fontSize: "xx-small" }}
+                                        >
+                                          <span
+                                            className="badge badge-light"
+                                            style={{ fontSize: "xx-small" }}
+                                          >
+                                            NOT
+                                          </span>
+                                        </button>
+                                      )}
+                                    </td>
+
+                                    {/* <td className="text-center pt-1 pb-1">
+      {bet.action === 0 && (
+        <button className="btn-yes btn btn-sm p-1" style={{ fontSize: 'xx-small' }}>
+          <span className="badge badge-action" style={{ fontSize: 'xx-small' }}>L</span>
+          <span className="badge badge-light" style={{ fontSize: 'xx-small' }}>{bet.team}</span>
+        </button>
+      )}
+      {bet.action === 1 && (
+        <button className="btn-not btn btn-sm p-1" style={{ fontSize: 'xx-small' }}>
+          <span className="badge badge-action" style={{ fontSize: 'xx-small' }}>K</span>
+          <span className="badge badge-light" style={{ fontSize: 'xx-small' }}>{bet.team}</span>
+        </button>
+      )}
+    </td> */}
+                                    <td
+                                      className={`pt-2 pb-1 ${bet?.profitLoss < 0
+                                        ? "text-red-500"
+                                        : "text-green-500"
+                                        }`}
+                                    >
+                                      {bet?.stack}
+                                    </td>
+
+                                    <td
+                                      className={`pt-2 pb-1 ${bet?.profitLoss < 0
+                                        ? "text-red-500"
+                                        : "text-green-500"
+                                        }`}
+                                    >
+                                      {bet?.profitLoss}
+                                    </td>
+
+                                    <td
+                                      className="pt-2 pb-1 text-nowrap"
+                                      style={{ fontSize: "xx-small" }}
+                                    >
+                                      {moment.utc(bet?.betClickTime).format("MMMM Do, h:mm:ss A")}
+
+                                      {/* ( {new Date(bet?.betClickTime).toLocaleTimeString()}) */}
+                                    </td>
+                                    <td
+                                      className="pt-2 pb-1"
+                                      style={{ fontSize: "xx-small" }}
+                                    >
+                                      {bet?.userIp
+                                        ?.split(":")
+                                        ?.slice(0, 4)
+                                        ?.join(":")}
+                                    </td>
+                                  </tr>
+                                ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                ))}
+              </div>
+            ) : (
+              ""
+            )}
+          
+          
+

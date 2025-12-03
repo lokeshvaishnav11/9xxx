@@ -820,7 +820,7 @@ const [userList, setUserList] = React.useState<any>({});
 
                     { dropdownOpen ? <div  className="dropdown-menuj bg-neutral-700 md:pl-2   absolutek z-50 hiddenj group-hover:block w-full">
                       {getRoleOptions().map((role) => (
-                        <li key={role.key}>
+                        <li key={role.key} className="border-b pb-2">
                           <CustomLink
                             to={`/list-clients/${userState?.user?.username}/${role.key}`}
                             // onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -1382,7 +1382,7 @@ const [userList, setUserList] = React.useState<any>({});
                                 </b>
                               </CustomLink>
                             </li> */}
-                            <li>
+                            <li className="border-b pb-2">
                               <CustomLink
                                 // onClick={() => setDropdownOpen4(!dropdownOpen4)}
                                 onClick={() => {toggleDrawer() ; setActiveMenu("Adm");}}
@@ -1396,7 +1396,7 @@ const [userList, setUserList] = React.useState<any>({});
                               </CustomLink>
                             </li>
 
-                            <li>
+                            <li className="border-b pb-2">
                               <CustomLink
                                 //  onClick={() => setDropdownOpen4(!dropdownOpen4)}
                                 onClick={() => {toggleDrawer() ; setActiveMenu("CS");}}
@@ -1411,7 +1411,7 @@ const [userList, setUserList] = React.useState<any>({});
                             </li>
 
 
-                            <li>
+                            <li className="border-b pb-2">
                               <CustomLink
                                 // onClick={() => setDropdownOpen4(!dropdownOpen4)}
                                 // to="/sports-list/active-matches"
@@ -1426,7 +1426,7 @@ const [userList, setUserList] = React.useState<any>({});
                               </CustomLink>
                             </li>
 
-                            <li>
+                            <li className="border-b pb-2">
                               <CustomLink
                                 // onClick={() => setDropdownOpen4(!dropdownOpen4)}
                                 onClick={() => {toggleDrawer() ; setActiveMenu("DB");}}
@@ -1441,7 +1441,7 @@ const [userList, setUserList] = React.useState<any>({});
                             </li>
 
 
-                            <li>
+                            <li className="border-b pb-2">
                           <CustomLink
                             onClick={toggleDrawer}
                             to="/deleted-bets"
@@ -1455,7 +1455,7 @@ const [userList, setUserList] = React.useState<any>({});
                         </li>
 
 
-                            <li>
+                            <li className="border-b pb-2">
                               <CustomLink
                                 // onClick={() => setDropdownOpen4(!dropdownOpen4)}
                                 onClick={() => {toggleDrawer() ; setActiveMenu("NC");}}
@@ -1470,7 +1470,7 @@ const [userList, setUserList] = React.useState<any>({});
                             </li>
 
 
-                            <li>
+                            <li className="border-b pb-2">
                               <CustomLink
                                 // onClick={() => setDropdownOpen4(!dropdownOpen4)}
                                 onClick={() => {toggleDrawer() ; setActiveMenu("MO");}}
