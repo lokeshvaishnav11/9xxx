@@ -483,18 +483,41 @@ const ClientBetsLedger = () => {
           </div>
         </div>
 
+        {isMobile ? (
+          <button
+            onClick={() => setShowmatch(!showmatch)}
+            className="card-header p-0 text-center"
+          >
+            Display Match Bet
+          </button>
+        ) : (
+          <div className="card-header p-0 text-center">MATCH</div>
+        )}
+        {isMobile ? (
+          <button
+            onClick={() => setSession(!session)}
+            className="card-header p-0 text-center w-100"
+          >
+            Display Session Bet
+          </button>
+        ) : (
+          ""
+        )}
+
+        {isMobile ? (
+          <button
+            onClick={() => setPlus(!plus)}
+            className="card-header p-0 text-center w-100"
+          >
+            Match & Session Plus Minus
+          </button>
+        ) : (
+          ""
+        )}
+
         <div className="md:flex grid gap-2 md:mb-40 mb-2 ">
           <div className="card md:mt-0 ">
-            {isMobile ? (
-              <button
-                onClick={() => setShowmatch(!showmatch)}
-                className="card-header p-0 text-center"
-              >
-                Display Match Bet
-              </button>
-            ) : (
-              <div className="card-header p-0 text-center">MATCH</div>
-            )}
+
             {showmatch ? (
               <div
                 style={{ height: "30vh" }}
@@ -627,16 +650,7 @@ const ClientBetsLedger = () => {
           </div>
 
           <div>
-            {isMobile ? (
-              <button
-                onClick={() => setSession(!session)}
-                className="card-header p-0 text-center w-100"
-              >
-                Display Session Bet
-              </button>
-            ) : (
-              ""
-            )}
+
 
             {session ? (
               <div className="card-heade p-0 mb-20 " id="headig">
@@ -763,8 +777,8 @@ const ClientBetsLedger = () => {
 
                                       <td
                                         className={`pt-2 pb-1 ${bet?.profitLoss < 0
-                                            ? "text-red-500"
-                                            : "text-green-500"
+                                          ? "text-red-500"
+                                          : "text-green-500"
                                           }`}
                                       >
                                         {bet?.stack}
@@ -772,8 +786,8 @@ const ClientBetsLedger = () => {
 
                                       <td
                                         className={`pt-2 pb-1 ${bet?.profitLoss < 0
-                                            ? "text-red-500"
-                                            : "text-green-500"
+                                          ? "text-red-500"
+                                          : "text-green-500"
                                           }`}
                                       >
                                         {bet?.profitLoss}
@@ -814,16 +828,7 @@ const ClientBetsLedger = () => {
         </div>
 
         <div>
-          {isMobile ? (
-            <button
-              onClick={() => setPlus(!plus)}
-              className="card-header p-0 text-center w-100"
-            >
-              Match & Session Plus Minus
-            </button>
-          ) : (
-            ""
-          )}
+
 
           {plus ? (
             <div>
