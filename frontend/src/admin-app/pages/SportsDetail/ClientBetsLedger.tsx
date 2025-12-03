@@ -483,42 +483,56 @@ const ClientBetsLedger = () => {
           </div>
         </div>
 
-       
+
 
         <div className="md:flex grid gap-2 md:mb-40 mb-2 ">
           <div className="card md:mt-0 ">
 
-             {isMobile ? (
-          <button
-            onClick={() => setShowmatch(!showmatch)}
-            className="card-header p-0 text-center"
-          >
-            Display Match Bet
-          </button>
-        ) : (
-          <div className="card-header p-0 text-center">MATCH</div>
-        )}
-        {isMobile ? (
-          <button
-            onClick={() => setSession(!session)}
-            className="card-header p-0 text-center w-100"
-          >
-            Display Session Bet
-          </button>
-        ) : (
-          ""
-        )}
+            {isMobile ? (
+              <button
+                onClick={() => {
+                  setSession(false);
+                  setShowmatch(!showmatch);
+                  setPlus(false);
+                }}
+                className="card-header p-0 text-center mb-2"
+              >
+                Display Match Bet
+              </button>
+            ) : (
+              <div className="card-header p-0 text-center">MATCH</div>
+            )}
+            {isMobile ? (
+              <button
+                onClick={() => {
+                  setSession(!session);
+                  setShowmatch(false);
+                  setPlus(false);
+                }}
 
-        {isMobile ? (
-          <button
-            onClick={() => setPlus(!plus)}
-            className="card-header p-0 text-center w-100"
-          >
-            Match & Session Plus Minus
-          </button>
-        ) : (
-          ""
-        )}
+                className="card-header p-0 text-center w-100 mb-2"
+              >
+                Display Session Bet
+              </button>
+            ) : (
+              ""
+            )}
+
+            {isMobile ? (
+              <button
+                onClick={() => {
+                  setSession(false);
+                  setShowmatch(false);
+                  setPlus(!plus);
+                }}
+
+                className="card-header p-0 text-center w-100 mb-2"
+              >
+                Match & Session Plus Minus
+              </button>
+            ) : (
+              ""
+            )}
 
             {showmatch ? (
               <div
@@ -687,7 +701,7 @@ const ClientBetsLedger = () => {
                           <span
                             className="badge float-right ml-2"
                             style={{
-                              background: totalPL < 0 ? "red" : "green",
+                              background: totalPL < 0 ? "green" : "red",
                               color: "white",
                             }}
                           >

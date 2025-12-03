@@ -496,37 +496,51 @@ const ClientBetsUser = () => {
 
                 <div className="md:flex grid gap-2 md:mb-40 mb-2 ">
                     <div className="card md:mt-0 ">
-                       {isMobile ? (
-          <button
-            onClick={() => setShowmatch(!showmatch)}
-            className="card-header p-0 text-center"
-          >
-            Display Match Bet
-          </button>
-        ) : (
-          <div className="card-header p-0 text-center">MATCH</div>
-        )}
-        {isMobile ? (
-          <button
-            onClick={() => setSession(!session)}
-            className="card-header p-0 text-center w-100"
-          >
-            Display Session Bet
-          </button>
-        ) : (
-          ""
-        )}
+                        {isMobile ? (
+                            <button
+                            onClick={() => {
+                                    setSession(false);
+                                    setShowmatch(!showmatch);
+                                    setPlus(false);
+                                }}
+                                className="card-header p-0 text-center mb-2"
+                            >
+                                Display Match Bet
+                            </button>
+                        ) : (
+                            <div className="card-header p-0 text-center">MATCH</div>
+                        )}
+                        {isMobile ? (
+                            <button
+                                onClick={() => {
+                                    setSession(!session);
+                                    setShowmatch(false);
+                                    setPlus(false);
+                                }}
 
-        {isMobile ? (
-          <button
-            onClick={() => setPlus(!plus)}
-            className="card-header p-0 text-center w-100"
-          >
-            Match & Session Plus Minus
-          </button>
-        ) : (
-          ""
-        )}
+                                className="card-header p-0 text-center w-100 mb-2"
+                            >
+                                Display Session Bet
+                            </button>
+                        ) : (
+                            ""
+                        )}
+
+                        {isMobile ? (
+                            <button
+                               onClick={() => {
+                                    setSession(false);
+                                    setShowmatch(false);
+                                    setPlus(!plus);
+                                }}
+
+                                className="card-header p-0 text-center w-100 mb-2"
+                            >
+                                Match & Session Plus Minus
+                            </button>
+                        ) : (
+                            ""
+                        )}
                         {showmatch ? (
                             <div
                                 style={{ height: "30vh" }}
@@ -672,175 +686,175 @@ const ClientBetsUser = () => {
                         )} */}
 
                         {session ? (
-                                     <div className="card-heade p-0 mb-20 " id="headig">
-                                       {[
-                                         //@ts-expect-error
-                                         ...new Map(
-                                           marketonlyf?.map((item) => [item?.selectionId, item])
-                                         ).values(),
-                                       ].map((bet, index) => {
-                       
-                                         // ⭐ ADD — Total P/L Code
-                                         const totalPL = marketonlyf
-                                           ?.filter(x => x.selectionId === bet?.selectionId)
-                                           ?.reduce((acc, curr) => acc + (curr?.profitLoss || 0), 0);
-                       
-                                         return (
-                                           <>
-                                             <h6 className="mb-2" key={bet?.selectionId}>
-                                               <button
-                                                 onClick={() =>
-                                                   setSendid((prev) =>
-                                                     prev === bet?.selectionId ? null : bet?.selectionId
-                                                   )
-                                                 }
-                                                 className="p-2 small badge navbar-bet99 w-100 text-left border text-dark ng-binding"
-                                               >
-                       
-                                                 {/* ⭐ Selection Name */}
-                                                 {bet?.selectionName}
-                       
-                                                 {/* ⭐ Total P/L (added) */}
-                                                 <span
-                                                   className="badge float-right ml-2"
-                                                   style={{
-                                                     background: totalPL < 0 ? "red" : "green",
-                                                     color: "white",
-                                                   }}
-                                                 >
-                                                   {totalPL}
-                                                 </span>
-                       
-                                                 {/* ⭐ Existing Result Badge — unchanged */}
-                                                 <span className="badge badge-light float-right ng-binding ng-scope">
-                                                   <i className="fas fa-trophy"></i>
-                                                   {bet?.fancy?.result ? bet?.fancy?.result : bet?.oppsiteVol}
-                                                 </span>
-                       
-                                               </button>
-                                             </h6>
-                       
-                                             {sendid === bet?.selectionId && (
-                                               <div className="card mb-2">
-                                                 <div className="card-body p-0">
-                                                   <table className="table table-striped table-bordered table-hover">
-                                                     <thead className="small">
-                                                       <tr>
-                                                         <th className="pt-0 pb-0">Client</th>
-                                                         <th className="pt-0 pb-0">Yes/Not</th>
-                                                         <th className="pt-0 pb-0">Rate</th>
-                                                         <th className="pt-0 pb-0">-</th>
-                                                         <th className="pt-0 pb-0">Amount</th>
-                                                         <th className="pt-0 pb-0">PnL</th>
-                                                         <th className="pt-0 pb-0">Created</th>
-                                                         <th className="pt-0 pb-0">IP</th>
-                                                       </tr>
-                                                     </thead>
-                       
-                                                     <tbody className="small">
-                                                       {marketonlyf
-                                                         ?.filter((bet) => bet?.selectionId === sendid)
-                                                         .map((bet, index) => (
-                                                           <tr key={index}>
-                                                             <td
-                                                               style={{
-                                                                 fontSize: "10px",
-                                                                 minWidth: "180px",
-                                                                 whiteSpace: "normal",
-                                                                 wordBreak: "break-word",
-                                                               }}
-                                                               className="p-1 pt-2"
-                                                             >
-                                                               {
-                                                                 bet?.parentData
-                                                                   ?.slice(
-                                                                     bet?.parentData.indexOf(
-                                                                       userState.user.username
-                                                                     ) + 1
-                                                                   )
-                                                                   .join("/")
-                                                               }
-                                                               /{bet?.userName}({bet?.userCode})
-                                                             </td>
-                       
-                                                             <td className="pt-2 pb-1">{bet?.odds}</td>
-                                                             <td className="pt-2 pb-1">{bet?.volume}</td>
-                       
-                                                             <td className="pt-2 pb-1">
-                                                               {bet?.isBack ? (
-                                                                 <button
-                                                                   className="btn-yes btn btn-sm p-1 ng-scope"
-                                                                   style={{ fontSize: "xx-small" }}
-                                                                 >
-                                                                   <span
-                                                                     className="badge badge-light"
-                                                                     style={{ fontSize: "xx-small" }}
-                                                                   >
-                                                                     YES
-                                                                   </span>
-                                                                 </button>
-                                                               ) : (
-                                                                 <button
-                                                                   className="btn-not btn btn-sm p-1 ng-scope"
-                                                                   style={{ fontSize: "xx-small" }}
-                                                                 >
-                                                                   <span
-                                                                     className="badge badge-light"
-                                                                     style={{ fontSize: "xx-small" }}
-                                                                   >
-                                                                     NOT
-                                                                   </span>
-                                                                 </button>
-                                                               )}
-                                                             </td>
-                       
-                                                             <td
-                                                               className={`pt-2 pb-1 ${bet?.profitLoss < 0
-                                                                   ? "text-red-500"
-                                                                   : "text-green-500"
-                                                                 }`}
-                                                             >
-                                                               {bet?.stack}
-                                                             </td>
-                       
-                                                             <td
-                                                               className={`pt-2 pb-1 ${bet?.profitLoss < 0
-                                                                   ? "text-red-500"
-                                                                   : "text-green-500"
-                                                                 }`}
-                                                             >
-                                                               {bet?.profitLoss}
-                                                             </td>
-                       
-                                                             <td
-                                                               className="pt-2 pb-1 text-nowrap"
-                                                               style={{ fontSize: "xx-small" }}
-                                                             >
-                                                               {moment
-                                                                 .utc(bet?.betClickTime)
-                                                                 .format("MMMM Do, h:mm:ss A")}
-                                                             </td>
-                       
-                                                             <td
-                                                               className="pt-2 pb-1"
-                                                               style={{ fontSize: "xx-small" }}
-                                                             >
-                                                               {bet?.userIp?.split(":")?.slice(0, 4)?.join(":")}
-                                                             </td>
-                                                           </tr>
-                                                         ))}
-                                                     </tbody>
-                                                   </table>
-                                                 </div>
-                                               </div>
-                                             )}
-                                           </>
-                                         );
-                                       })}
-                                     </div>
-                                   ) : (
-                                     ""
-                                   )}
+                            <div className="card-heade p-0 mb-20 " id="headig">
+                                {[
+                                    //@ts-expect-error
+                                    ...new Map(
+                                        marketonlyf?.map((item) => [item?.selectionId, item])
+                                    ).values(),
+                                ].map((bet, index) => {
+
+                                    // ⭐ ADD — Total P/L Code
+                                    const totalPL = marketonlyf
+                                        ?.filter(x => x.selectionId === bet?.selectionId)
+                                        ?.reduce((acc, curr) => acc + (curr?.profitLoss || 0), 0);
+
+                                    return (
+                                        <>
+                                            <h6 className="mb-2" key={bet?.selectionId}>
+                                                <button
+                                                    onClick={() =>
+                                                        setSendid((prev) =>
+                                                            prev === bet?.selectionId ? null : bet?.selectionId
+                                                        )
+                                                    }
+                                                    className="p-2 small badge navbar-bet99 w-100 text-left border text-dark ng-binding"
+                                                >
+
+                                                    {/* ⭐ Selection Name */}
+                                                    {bet?.selectionName}
+
+                                                    {/* ⭐ Total P/L (added) */}
+                                                    <span
+                                                        className="badge float-right ml-2"
+                                                        style={{
+                                                            background: totalPL < 0 ? "green" : "red",
+                                                            color: "white",
+                                                        }}
+                                                    >
+                                                        {totalPL}
+                                                    </span>
+
+                                                    {/* ⭐ Existing Result Badge — unchanged */}
+                                                    <span className="badge badge-light float-right ng-binding ng-scope">
+                                                        <i className="fas fa-trophy"></i>
+                                                        {bet?.fancy?.result && bet?.fancy?.result }
+                                                    </span>
+
+                                                </button>
+                                            </h6>
+
+                                            {sendid === bet?.selectionId && (
+                                                <div className="card mb-2">
+                                                    <div className="card-body p-0">
+                                                        <table className="table table-striped table-bordered table-hover">
+                                                            <thead className="small">
+                                                                <tr>
+                                                                    <th className="pt-0 pb-0">Client</th>
+                                                                    <th className="pt-0 pb-0">Yes/Not</th>
+                                                                    <th className="pt-0 pb-0">Rate</th>
+                                                                    <th className="pt-0 pb-0">-</th>
+                                                                    <th className="pt-0 pb-0">Amount</th>
+                                                                    <th className="pt-0 pb-0">PnL</th>
+                                                                    <th className="pt-0 pb-0">Created</th>
+                                                                    <th className="pt-0 pb-0">IP</th>
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody className="small">
+                                                                {marketonlyf
+                                                                    ?.filter((bet) => bet?.selectionId === sendid)
+                                                                    .map((bet, index) => (
+                                                                        <tr key={index}>
+                                                                            <td
+                                                                                style={{
+                                                                                    fontSize: "10px",
+                                                                                    minWidth: "180px",
+                                                                                    whiteSpace: "normal",
+                                                                                    wordBreak: "break-word",
+                                                                                }}
+                                                                                className="p-1 pt-2"
+                                                                            >
+                                                                                {
+                                                                                    bet?.parentData
+                                                                                        ?.slice(
+                                                                                            bet?.parentData.indexOf(
+                                                                                                userState.user.username
+                                                                                            ) + 1
+                                                                                        )
+                                                                                        .join("/")
+                                                                                }
+                                                                                /{bet?.userName}({bet?.userCode})
+                                                                            </td>
+
+                                                                            <td className="pt-2 pb-1">{bet?.odds}</td>
+                                                                            <td className="pt-2 pb-1">{bet?.volume}</td>
+
+                                                                            <td className="pt-2 pb-1">
+                                                                                {bet?.isBack ? (
+                                                                                    <button
+                                                                                        className="btn-yes btn btn-sm p-1 ng-scope"
+                                                                                        style={{ fontSize: "xx-small" }}
+                                                                                    >
+                                                                                        <span
+                                                                                            className="badge badge-light"
+                                                                                            style={{ fontSize: "xx-small" }}
+                                                                                        >
+                                                                                            YES
+                                                                                        </span>
+                                                                                    </button>
+                                                                                ) : (
+                                                                                    <button
+                                                                                        className="btn-not btn btn-sm p-1 ng-scope"
+                                                                                        style={{ fontSize: "xx-small" }}
+                                                                                    >
+                                                                                        <span
+                                                                                            className="badge badge-light"
+                                                                                            style={{ fontSize: "xx-small" }}
+                                                                                        >
+                                                                                            NOT
+                                                                                        </span>
+                                                                                    </button>
+                                                                                )}
+                                                                            </td>
+
+                                                                            <td
+                                                                                className={`pt-2 pb-1 ${bet?.profitLoss < 0
+                                                                                    ? "text-red-500"
+                                                                                    : "text-green-500"
+                                                                                    }`}
+                                                                            >
+                                                                                {bet?.stack}
+                                                                            </td>
+
+                                                                            <td
+                                                                                className={`pt-2 pb-1 ${bet?.profitLoss < 0
+                                                                                    ? "text-red-500"
+                                                                                    : "text-green-500"
+                                                                                    }`}
+                                                                            >
+                                                                                {bet?.profitLoss}
+                                                                            </td>
+
+                                                                            <td
+                                                                                className="pt-2 pb-1 text-nowrap"
+                                                                                style={{ fontSize: "xx-small" }}
+                                                                            >
+                                                                                {moment
+                                                                                    .utc(bet?.betClickTime)
+                                                                                    .format("MMMM Do, h:mm:ss A")}
+                                                                            </td>
+
+                                                                            <td
+                                                                                className="pt-2 pb-1"
+                                                                                style={{ fontSize: "xx-small" }}
+                                                                            >
+                                                                                {bet?.userIp?.split(":")?.slice(0, 4)?.join(":")}
+                                                                            </td>
+                                                                        </tr>
+                                                                    ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            ""
+                        )}
                     </div>
                 </div>
 
