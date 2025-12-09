@@ -53,19 +53,45 @@ class Passport {
     }
   }
 
+  // public authenticateJWT(req: Request, res: Response, next: NextFunction) {
+  //   return passport.authenticate('jwt', function (err: Error, user: IUser, info: any) {
+  //     if (err) {
+  //       return res.status(401).json(error(info?.message ? info.message : '', {}, res.statusCode))
+  //     }
+  //     if (!user) {
+  //       return res.status(401).json(error(info?.message ? info.message : '', {}, res.statusCode))
+  //     } else {
+  //       req.user = user
+  //       return next()
+  //     }
+  //   })(req, res, next)
+
+  // }
+
   public authenticateJWT(req: Request, res: Response, next: NextFunction) {
-    return passport.authenticate('jwt', function (err: Error, user: IUser, info: any) {
-      if (err) {
-        return res.status(401).json(error(info?.message ? info.message : '', {}, res.statusCode))
-      }
-      if (!user) {
-        return res.status(401).json(error(info?.message ? info.message : '', {}, res.statusCode))
-      } else {
-        req.user = user
-        return next()
-      }
-    })(req, res, next)
-  }
+  return passport.authenticate('jwt', function (err: Error, user: IUser, info: any) {
+    if (err) {
+      return res.status(401).json(error(info?.message ? info.message : '', {}, res.statusCode))
+    }
+
+    if (!user) {
+      return res.status(401).json(error(info?.message ? info.message : 'Unauthorized', {}, res.statusCode))
+    }
+
+    // 🔥 NEW CHECK → If user isLogin = false → logout
+    if (user.isLogin == false) {
+      return res.status(401).json(
+        error("Session expired. Please login again.", {}, res.statusCode)
+      )
+    }
+
+    // ❤️ Everything OK → allow request
+    req.user = user
+    return next()
+
+  })(req, res, next)
+}
+
 }
 
 export default new Passport()

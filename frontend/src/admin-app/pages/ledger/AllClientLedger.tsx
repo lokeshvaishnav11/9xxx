@@ -626,7 +626,7 @@ const AllClientLedger = () => {
         // const netFinal = Math.max(0, Math.abs(rawAmount  + settledAmount));
         const netFinal = rawAmount + settledAmount;
 
-        console.log(netFinal ,settledAmount,'GHJK',username)
+        console.log(netFinal ,rawAmount ,settledAmount,'GHJK',username)
         const baseData = {
           agent: username,
           amount: rawAmount,
