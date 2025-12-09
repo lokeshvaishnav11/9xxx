@@ -78,6 +78,8 @@ class Passport {
       return res.status(401).json(error(info?.message ? info.message : 'Unauthorized', {}, res.statusCode))
     }
 
+    console.log(user,'USER PASSPORT',user.isLogin)
+
     // 🔥 NEW CHECK → If user isLogin = false → logout
     if (user.isLogin == false) {
       return res.status(401).json(

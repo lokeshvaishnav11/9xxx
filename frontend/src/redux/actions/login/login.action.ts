@@ -43,3 +43,28 @@ export const getUserInfoAction = createAsyncThunk(
     return rejectWithValue('Token not exist')
   },
 )
+
+// export const getUserInfoAction = createAsyncThunk(
+//   'user/user-info',
+//   async (_, { rejectWithValue }) => {
+//     if (authService.getRefreshToken()) {
+//       return authService
+//         .getUser()
+//         .then((res: any) => {
+          
+//           // 🔥 Check isLogin flag from backend
+//           if (res.data?.data?.isLogin === false) {
+//             authService.logout()   // ← AUTO LOGOUT
+//             return rejectWithValue("Session expired. Please login again.")
+//           }
+
+//           return res.data
+//         })
+//         .catch((e: any) => {
+//           return rejectWithValue(e.response?.data?.message || "Error")
+//         })
+//     }
+//     return rejectWithValue('Token not exist')
+//   },
+// )
+

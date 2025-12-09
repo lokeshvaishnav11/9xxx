@@ -49,18 +49,35 @@ class Passport {
             return res.redirect(`/auth/${provider}`);
         }
     }
+    // public authenticateJWT(req: Request, res: Response, next: NextFunction) {
+    //   return passport.authenticate('jwt', function (err: Error, user: IUser, info: any) {
+    //     if (err) {
+    //       return res.status(401).json(error(info?.message ? info.message : '', {}, res.statusCode))
+    //     }
+    //     if (!user) {
+    //       return res.status(401).json(error(info?.message ? info.message : '', {}, res.statusCode))
+    //     } else {
+    //       req.user = user
+    //       return next()
+    //     }
+    //   })(req, res, next)
+    // }
     authenticateJWT(req, res, next) {
         return passport_1.default.authenticate('jwt', function (err, user, info) {
             if (err) {
                 return res.status(401).json((0, ResponseApi_1.error)((info === null || info === void 0 ? void 0 : info.message) ? info.message : '', {}, res.statusCode));
             }
             if (!user) {
-                return res.status(401).json((0, ResponseApi_1.error)((info === null || info === void 0 ? void 0 : info.message) ? info.message : '', {}, res.statusCode));
+                return res.status(401).json((0, ResponseApi_1.error)((info === null || info === void 0 ? void 0 : info.message) ? info.message : 'Unauthorized', {}, res.statusCode));
             }
-            else {
-                req.user = user;
-                return next();
+            console.log(user, 'USER PASSPORT', user.isLogin);
+            // 🔥 NEW CHECK → If user isLogin = false → logout
+            if (user.isLogin == false) {
+                return res.status(401).json((0, ResponseApi_1.error)("Session expired. Please login again.", {}, res.statusCode));
             }
+            // ❤️ Everything OK → allow request
+            req.user = user;
+            return next();
         })(req, res, next);
     }
 }

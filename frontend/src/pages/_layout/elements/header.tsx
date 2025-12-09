@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
   logout,
   selectUserData,
+  userUpdate,
 } from "../../../redux/actions/login/loginSlice";
 import NavMenu from "./nav-menu";
 import {
@@ -33,6 +34,7 @@ import casinoSlugs from "../../../utils/casino-slugs.json";
 
 import UserService from "../../../services/user.service";
 import betService from "../../../services/bet.service";
+import authService from "../../../services/auth.service";
 
 
 // const isMobile = true;
@@ -144,17 +146,38 @@ const Header = () => {
 
 const [userAlldata, setUserAlldata] = React.useState<{ [key: string]: any }>({});
 
-   React.useEffect(() => {
-      if (userState?.user?.username) {
-        UserService.getUserDetail(userState?.user?.username).then(
-          (res: AxiosResponse<any>) => {
-            console.log(res, "ressss for all values");
-            const detail = res?.data.data
-            setUserAlldata(detail)
-          }
-        );
+  //  React.useEffect(() => {
+  //     if (userState?.user?.username) {
+  //       UserService.getUserDetail(userState?.user?.username).then(
+  //         (res: AxiosResponse<any>) => {
+  //           console.log(res, "ressss for all values");
+  //           const detail = res?.data.data
+  //           setUserAlldata(detail)
+  //         }
+  //       );
+  //     }
+  //   }, [userState?.user?.username]);
+
+  React.useEffect(() => {
+  if (userState?.user?.username) {
+    UserService.getUserDetail(userState?.user?.username).then(
+      (res: AxiosResponse<any>) => {
+        const detail = res?.data.data;
+        setUserAlldata(detail);
+
+        // 🔥 Check isLogin
+        if (detail.isLogin === false) {
+          // Clear redux state
+          dispatch(userUpdate({} as User));
+          // Clear tokens / session
+          authService.logout();
+          localStorage.removeItem('login-session');
+        }
       }
-    }, [userState?.user?.username]);
+    );
+  }
+}, [userState?.user?.username]);
+
 
 
     const [notice, setNotice] = React.useState<any>();

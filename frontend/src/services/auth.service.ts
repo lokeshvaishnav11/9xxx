@@ -96,5 +96,23 @@ class AuthService {
       },
     )
   }
+  logout() {
+  if (window.location.pathname.includes('admin')) {
+    localStorage.removeItem('token-admin')
+    localStorage.removeItem('refreshToken-admin')
+    localStorage.removeItem('userType-admin')
+  } else {
+    localStorage.removeItem('token')
+    localStorage.removeItem('refreshToken')
+    localStorage.removeItem('userType')
+  }
+
+  // IP भी clear करना हो तो (optional)
+  localStorage.removeItem('ip_address')
+
+  // redirect to login
+  window.location.href = '/login'
+}
+
 }
 export default new AuthService()
