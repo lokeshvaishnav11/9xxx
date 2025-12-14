@@ -652,7 +652,7 @@ class SportsController extends ApiController_1.ApiController {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             const markets = yield sports_service_1.default.getBookmakerMarkets(match);
-            console.log(markets, "markets data from backend ibn ths codew sw");
+            // console.log(markets, "markets data from backend ibn ths codew sw")
             if (((_b = (_a = markets === null || markets === void 0 ? void 0 : markets.data) === null || _a === void 0 ? void 0 : _a.sports) === null || _b === void 0 ? void 0 : _b.length) > 0) {
                 let i = 0;
                 if (i < 1) {
@@ -716,10 +716,33 @@ class SportsController extends ApiController_1.ApiController {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             const fancy = yield sports_service_1.default.getSession(match.matchId, match.sportId);
-            const fancyone = (_b = (_a = fancy === null || fancy === void 0 ? void 0 : fancy.data) === null || _a === void 0 ? void 0 : _a.sports) === null || _b === void 0 ? void 0 : _b.filter((m) => (m.gtype === "session" || m.gtype === "fancy1") &&
-                (m.RunnerName && !m.RunnerName.includes(" run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" Caught out ")) && (m.RunnerName && !m.RunnerName.includes(" ball No ")) && (m.RunnerName && !m.RunnerName.includes(" Run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" run bhav")) && (m.RunnerName.includes(".3 over ")) && (m.RunnerName && m.RunnerName.includes(' ball run ')) && (m.RunnerName && !m.RunnerName.includes(' Nextman ')) && (m.RunnerName && !m.RunnerName.includes('Power Surge ')));
+            // console.log(fancy, "fancy data from backend ibn ths codew sw")
+            // const fancyone = fancy?.data?.sports?.filter((m: any) =>
+            //   (m.gtype === "session" || m.gtype === "fancy1") &&
+            //   (m.RunnerName && !m.RunnerName.includes(" run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" Caught out ")) && (m.RunnerName && !m.RunnerName.includes(" ball No ")) && (m.RunnerName && !m.RunnerName.includes(" Run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" run bhav")) && (m.RunnerName.includes(".3 over ")) && (m.RunnerName && m.RunnerName.includes(' ball run ')) && (m.RunnerName && ! m.RunnerName.includes(' Nextman ')) && (m.RunnerName && ! m.RunnerName.includes('Power Surge ')))
+            // const fancyone = fancy?.data?.sports?.filter((m: any) =>
+            //   (m.gtype === "session" || m.gtype === "fancy1") &&
+            //   (m.RunnerName && !m.RunnerName.includes(" run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" Caught out ")) && (m.RunnerName && !m.RunnerName.includes(" ball No ")) && (m.RunnerName && !m.RunnerName.includes(" Run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" run bhav")) && (m.RunnerName.includes(".3 over ")) && (m.RunnerName && m.RunnerName.includes(' ball run ')) && (m.RunnerName && ! m.RunnerName.includes(' Nextman ')) && (m.RunnerName && ! m.RunnerName.includes('Power Surge '))
+            //   )
+            const fancyone = (_b = (_a = fancy === null || fancy === void 0 ? void 0 : fancy.data) === null || _a === void 0 ? void 0 : _a.sports) === null || _b === void 0 ? void 0 : _b.filter((m) => {
+                const name = (m === null || m === void 0 ? void 0 : m.RunnerName) || "";
+                return ((m.gtype === "session" || m.gtype === "fancy1") &&
+                    // must include
+                    !name.includes(".3 over ") &&
+                    !name.includes(" ball run ") &&
+                    // must NOT include
+                    !name.includes(" run bhav ") &&
+                    !name.includes(" run bhav") &&
+                    !name.includes(" Run bhav ") &&
+                    !name.includes(" bhav ") &&
+                    !name.includes(" Caught out ") &&
+                    !name.includes(" ball No ") &&
+                    !name.includes(" Nextman ") &&
+                    !name.includes("Power Surge "));
+            });
+            console.log(fancyone, "fancy one data from backend ibn ths codew sw");
             if (fancy.data.sports) {
-                yield fancyone.map((market) => __awaiter(this, void 0, void 0, function* () {
+                yield fancy.data.sports.map((market) => __awaiter(this, void 0, void 0, function* () {
                     let type = '';
                     if (market.RunnerName.includes(' ball run ')) {
                         type = 'ballRun';

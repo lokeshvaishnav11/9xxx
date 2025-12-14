@@ -298,7 +298,7 @@ class SportsController extends ApiController {
 
   async  bookmakermarketesData(match: IMatch) {
     const markets = await sportsService.getBookmakerMarkets(match)
-    console.log(markets, "markets data from backend ibn ths codew sw")
+    // console.log(markets, "markets data from backend ibn ths codew sw")
     if (markets?.data?.sports?.length > 0) {
       let i = 0
       if(i < 1){
@@ -368,13 +368,39 @@ class SportsController extends ApiController {
 
   async fancyData(match: IMatch) {
     const fancy = await sportsService.getSession(match.matchId, match.sportId)
-    const fancyone = fancy?.data?.sports?.filter((m: any) =>
-      (m.gtype === "session" || m.gtype === "fancy1") &&
-      (m.RunnerName && !m.RunnerName.includes(" run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" Caught out ")) && (m.RunnerName && !m.RunnerName.includes(" ball No ")) && (m.RunnerName && !m.RunnerName.includes(" Run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" run bhav")) && (m.RunnerName.includes(".3 over ")) && (m.RunnerName && m.RunnerName.includes(' ball run ')) && (m.RunnerName && ! m.RunnerName.includes(' Nextman ')) && (m.RunnerName && ! m.RunnerName.includes('Power Surge ')))
-    
+    // console.log(fancy, "fancy data from backend ibn ths codew sw")
+    // const fancyone = fancy?.data?.sports?.filter((m: any) =>
+    //   (m.gtype === "session" || m.gtype === "fancy1") &&
+    //   (m.RunnerName && !m.RunnerName.includes(" run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" Caught out ")) && (m.RunnerName && !m.RunnerName.includes(" ball No ")) && (m.RunnerName && !m.RunnerName.includes(" Run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" run bhav")) && (m.RunnerName.includes(".3 over ")) && (m.RunnerName && m.RunnerName.includes(' ball run ')) && (m.RunnerName && ! m.RunnerName.includes(' Nextman ')) && (m.RunnerName && ! m.RunnerName.includes('Power Surge ')))
+    // const fancyone = fancy?.data?.sports?.filter((m: any) =>
+    //   (m.gtype === "session" || m.gtype === "fancy1") &&
+    //   (m.RunnerName && !m.RunnerName.includes(" run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" Caught out ")) && (m.RunnerName && !m.RunnerName.includes(" ball No ")) && (m.RunnerName && !m.RunnerName.includes(" Run bhav ")) && (m.RunnerName && !m.RunnerName.includes(" run bhav")) && (m.RunnerName.includes(".3 over ")) && (m.RunnerName && m.RunnerName.includes(' ball run ')) && (m.RunnerName && ! m.RunnerName.includes(' Nextman ')) && (m.RunnerName && ! m.RunnerName.includes('Power Surge '))
+    //   )
 
+    const fancyone = fancy?.data?.sports?.filter((m: any) => {
+  const name = m?.RunnerName || "";
+
+  return (
+    (m.gtype === "session" || m.gtype === "fancy1") &&
+
+    // must include
+    ! name.includes(".3 over ") &&
+    ! name.includes(" ball run ") &&
+
+    // must NOT include
+    !name.includes(" run bhav ") &&
+    !name.includes(" run bhav") &&
+    !name.includes(" Run bhav ") &&
+    !name.includes(" bhav ") &&
+    !name.includes(" Caught out ") &&
+    !name.includes(" ball No ") &&
+    !name.includes(" Nextman ") &&
+    !name.includes("Power Surge ")
+  );
+});
+    console.log(fancyone, "fancy one data from backend ibn ths codew sw")
     if (fancy.data.sports) {
-      await fancyone.map(async (market: any) => {
+      await fancy.data.sports.map(async (market: any) => {
         let type = ''
         if (market.RunnerName.includes(' ball run ')) {
           type = 'ballRun'
