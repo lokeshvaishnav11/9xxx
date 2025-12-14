@@ -161,7 +161,7 @@ const MatchesPage = () => {
               </thead>
               <tbody>
                 {matches.map((match: IMatch, index: number) => {
-                  if (match?.series?.id == '1') return
+                  // if (match?.series?.id == '1') return
                   return (
                     <tr key={index}>
                       <td>{match.name}</td>
