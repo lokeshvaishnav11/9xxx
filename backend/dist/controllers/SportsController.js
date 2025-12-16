@@ -742,7 +742,7 @@ class SportsController extends ApiController_1.ApiController {
             });
             console.log(fancyone, "fancy one data from backend ibn ths codew sw");
             if (fancy.data.sports) {
-                yield fancy.data.sports.map((market) => __awaiter(this, void 0, void 0, function* () {
+                yield (fancyone === null || fancyone === void 0 ? void 0 : fancyone.map((market) => __awaiter(this, void 0, void 0, function* () {
                     let type = '';
                     if (market.RunnerName.includes(' ball run ')) {
                         type = 'ballRun';
@@ -769,7 +769,7 @@ class SportsController extends ApiController_1.ApiController {
                         new: true,
                         upsert: true,
                     });
-                }));
+                })));
                 return fancy.data.sports.length > 0;
             }
             return false;

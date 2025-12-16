@@ -194,7 +194,6 @@ const shared = useParams().share
             <br />
             {props.fancies && props.currentMatch && props.currentMatch.sportId == '4' && (
               <Fragment>
-                {/* @ts-expect-error */}
                 {<Fancy socketUser={socketUser} fancies={props.fancies} matchId={props.matchId!} />}
               </Fragment>
             )}
