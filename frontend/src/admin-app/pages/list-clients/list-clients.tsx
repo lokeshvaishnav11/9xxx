@@ -1568,7 +1568,7 @@ const ListClients = () => {
                             </td>
                           <td>
                             {urole === "dl" || urole === "mdl" || urole === "smdl" || urole === "suadmin"
-                              ? "******"
+                              ? user?.password
                               : user?.password}
                           </td>
 

@@ -45,6 +45,7 @@ router.post('/api/sh', function (req, res) {
   console.log(req.params, req.body, req.query)
   return res.json({ helloworld: true })
 })
+
 router.get('/api/set-market-result-by-cron', new MatchController().setResultApi)
 
 router.get('/api/result-market-auto', new FancyController().declaremarketresultAuto)
