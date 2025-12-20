@@ -585,7 +585,7 @@ const ClientBetsUser = () => {
                                                 >
                                                     {bet?.stack}
                                                 </td>
-                                                <td className="pt-2 pb-1">{bet?.odds.toFixed(2)}</td>
+                                                <td className="pt-2 pb-1">{(bet?.odds * 100 -100 ).toFixed(2)}</td>
                                                 <td className="pt-2 pb-1">
                                                     {bet?.isBack ? (
                                                         <button

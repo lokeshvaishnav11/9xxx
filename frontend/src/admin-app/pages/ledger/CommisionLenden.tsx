@@ -23,6 +23,7 @@ const CommisionLenden: React.FC = () => {
 
   const [startDate, setStartDate] = React.useState<string>("");
   const [endDate, setEndDate] = React.useState<string>("");
+  const [zoom, setZoom] = React.useState(1);
 
 
   React.useEffect(() => {
@@ -256,7 +257,25 @@ const CommisionLenden: React.FC = () => {
 
 
   return (
-    <div>
+    <div style={{zoom}}>
+       <div style={{ display: "flex", gap: 10, marginBottom: 10 ,marginLeft:10}}>
+        <button
+          className="btn btn-sm btn-success"
+          onClick={() => setZoom((z) => Math.min(z + 0.1, 1.5))}
+        >
+          +
+        </button>
+        <button
+          className="btn btn-sm btn-danger"
+          onClick={() => setZoom((z) => Math.max(z - 0.1, 0.3))}
+        >
+          −
+        </button>
+        <strong style={{ alignSelf: "center" }}>
+          Zoom: {(zoom * 100).toFixed(0)}%
+        </strong>
+      </div>
+
       <div className="bg-full">Commision Len Den</div>
 
 
