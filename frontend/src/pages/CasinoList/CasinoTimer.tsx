@@ -26,7 +26,7 @@ const CasinoTimer = (props:any) => {
     return <div className="clock clock2digit flip-clock-wrapper">
         <ul className="flip play">
             <li className="flip-clock-before">
-                <a href="#">
+                <a>
                     <div className="up">
                         <div className="shadow"></div>
                         <div className="inn">1</div>
@@ -38,7 +38,7 @@ const CasinoTimer = (props:any) => {
                 </a>
             </li>
             <li className="flip-clock-active">
-                <a href="#">
+                <a>
                     <div className="up">
                         <div className="shadow"></div>
                         <div className="inn">{counter.toString().length > 1 ? counter.toString().substring(0, 1) : 0}</div>
@@ -52,7 +52,7 @@ const CasinoTimer = (props:any) => {
         </ul>
         <ul className="flip play">
             <li className="flip-clock-before">
-                <a href="#">
+                <a>
                     <div className="up">
                         <div className="shadow"></div>
                         <div className="inn">8</div>
@@ -64,7 +64,7 @@ const CasinoTimer = (props:any) => {
                 </a>
             </li>
             <li className="flip-clock-active">
-                <a href="#">
+                <a>
                     <div className="up">
                         <div className="shadow"></div>
                         <div className="inn">{counter.toString().length > 1 ? counter.toString().substring(1, 2) : counter.toString().substring(0, 1)}</div>

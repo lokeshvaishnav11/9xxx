@@ -1007,7 +1007,7 @@ const ListClients = () => {
                       <th>Match %</th>
                       <th>Session %</th>
 
-                      <th>Account Type</th>
+                      {/* <th>Account Type</th> */}
                       {/* <th className="noExport">Actions</th> */}
                     </tr>
                   </thead>
@@ -1708,7 +1708,7 @@ const ListClients = () => {
                           <td>{user.mcom}%</td>
                           <td>{user.scom}%</td>
 
-                          <td>{RoleName[user.role!]}</td>
+                          {/* <td>{RoleName[user.role!]}</td> */}
                         </tr>
                       );
                     })}

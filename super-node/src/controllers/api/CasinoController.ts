@@ -1822,7 +1822,7 @@ export default class CasinoController extends ApiController {
               } else if (templateRunner.RunnerName.includes("Card ")) {
                 bhav = parseFloat(bhav) - 1;
               }
-            } else if (xyz == "dt20") {
+            } else if (xyz == "dt20" || xyz == "dt20b") {
               let name = templateRunner.RunnerName;
               if (name == "Dragon" || name == "Tiger") {
                 bhav = parseFloat(bhav) - 0.03;
@@ -2032,7 +2032,7 @@ export default class CasinoController extends ApiController {
       console.log(singleMarket, "singleMarket");
       let bhav: any = singleMarket?.b;
 
-      if (type === "lucky7") {
+      if (type === "lucky7" ) {
         if (
           singleMarket?.nat === "High Card" ||
           singleMarket?.nat === "Low Card"
@@ -2049,7 +2049,7 @@ export default class CasinoController extends ApiController {
         ) {
           bhav = parseFloat(bhav) - 1;
         }
-      } else if (type === "dt20") {
+      } else if (type === "dt20"|| type==="dt202") {
         let name = singleMarket?.nat;
         if (name === "Dragon" || name === "Tiger") {
           bhav = parseFloat(bhav) - 0.03;

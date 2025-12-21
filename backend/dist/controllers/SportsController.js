@@ -604,6 +604,7 @@ class SportsController extends ApiController_1.ApiController {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             const markets = yield sports_service_1.default.getMarkets(match);
+            console.log(markets.data.sports, "markets data from backend ibn ths codew sw");
             if (((_b = (_a = markets === null || markets === void 0 ? void 0 : markets.data) === null || _a === void 0 ? void 0 : _a.sports) === null || _b === void 0 ? void 0 : _b.length) > 0)
                 yield markets.data.sports.map((market) => __awaiter(this, void 0, void 0, function* () {
                     if (market.marketId) {
@@ -648,42 +649,74 @@ class SportsController extends ApiController_1.ApiController {
                 }));
         });
     }
+    // async  bookmakermarketesData(match: IMatch) {
+    //   const markets = await sportsService.getBookmakerMarkets(match)
+    //   // console.log(markets.data.sports, "markets data from backend ibn ths codew sw")
+    //   if (markets?.data?.sports?.length > 0) {
+    //     let i = 0
+    //     if(i < 1){
+    //     await markets.data.sports.map(async (market: any) => {
+    //       let marketName = market.marketName
+    //       if (market.marketName === 'Bookmaker') {
+    //         i++
+    //         marketName = i > 1 ? `${market.marketName}${i}` : market.marketName
+    //       }
+    //       const marketsData: IMarket = {
+    //         seriesId: match.seriesId,
+    //         sportId: match.sportId,
+    //         matchId: match.matchId,
+    //         marketId: market.marketId,
+    //         marketName: marketName,
+    //         marketStartTime: market.marketStartTime,
+    //         runners: market.runners.sort((a: any, b: any) => a.sortPriority - b.sortPriority),
+    //         isActive: i == 1 ? true :false,
+    //         oddsType: OddsType.BM,
+    //       }
+    //       if(i == 1){
+    //       await Market.findOneAndUpdate(
+    //         { marketId: market.marketId, matchId: match.matchId },
+    //         marketsData,
+    //         {
+    //           new: true,
+    //           upsert: true,
+    //         },
+    //       )
+    //     }
+    //     })
+    //   }
+    //     return markets.data.sports.length > 0
+    //   }
+    //   return false
+    // }
     bookmakermarketesData(match) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             const markets = yield sports_service_1.default.getBookmakerMarkets(match);
-            // console.log(markets, "markets data from backend ibn ths codew sw")
-            if (((_b = (_a = markets === null || markets === void 0 ? void 0 : markets.data) === null || _a === void 0 ? void 0 : _a.sports) === null || _b === void 0 ? void 0 : _b.length) > 0) {
-                let i = 0;
-                if (i < 1) {
-                    yield markets.data.sports.map((market) => __awaiter(this, void 0, void 0, function* () {
-                        let marketName = market.marketName;
-                        if (market.marketName === 'Bookmaker') {
-                            i++;
-                            marketName = i > 1 ? `${market.marketName}${i}` : market.marketName;
-                        }
-                        const marketsData = {
-                            seriesId: match.seriesId,
-                            sportId: match.sportId,
-                            matchId: match.matchId,
-                            marketId: market.marketId,
-                            marketName: marketName,
-                            marketStartTime: market.marketStartTime,
-                            runners: market.runners.sort((a, b) => a.sortPriority - b.sortPriority),
-                            isActive: i == 1 ? true : false,
-                            oddsType: Market_1.OddsType.BM,
-                        };
-                        if (i == 1) {
-                            yield Market_1.Market.findOneAndUpdate({ marketId: market.marketId, matchId: match.matchId }, marketsData, {
-                                new: true,
-                                upsert: true,
-                            });
-                        }
-                    }));
-                }
-                return markets.data.sports.length > 0;
+            if (!((_b = (_a = markets === null || markets === void 0 ? void 0 : markets.data) === null || _a === void 0 ? void 0 : _a.sports) === null || _b === void 0 ? void 0 : _b.length))
+                return false;
+            let bookmakerSaved = false;
+            for (const market of markets.data.sports) {
+                // ✅ ONLY BOOKMAKER
+                if (market.marketName !== "Bookmaker")
+                    continue;
+                // ✅ already one bookmaker saved → ignore others
+                if (bookmakerSaved)
+                    break;
+                const marketsData = {
+                    seriesId: match.seriesId,
+                    sportId: match.sportId,
+                    matchId: match.matchId,
+                    marketId: market.marketId,
+                    marketName: "Bookmaker",
+                    marketStartTime: market.marketStartTime,
+                    runners: market.runners.sort((a, b) => a.sortPriority - b.sortPriority),
+                    isActive: true,
+                    oddsType: Market_1.OddsType.BM,
+                };
+                yield Market_1.Market.findOneAndUpdate({ marketId: market.marketId, matchId: match.matchId }, marketsData, { upsert: true, new: true });
+                bookmakerSaved = true;
             }
-            return false;
+            return bookmakerSaved;
         });
     }
     t10MarketesData(match) {
@@ -1049,53 +1082,111 @@ class SportsController extends ApiController_1.ApiController {
     //     return this.fail(res, e);
     //   }
     // }
+    // async getFancyList(req: Request, res: Response): Promise<Response> {
+    //   try {
+    //     const { matchId, gtype }: any = req.query;
+    //     const fancy = await Fancy.find({
+    //       matchId,
+    //       active: true,
+    //     }).sort({ sr_no: 1, marketId: 1 });
+    //     const priorityOrder = [
+    //       " over runs ",
+    //       " over run ",
+    //       "fall of",
+    //       " run",
+    //       "boundaries",
+    //       "pship boundaries",
+    //     ];
+    //     const commonSessions = [6,10, 15, 20, 25, 30, 35, 40, 45, 50];
+    //     const extractSessionNumber = (name: string) => {
+    //       const match = name?.match(/\b(\d+)\b/);
+    //       return match ? parseInt(match[1]) : null;
+    //     };
+    //     const sortedFancy = fancy.sort((a: any, b: any) => {
+    //       const nameA = a?.fancyName?.toLowerCase() || "";
+    //       const nameB = b?.fancyName?.toLowerCase() || "";
+    //       const indexA = priorityOrder.findIndex((p) => nameA.includes(p));
+    //       const indexB = priorityOrder.findIndex((p) => nameB.includes(p));
+    //       const rankA = indexA === -1 ? 999 : indexA;
+    //       const rankB = indexB === -1 ? 999 : indexB;
+    //       if (rankA !== rankB) return rankA - rankB;
+    //       const isOverRunA =
+    //         nameA.includes(" over run ") || nameA.includes(" over runs ");
+    //       const isOverRunB =
+    //         nameB.includes(" over run ") || nameB.includes(" over runs ");
+    //       if (isOverRunA || isOverRunB) {
+    //         const numA = extractSessionNumber(nameA) || -1;
+    //         const numB = extractSessionNumber(nameB) || -1;
+    //         const aCommon = commonSessions.includes(numA);
+    //         const bCommon = commonSessions.includes(numB);
+    //         if (aCommon && !bCommon) return -1;
+    //         if (!aCommon && bCommon) return 1;
+    //         if (aCommon && bCommon) return numA - numB;
+    //         // ⭐ NEW → both uncommon → ASCENDING
+    //         return numA - numB;
+    //       }
+    //       return nameA.localeCompare(nameB);
+    //     });
+    //     return this.success(res, sortedFancy);
+    //   } catch (e: any) {
+    //     return this.fail(res, e);
+    //   }
+    // }
     getFancyList(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { matchId, gtype } = req.query;
+                const { matchId } = req.query;
                 const fancy = yield Fancy_1.Fancy.find({
                     matchId,
                     active: true,
                 }).sort({ sr_no: 1, marketId: 1 });
-                const priorityOrder = [
-                    " over runs ",
-                    " over run ",
-                    "fall of",
-                    " run",
-                    "boundaries",
-                    "pship boundaries",
-                ];
-                const commonSessions = [6, 10, 15, 20, 25, 30, 35, 40, 45, 50];
                 const extractSessionNumber = (name) => {
                     const match = name === null || name === void 0 ? void 0 : name.match(/\b(\d+)\b/);
                     return match ? parseInt(match[1]) : null;
                 };
+                const overRunsPriority = [6, 10, 15, 20];
                 const sortedFancy = fancy.sort((a, b) => {
-                    var _a, _b;
+                    var _a, _b, _c, _d, _e, _f;
                     const nameA = ((_a = a === null || a === void 0 ? void 0 : a.fancyName) === null || _a === void 0 ? void 0 : _a.toLowerCase()) || "";
                     const nameB = ((_b = b === null || b === void 0 ? void 0 : b.fancyName) === null || _b === void 0 ? void 0 : _b.toLowerCase()) || "";
-                    const indexA = priorityOrder.findIndex((p) => nameA.includes(p));
-                    const indexB = priorityOrder.findIndex((p) => nameB.includes(p));
-                    const rankA = indexA === -1 ? 999 : indexA;
-                    const rankB = indexB === -1 ? 999 : indexB;
-                    if (rankA !== rankB)
-                        return rankA - rankB;
-                    const isOverRunA = nameA.includes(" over run ") || nameA.includes(" over runs ");
-                    const isOverRunB = nameB.includes(" over run ") || nameB.includes(" over runs ");
-                    if (isOverRunA || isOverRunB) {
-                        const numA = extractSessionNumber(nameA) || -1;
-                        const numB = extractSessionNumber(nameB) || -1;
-                        const aCommon = commonSessions.includes(numA);
-                        const bCommon = commonSessions.includes(numB);
-                        if (aCommon && !bCommon)
-                            return -1;
-                        if (!aCommon && bCommon)
-                            return 1;
-                        if (aCommon && bCommon)
-                            return numA - numB;
-                        // ⭐ NEW → both uncommon → ASCENDING
+                    const isOverRunsA = nameA.includes(" over runs ");
+                    const isOverRunsB = nameB.includes(" over runs ");
+                    const isOverRunA = nameA.includes(" over run ");
+                    const isOverRunB = nameB.includes(" over run ");
+                    /** 1️⃣ Over Runs first */
+                    if (isOverRunsA && !isOverRunsB)
+                        return -1;
+                    if (!isOverRunsA && isOverRunsB)
+                        return 1;
+                    /** 2️⃣ Over Run after Over Runs */
+                    if (isOverRunA && !isOverRunB && !isOverRunsA)
+                        return -1;
+                    if (!isOverRunA && isOverRunB && !isOverRunsB)
+                        return 1;
+                    /** Over Runs internal sorting */
+                    if (isOverRunsA && isOverRunsB) {
+                        const numA = (_c = extractSessionNumber(nameA)) !== null && _c !== void 0 ? _c : 999;
+                        const numB = (_d = extractSessionNumber(nameB)) !== null && _d !== void 0 ? _d : 999;
+                        const indexA = overRunsPriority.indexOf(numA);
+                        const indexB = overRunsPriority.indexOf(numB);
+                        // ⭐ 6,10,15,20 first
+                        if (indexA !== -1 || indexB !== -1) {
+                            if (indexA === -1)
+                                return 1;
+                            if (indexB === -1)
+                                return -1;
+                            return indexA - indexB;
+                        }
+                        // baaki Over Runs → ascending
                         return numA - numB;
                     }
+                    /** Over Run internal sorting */
+                    if (isOverRunA && isOverRunB) {
+                        const numA = (_e = extractSessionNumber(nameA)) !== null && _e !== void 0 ? _e : 999;
+                        const numB = (_f = extractSessionNumber(nameB)) !== null && _f !== void 0 ? _f : 999;
+                        return numA - numB;
+                    }
+                    /** Remaining fancy → default */
                     return nameA.localeCompare(nameB);
                 });
                 return this.success(res, sortedFancy);

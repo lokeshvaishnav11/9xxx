@@ -546,10 +546,10 @@ const ClientBetsLedger = () => {
                       <th className="pt-0 pb-0">Amount</th>
                       <th className="pt-0 pb-0">Rate</th>
                       <th className="pt-0 pb-0">-</th>
-                      <th className="pt-0 pb-0">PnL</th>
+                      {/* <th className="pt-0 pb-0">PnL</th> */}
 
                       <th className="pt-0 pb-0">Date</th>
-                      <th className="pt-0 pb-0">IP</th>
+                      {/* <th className="pt-0 pb-0">IP</th> */}
                     </tr>
                   </thead>
                   <tbody className="small">
@@ -634,14 +634,14 @@ const ClientBetsLedger = () => {
               )}
             </td> */}
 
-                        <td
+                        {/* <td
                           className={`pt-2 pb-1 ${bet?.profitLoss < 0
                             ? "text-red-500"
                             : "text-green-500"
                             }`}
                         >
                           {(bet?.profitLoss).toFixed()}
-                        </td>
+                        </td> */}
                         <td
                           className="pt-2 pb-1 text-nowrap"
                           style={{ fontSize: "xx-small" }}
@@ -649,12 +649,12 @@ const ClientBetsLedger = () => {
                           {moment.utc(bet?.betClickTime).format("MMMM Do, h:mm:ss A")}
 
                         </td>
-                        <td
+                        {/* <td
                           className="pt-2 pb-1"
                           style={{ fontSize: "xx-small" }}
                         >
                           {bet?.userIp?.split(":").slice(0, 4).join(":")}
-                        </td>
+                        </td> */}
                       </tr>
                     ))}
                   </tbody>
@@ -728,9 +728,9 @@ const ClientBetsLedger = () => {
                                   <th className="pt-0 pb-0">Rate</th>
                                   <th className="pt-0 pb-0">-</th>
                                   <th className="pt-0 pb-0">Amount</th>
-                                  <th className="pt-0 pb-0">PnL</th>
+                                  {/* <th className="pt-0 pb-0">PnL</th> */}
                                   <th className="pt-0 pb-0">Created</th>
-                                  <th className="pt-0 pb-0">IP</th>
+                                  {/* <th className="pt-0 pb-0">IP</th> */}
                                 </tr>
                               </thead>
 
@@ -800,14 +800,14 @@ const ClientBetsLedger = () => {
                                         {bet?.stack}
                                       </td>
 
-                                      <td
+                                      {/* <td
                                         className={`pt-2 pb-1 ${bet?.profitLoss < 0
                                           ? "text-red-500"
                                           : "text-green-500"
                                           }`}
                                       >
                                         {bet?.profitLoss}
-                                      </td>
+                                      </td> */}
 
                                       <td
                                         className="pt-2 pb-1 text-nowrap"
@@ -818,12 +818,12 @@ const ClientBetsLedger = () => {
                                           .format("MMMM Do, h:mm:ss A")}
                                       </td>
 
-                                      <td
+                                      {/* <td
                                         className="pt-2 pb-1"
                                         style={{ fontSize: "xx-small" }}
                                       >
                                         {bet?.userIp?.split(":")?.slice(0, 4)?.join(":")}
-                                      </td>
+                                      </td> */}
                                     </tr>
                                   ))}
                               </tbody>

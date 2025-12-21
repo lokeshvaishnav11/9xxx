@@ -212,66 +212,114 @@ const AccountStatementAdminDeposit = () => {
     setIsOpen(true);
   };
 
+  // const getAcHtml = () => {
+  //   let closingbalance: number = page == 1 ? openBalance : closeBalance;
+  //   const achtml =
+  //     currentItems &&
+  //     currentItems.filter((t)=> t.narration != "commission").((stmt: any, index: number) => {
+  //       closingbalance = closingbalance + stmt.amount;
+  //       return (
+  //         <tr key={`${stmt._id}${index}`}>
+  //           <td style={
+  //             stmt.debit >= 0
+  //               ? { backgroundColor: "green", color: "white" }
+  //               : { backgroundColor: "red", color: "white" }
+  //           }>{stmt.sr_no}</td>
+  //           <td style={
+  //             stmt.debit >= 0
+  //               ? { backgroundColor: "green", color: "white" }
+  //               : { backgroundColor: "red", color: "white" }
+  //           } className="wnwrap">{stmt.date}</td>
+  //           <td style={
+  //             stmt.debit >= 0
+  //               ? { backgroundColor: "green", color: "white" }
+  //               : { backgroundColor: "red", color: "white" }
+  //           } className="green wnwrap">
+  //             {stmt.credit >= 0 && stmt.credit.toFixed(2)}
+  //           </td>
+  //           <td style={
+  //             stmt.debit >= 0
+  //               ? { backgroundColor: "green", color: "white" }
+  //               : { backgroundColor: "red", color: "white" }
+  //           } className="red wnwrap">
+  //             {stmt.credit < 0 && stmt.credit.toFixed(2)}
+  //           </td>
+  //           {/* <td style={
+  //             stmt.debit >= 0
+  //               ? { backgroundColor: "green", color: "white" }
+  //               : { backgroundColor: "red", color: "white" }
+  //           } className="green wnwrap">{stmt.closing}</td> */}
+  //           <td style={
+  //             stmt.debit >= 0
+  //               ? { backgroundColor: "green", color: "white" }
+  //               : { backgroundColor: "red", color: "white" }
+  //           }>{stmt.stmt.txnBy}</td>
+  //           <td style={
+  //             stmt.debit >= 0
+  //               ? { backgroundColor: "green", color: "white" }
+  //               : { backgroundColor: "red", color: "white" }
+  //           }
+  //             onClick={(e: MouseEvent<HTMLTableCellElement>) =>
+  //               getBets(e, stmt.stmt)
+  //             }
+  //           >
+  //             <span className={stmt.type == "pnl" ? "label-buttonccc" : ""}>
+  //               {stmt.narration}
+  //             </span>
+  //           </td>
+  //         </tr>
+  //       );
+  //     });
+  //   return achtml;
+  // };
+
   const getAcHtml = () => {
-    let closingbalance: number = page == 1 ? openBalance : closeBalance;
-    const achtml =
-      currentItems &&
-      currentItems.map((stmt: any, index: number) => {
+  let closingbalance: number = page == 1 ? openBalance : closeBalance;
+
+  const achtml =
+    currentItems &&
+    currentItems
+      .filter((t: any) => t.narration !== "commission")
+      .map((stmt: any, index: number) => {
         closingbalance = closingbalance + stmt.amount;
+
+        const rowStyle =
+          stmt.debit >= 0
+            ? { backgroundColor: "green", color: "white" }
+            : { backgroundColor: "red", color: "white" };
+
         return (
           <tr key={`${stmt._id}${index}`}>
-            <td style={
-              stmt.debit >= 0
-                ? { backgroundColor: "green", color: "white" }
-                : { backgroundColor: "red", color: "white" }
-            }>{stmt.sr_no}</td>
-            <td style={
-              stmt.debit >= 0
-                ? { backgroundColor: "green", color: "white" }
-                : { backgroundColor: "red", color: "white" }
-            } className="wnwrap">{stmt.date}</td>
-            <td style={
-              stmt.debit >= 0
-                ? { backgroundColor: "green", color: "white" }
-                : { backgroundColor: "red", color: "white" }
-            } className="green wnwrap">
+            <td style={rowStyle}>{stmt.sr_no}</td>
+            <td style={rowStyle} className="wnwrap">{stmt.date}</td>
+
+            <td style={rowStyle} className="green wnwrap">
               {stmt.credit >= 0 && stmt.credit.toFixed(2)}
             </td>
-            <td style={
-              stmt.debit >= 0
-                ? { backgroundColor: "green", color: "white" }
-                : { backgroundColor: "red", color: "white" }
-            } className="red wnwrap">
+
+            <td style={rowStyle} className="red wnwrap">
               {stmt.credit < 0 && stmt.credit.toFixed(2)}
             </td>
-            {/* <td style={
-              stmt.debit >= 0
-                ? { backgroundColor: "green", color: "white" }
-                : { backgroundColor: "red", color: "white" }
-            } className="green wnwrap">{stmt.closing}</td> */}
-            <td style={
-              stmt.debit >= 0
-                ? { backgroundColor: "green", color: "white" }
-                : { backgroundColor: "red", color: "white" }
-            }>{stmt.stmt.txnBy}</td>
-            <td style={
-              stmt.debit >= 0
-                ? { backgroundColor: "green", color: "white" }
-                : { backgroundColor: "red", color: "white" }
-            }
+
+            <td style={rowStyle}>{stmt.stmt.txnBy}</td>
+
+            <td
+              style={rowStyle}
               onClick={(e: MouseEvent<HTMLTableCellElement>) =>
                 getBets(e, stmt.stmt)
               }
             >
-              <span className={stmt.type == "pnl" ? "label-buttonccc" : ""}>
+              <span className={stmt.type === "pnl" ? "label-buttonccc" : ""}>
                 {stmt.narration}
               </span>
             </td>
           </tr>
         );
       });
-    return achtml;
-  };
+
+  return achtml;
+};
+
 
 
   const calculateTotal = (casino: number, sports: number) => {
