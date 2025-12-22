@@ -724,9 +724,9 @@ const ClientBetsLedger = () => {
                               <thead className="small">
                                 <tr>
                                   <th className="pt-0 pb-0">Client</th>
-                                  <th className="pt-0 pb-0">Amount</th>
-                                  <th className="pt-0 pb-0">Rate</th>
                                   <th className="pt-0 pb-0">-</th>
+                                  <th className="pt-0 pb-0">-</th>
+                                  <th className="pt-0 pb-0">Amt</th>
                                   {/* <th className="pt-0 pb-0">PnL</th> */}
 
                                   <th className="pt-0 pb-0">Date</th>
