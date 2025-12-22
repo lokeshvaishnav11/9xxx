@@ -44,6 +44,7 @@ interface MatchItem {
     selectionName: any;
     matchedDate: any;
     resultstring: any;
+    status: any;
 }
 
 type GroupedLedger = {
@@ -757,8 +758,8 @@ const ClientBetsUser = () => {
                                                                             {/* <th className="pt-0 pb-0">Rate</th> */}
 
                                                                             <th className="pt-0 pb-0">-</th>
-                                                                            <th className="pt-0 pb-0">Amount</th>
-                                                                            {/* <th className="pt-0 pb-0">PnL</th> */}
+                                                                            {bet?.status == "pending" &&<th className="pt-0 pb-0">Amount</th>}
+                                                                           { bet?.status == "completed" && <th className="pt-0 pb-0">PnL</th>}
 
                                                                             <th className="pt-0 pb-0">Created</th>
                                                                             {/* <th className="pt-0 pb-0">IP</th> */}
@@ -837,23 +838,23 @@ const ClientBetsUser = () => {
         </button>
       )}
     </td> */}
-                                                                                    <td
+                                                                                   {bet?.status == "pending" && <td
                                                                                         className={`pt-2 pb-1 ${bet?.profitLoss < 0
                                                                                             ? "text-black-500"
                                                                                             : "text-black-500"
                                                                                             }`}
                                                                                     >
                                                                                         {bet?.stack}
-                                                                                    </td>
+                                                                                    </td>}
 
-                                                                                    {/* <td
+                                                                                   {bet?.status == "completed" && <td
                                                                                 className={`pt-2 pb-1 ${bet?.profitLoss < 0
                                                                                     ? "text-red-500"
                                                                                     : "text-green-500"
                                                                                     }`}
                                                                             >
                                                                                 {bet?.profitLoss}
-                                                                            </td> */}
+                                                                            </td>}
 
                                                                                     <td
                                                                                         className="pt-2 pb-1 text-nowrap"
