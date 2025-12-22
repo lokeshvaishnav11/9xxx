@@ -1252,7 +1252,7 @@ const ListClients = () => {
                               >
                                 <CloseButton className="text-white" />
                               </button>
-                              <div className="actions-container  p-4">
+                              <div className="actions-container  p-4" >
                                 <a
                                   className="hover:text-white  border-b pb-2"
                                   style={{ color: "#007bff" }}

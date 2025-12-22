@@ -544,7 +544,7 @@ const ClientBetsUser = () => {
                         )}
                         {showmatch ? (
                             <div
-                                style={{ height: "30vh" }}
+                                style={{ height: "100vh" ,backgroundColor:"#F4EED0" }}
                                 className="card-body p-0 overflow-x-scroll overflow-y-scroll"
                             >
                                 <table className="table table-striped table-bordered table-hover">
@@ -857,7 +857,7 @@ const ClientBetsUser = () => {
                                                                             </td>}
 
                                                                                     <td
-                                                                                        className="pt-2 pb-1 text-nowrap"
+                                                                                        className="pt-2 pb-1"
                                                                                         style={{
                                                                                             fontSize: "10px",
                                                                                             minWidth: "30px",
@@ -865,7 +865,7 @@ const ClientBetsUser = () => {
                                                                                             wordBreak: "break-word",
                                                                                         }}
                                                                                     >
-                                                                                        {moment.utc(bet?.betClickTime).format("MMMM Do, h:mm:ss A")}
+                                                                                        {moment.utc(bet?.betClickTime).format("DD/MM/YY, h:mm:ss A")}
 
                                                                                     </td>
                                                                                     {/* <td

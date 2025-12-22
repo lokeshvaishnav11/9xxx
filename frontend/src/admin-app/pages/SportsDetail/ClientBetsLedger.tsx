@@ -536,7 +536,7 @@ const ClientBetsLedger = () => {
 
             {showmatch ? (
               <div
-                style={{ height: "30vh" }}
+                style={{ height: "100vh", backgroundColor:"#F4EED0" }}
                 className="card-body p-0 overflow-x-scroll overflow-y-scroll"
               >
                 <table className="table table-striped table-bordered table-hover">
@@ -578,7 +578,7 @@ const ClientBetsLedger = () => {
                         >
                           {bet?.stack}
                         </td>
-                        <td className="pt-2 pb-1">{(bet?.odds * 100 -100 ).toFixed(2)}</td>
+                        <td className="pt-2 pb-1">{(bet?.odds * 100 - 100).toFixed(2)}</td>
                         <td className="pt-2 pb-1">
                           {bet?.isBack ? (
                             <button
@@ -669,7 +669,7 @@ const ClientBetsLedger = () => {
 
 
             {session ? (
-              <div className="card-heade p-0 mb-20 " id="headig">
+              <div className="card-heade p-0 mb-20 " id="headig" >
                 {[
                   //@ts-expect-error
                   ...new Map(
@@ -724,12 +724,12 @@ const ClientBetsLedger = () => {
                               <thead className="small">
                                 <tr>
                                   <th className="pt-0 pb-0">Client</th>
-                                  <th className="pt-0 pb-0">Yes/Not</th>
+                                  <th className="pt-0 pb-0">Amount</th>
                                   <th className="pt-0 pb-0">Rate</th>
                                   <th className="pt-0 pb-0">-</th>
-                                  <th className="pt-0 pb-0">Amount</th>
-                                  <th className="pt-0 pb-0">PnL</th>
-                                  <th className="pt-0 pb-0">Created</th>
+                                  {/* <th className="pt-0 pb-0">PnL</th> */}
+
+                                  <th className="pt-0 pb-0">Date</th>
                                   {/* <th className="pt-0 pb-0">IP</th> */}
                                 </tr>
                               </thead>
@@ -761,9 +761,9 @@ const ClientBetsLedger = () => {
                                       </td>
 
                                       <td className="pt-2 pb-1">{bet?.odds}</td>
-                                      <td className="pt-2 pb-1">{bet?.volume}</td>
+                                      {/* <td className="pt-2 pb-1">{bet?.volume}</td> */}
 
-                                      <td className="pt-2 pb-1">
+                                      {/* <td className="pt-2 pb-1">
                                         {bet?.isBack ? (
                                           <button
                                             className="btn-yes btn btn-sm p-1 ng-scope"
@@ -789,6 +789,42 @@ const ClientBetsLedger = () => {
                                             </span>
                                           </button>
                                         )}
+                                      </td> */}
+
+                                      <td className="pt-2 pb-1">
+                                        {bet?.isBack ? (
+                                          <>
+                                            <button
+                                              className="btn-yes btn btn-sm p-1 ng-scope d-flex"
+                                              style={{ fontSize: "xx-small" }}
+                                            >
+                                              <div
+                                                className="badge badge-light"
+                                                style={{ fontSize: "14px" }}
+                                              >
+                                                YES
+
+                                              </div>
+
+                                            </button>
+                                            <span style={{ fontSize: "12px", marginLeft: "5px" }}>{bet?.volume}</span>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <button
+                                              className="btn-not btn btn-sm p-1 ng-scope"
+                                              style={{ fontSize: "xx-small", backgroundColor: "red" }}
+                                            >
+                                              <span
+                                                className="badge badge-light"
+                                                style={{ fontSize: "14px" }}
+                                              >
+                                                NOT
+                                              </span>
+                                            </button>
+                                            <span style={{ fontSize: "12px", marginLeft: "5px" }}>{bet?.volume}</span>
+                                          </>
+                                        )}
                                       </td>
 
                                       <td
@@ -800,22 +836,26 @@ const ClientBetsLedger = () => {
                                         {bet?.stack}
                                       </td>
 
-                                      <td
+                                      {/* <td
                                         className={`pt-2 pb-1 ${bet?.profitLoss < 0
                                           ? "text-red-500"
                                           : "text-green-500"
                                           }`}
                                       >
                                         {bet?.profitLoss}
-                                      </td>
+                                      </td> */}
 
                                       <td
-                                        className="pt-2 pb-1 text-nowrap"
-                                        style={{ fontSize: "xx-small" }}
+                                        className="pt-2 pb-1"
+                                        style={{
+                                          fontSize: "10px",
+                                          minWidth: "30px",
+                                          whiteSpace: "normal",
+                                          wordBreak: "break-word",
+                                        }}
                                       >
-                                        {moment
-                                          .utc(bet?.betClickTime)
-                                          .format("MMMM Do, h:mm:ss A")}
+                                        {moment.utc(bet?.betClickTime).format("DD/MM/YY, h:mm:ss A")}
+
                                       </td>
 
                                       {/* <td
