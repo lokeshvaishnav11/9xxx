@@ -2197,7 +2197,7 @@ marketDetails = async (req: Request, res: Response): Promise<Response> => {
       limit,
       totalMatches,
       totalPages: Math.ceil(totalMatches / limit),
-      matches: matchesWithBets,
+      matches: matchesWithBets.reverse(),
     });
 
   } catch (e: any) {

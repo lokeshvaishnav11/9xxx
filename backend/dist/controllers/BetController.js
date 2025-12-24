@@ -1857,7 +1857,7 @@ class BetController extends ApiController_1.ApiController {
                     limit,
                     totalMatches,
                     totalPages: Math.ceil(totalMatches / limit),
-                    matches: matchesWithBets,
+                    matches: matchesWithBets.reverse(),
                 });
             }
             catch (e) {
