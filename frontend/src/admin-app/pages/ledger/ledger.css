@@ -41,9 +41,10 @@
     background: #4b778d;
     color: #fff;
 }
-body {
+/* body {
     background-image: url(https://admin.silent365.in/assets/images/bg.png)
-}
+
+} */
 
 table ul .dropdown-toggle::after {
     position: absolute;
