@@ -9,10 +9,12 @@ class AccountService {
     return api.get(`bets22?matchId=${matchId}`);
   }
 
-  matchdetail() {
-    return api.get(`matchdetail`);
+  matchdetail(page:any,limit:any,) {
+    return api.get(`matchdetail?page=${page}&limit=${limit}`);
   }
-
+   matchdetail2() {
+    return api.get(`matchdetail-two`);
+  }
    getBets32(data:any) {
     return api.post(`bet32`,data);
   }

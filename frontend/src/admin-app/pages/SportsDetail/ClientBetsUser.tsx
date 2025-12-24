@@ -91,7 +91,7 @@ const ClientBetsUser = () => {
     const maid = useParams().matchId;
 
     React.useEffect(() => {
-        accountService.matchdetail().then((res: AxiosResponse) => {
+        accountService.matchdetail2().then((res: AxiosResponse) => {
             console.log(res, "marketffffff data");
             const allms = res?.data?.data?.matches;
 
@@ -203,7 +203,7 @@ const ClientBetsUser = () => {
 
     const handleDateFilter = async (isFilterApplied = false) => {
         try {
-            const res = await accountService.matchdetail();
+            const res = await accountService.matchdetail2();
             // console.log(res, "maatchh commsion report");
 
             const allms = res?.data?.data?.matches;

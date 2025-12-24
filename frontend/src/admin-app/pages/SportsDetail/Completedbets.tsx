@@ -9,7 +9,7 @@ const Completedbets = () => {
     
 
      React.useEffect(() => {
-        accountService.matchdetail().then((res: AxiosResponse) => {
+        accountService.matchdetail2().then((res: AxiosResponse) => {
           console.log(res, "marketffffff data");
           const allBets = res.data.data.bets;
           console.log(allBets,"alllbets")

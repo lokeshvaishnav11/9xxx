@@ -73,7 +73,7 @@ const ReportBets = () => {
       
         const handleDateFilter =  async (isFilterApplied = false) => {
           try {
-            const res = await accountService.matchdetail()
+            const res = await accountService.matchdetail2()
             // console.log(res, "maatchh commsion report");
 
             const allms = res.data.data.matches;

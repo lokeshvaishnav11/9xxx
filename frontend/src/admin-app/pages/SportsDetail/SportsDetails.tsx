@@ -7,7 +7,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { CustomLink } from "../../../pages/_layout/elements/custom-link";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectUserData } from "../../../redux/actions/login/loginSlice";
-import {CloseButton, } from "react-bootstrap";
+import { CloseButton, } from "react-bootstrap";
 import moment from "moment";
 import { dateFormat } from "../../../utils/helper";
 import userService from "../../../services/user.service";
@@ -31,7 +31,11 @@ const SportsDetails = () => {
   console.log(userState, "dffdfdfdf");
 
   const [shared, setShared] = React.useState<any>();
-  
+  const [page, setPage] = React.useState(1);
+  const [totalPages, setTotalPages] = React.useState(1);
+  const limit = 10;
+
+
   React.useEffect(() => {
     // const userState = useAppSelector<{ user: User }>(selectUserData);
     const username: any = userState?.user?.username;
@@ -48,55 +52,70 @@ const SportsDetails = () => {
     );
   }, [userState]);
 
-  React.useEffect(() => {
-    betService.getMarketAnalysis().then((res: AxiosResponse) => {
-      // setmarketData(res.data.data);
-      // console.log(res, "market data");
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   betService.getMarketAnalysis().then((res: AxiosResponse) => {
+  //     // setmarketData(res.data.data);
+  //     // console.log(res, "market data");
+  //   });
+  // }, []);
+
+  // React.useEffect(() => {
+  //   accountService.matchdetail().then((res: AxiosResponse) => {
+  //     console.log(res, "marketffffff data");
+  //     // setmarketData(res.data.data.matches ? res.data.data.matches.reverse() : []);
+  //     setmarketData(res?.data?.data?.matches ? res?.data?.data?.matches?.filter((match:any) => match?.bets && match?.bets?.length > 0).reverse()
+  //         : []
+  //     );
+
+  //   });
+
+  // }, []);
 
   React.useEffect(() => {
-    accountService.matchdetail().then((res: AxiosResponse) => {
-      console.log(res, "marketffffff data");
-      // setmarketData(res.data.data.matches ? res.data.data.matches.reverse() : []);
-      setmarketData(res?.data?.data?.matches ? res?.data?.data?.matches?.filter((match:any) => match?.bets && match?.bets?.length > 0).reverse()
+    accountService.matchdetail(page, limit).then((res: AxiosResponse) => {
+      setmarketData(
+        res?.data?.data?.matches
+          ? res?.data?.data?.matches
+            ?.filter((match: any) => match?.bets && match?.bets?.length > 0)
+            .reverse()
           : []
       );
-      
-    });
 
-  }, []);
+      setTotalPages(res?.data?.data?.totalPages || 1);
+    });
+  }, [page]);
+
 
 
   const grandUpdown = React.useMemo(() => {
     if (!marketData || !Array.isArray(marketData)) return 0;
-  
+
     return marketData.reduce((total, match,) => {
       const matchTotal = match.ledgers
         ?.filter((l) => l?.parentName === userState.user.username && l?.updown !== undefined)
-        ?.reduce((sum:any, l:any) => sum + l.updown, 0) || 0;
-  
+        ?.reduce((sum: any, l: any) => sum + l.updown, 0) || 0;
+
       return total + matchTotal;
     }, 0);
   }, [marketData, userState.user.username]);
 
   const grandpl = React.useMemo(() => {
     if (!marketData || !Array.isArray(marketData)) return 0;
-  
+
     return marketData.reduce((total, match,) => {
       const matchTotal = match.ledgers
         ?.filter((l) => l?.parentName === userState.user.username && l?.profit !== undefined)
-        ?.reduce((sum:any, l:any) => sum + l?.fammount, 0) || 0;
-       
+        ?.reduce((sum: any, l: any) => sum + l?.fammount, 0) || 0;
+
       return total + matchTotal;
     }, 0);
-    
+
   }, [marketData, userState.user.username]);
 
-  console.log(grandpl,"hello world pl")
+  console.log(grandpl, "hello world pl")
 
 
- 
+
 
   // const dropdownRef = React.useRef<HTMLDivElement>(null);
   const tdRef = React.useRef<HTMLTableDataCellElement | null>(null);
@@ -232,8 +251,8 @@ const SportsDetails = () => {
                       `${ItemMarket.marketId}_${ItemRunners.selectionId}`
                     ] != null
                       ? -userbook[
-                          `${ItemMarket.marketId}_${ItemRunners.selectionId}`
-                        ].toFixed(2)
+                        `${ItemMarket.marketId}_${ItemRunners.selectionId}`
+                      ].toFixed(2)
                       : ""}
                   </span>
                 </td>
@@ -246,7 +265,7 @@ const SportsDetails = () => {
   };
 
 
- 
+
 
   return (
     <div className="container-fluid">
@@ -449,10 +468,10 @@ const SportsDetails = () => {
                     }}
                   >
 
-<button onClick={() => handleToggle(item._id)} className="-right-2.5 -top-2.5 position-absolute bg-gray-800 p-0 rounded-full "><CloseButton className="text-white " />
-</button>
+                    <button onClick={() => handleToggle(item._id)} className="-right-2.5 -top-2.5 position-absolute bg-gray-800 p-0 rounded-full "><CloseButton className="text-white " />
+                    </button>
 
-                   
+
                     <CustomLink
                       className="dropdown-item  text-lg  text-white call-event navbar-bet99"
                       to={`/report-bets/${item.matchId}`}
@@ -480,11 +499,11 @@ const SportsDetails = () => {
               </td>
               <td className="ng-scope">
                 {/* {new Date(item.matchDateTime).toLocaleString()} */}
-                        {moment(item.matchDateTime).format(dateFormat)}
-                
+                {moment(item.matchDateTime).format(dateFormat)}
+
               </td>
               <td className="ng-scope">
-                <CustomLink className="flex align-items-center gap-2 text-blue-500" to={`${item?.active ? `/odds/${item?.matchId}/${shared}` : `/client-bets/${item.matchId}` }`}>
+                <CustomLink className="flex align-items-center gap-2 text-blue-500" to={`${item?.active ? `/odds/${item?.matchId}/${shared}` : `/client-bets/${item.matchId}`}`}>
                   <img
                     style={{ maxWidth: "100%", height: "20px" }}
                     src="/imgs/default-4.png"
@@ -492,23 +511,22 @@ const SportsDetails = () => {
                   {item.name}
                 </CustomLink>
               </td>
-              <td className="ng-scope "><span className="badge p-2 badge-primary" style={{fontSize:"xx-small"}}>  <i className="fas fa-trophy"></i>  </span> {item?.resultstring ? item?.resultstring : ""}</td>
+              <td className="ng-scope "><span className="badge p-2 badge-primary" style={{ fontSize: "xx-small" }}>  <i className="fas fa-trophy"></i>  </span> {item?.resultstring ? item?.resultstring : ""}</td>
               <td className="ng-scope">
                 <span className="pt-2 pb-1 text-warning">
                   {(() => {
                     const total =
                       item.ledgers
                         ?.filter(
-                          (l:any) =>
+                          (l: any) =>
                             l?.parentName === userState.user.username &&
                             l?.updown !== undefined
                         )
-                        ?.reduce((sum: any, l:any) => sum + l.updown, 0) || 0;
+                        ?.reduce((sum: any, l: any) => sum + l.updown, 0) || 0;
                     return (
                       <span
-                        className={`pt-2 pb-1 ${
-                          total >= 0 ? "text-success" : "text-danger"
-                        }`}
+                        className={`pt-2 pb-1 ${total >= 0 ? "text-success" : "text-danger"
+                          }`}
                       >
                         {total.toFixed(2)}
                       </span>
@@ -522,20 +540,19 @@ const SportsDetails = () => {
                     const total =
                       item.ledgers
                         ?.filter(
-                          (l:any) =>
+                          (l: any) =>
                             l?.parentName === userState.user.username &&
                             l?.profit !== undefined
                         )
-                        ?.reduce((sum: any, l:any) => sum + l.fammount, 0) || 0;
-                        console.log(total,"total pl here")
+                        ?.reduce((sum: any, l: any) => sum + l.fammount, 0) || 0;
+                    console.log(total, "total pl here")
                     return (
                       <span
-                        className={`pt-2 pb-1 ${
-                          total >= 0 ? "text-success" : "text-danger"
-                        }`}
+                        className={`pt-2 pb-1 ${total >= 0 ? "text-success" : "text-danger"
+                          }`}
                       >
-                        {total.toFixed(2)} 
-                   
+                        {total.toFixed(2)}
+
                       </span>
                     );
                   })()}
@@ -550,14 +567,39 @@ const SportsDetails = () => {
               Total
             </td>
             <td className=" font-weight-bold"><span className={grandUpdown >= 0 ? "text-success" : "text-danger"}>
-    {grandUpdown.toFixed(2)}
-  </span></td>
-  <td className=" font-weight-bold"><span className={grandpl >= 0 ? "text-success" : "text-danger"}>
-    {grandpl.toFixed(2)}
-  </span></td>
+              {grandUpdown.toFixed(2)}
+            </span></td>
+            <td className=" font-weight-bold"><span className={grandpl >= 0 ? "text-success" : "text-danger"}>
+              {grandpl.toFixed(2)}
+            </span></td>
           </tr>
         </tbody>
       </table>
+      <div className="d-flex justify-content-end align-items-center mt-3 gap-2">
+
+        <button
+          className="btn btn-sm btn-secondary"
+          disabled={page === 1}
+          onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+        >
+          Prev
+        </button>
+
+        <span className="mx-2 small">
+          Page <b>{page}</b> of <b>{totalPages}</b>
+        </span>
+
+        <button
+          className="btn btn-sm btn-secondary"
+          disabled={page === totalPages}
+          onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}
+        >
+          Next
+        </button>
+
+      </div>
+
+
     </div>
   );
 };

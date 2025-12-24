@@ -1759,7 +1759,7 @@ export class BetController extends ApiController {
 
 
 
-  marketDetails = async (req: Request, res: Response): Promise<Response> => {
+  marketDetailstwo = async (req: Request, res: Response): Promise<Response> => {
     function convertDecimalFields(obj: any): any {
       const converted = { ...obj };
       for (const key in converted) {
@@ -2009,6 +2009,207 @@ export class BetController extends ApiController {
       return this.fail(res, e);
     }
   };
+
+marketDetails = async (req: Request, res: Response): Promise<Response> => {
+
+  // 🔹 Decimal128 → number converter
+  function convertDecimalFields(obj: any): any {
+    const converted = { ...obj };
+    for (const key in converted) {
+      const val = converted[key];
+      if (val && typeof val === "object" && val._bsontype === "Decimal128") {
+        converted[key] = parseFloat(val.toString());
+      }
+    }
+    return converted;
+  }
+
+  try {
+    const user: any = req.user;
+
+    // 🔹 Pagination params (MATCH based)
+    const page = parseInt(req.query.page as string) || 2;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+
+    // 🔹 Get child users
+    const usersWithThisAsParent = await User.find({
+      parentStr: ObjectId(user._id),
+      role: "user" as RoleType,
+    }).lean();
+
+    const userIds = usersWithThisAsParent.map(u => u._id);
+
+    // 🔹 STEP 1: Paginated MATCHES
+    const [matches, totalMatches] = await Promise.all([
+      Match.find({})
+        .sort({ createdAt: -1 })   // change if needed
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+
+      Match.countDocuments({}),
+    ]);
+
+    const matchIds = matches.map((m: any) => m.matchId);
+
+    // 🔹 STEP 2: ALL bets of these matches
+    const bets = await Bet.aggregate([
+      {
+        $match: {
+          matchId: { $in: matchIds },
+          userId: { $in: userIds },
+          bet_on: { $ne: "CASINO" },
+          status: { $ne: "deleted" },
+        },
+      },
+
+      { $sort: { createdAt: -1 } },
+
+      // ===== PARENT LOOKUP =====
+      {
+        $lookup: {
+          from: "users",
+          let: { parentIds: "$parentStr" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $in: [
+                    "$_id",
+                    {
+                      $map: {
+                        input: "$$parentIds",
+                        as: "id",
+                        in: { $toObjectId: "$$id" },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+            { $project: { username: 1, _id: 0 } },
+          ],
+          as: "parentData",
+        },
+      },
+
+      {
+        $addFields: {
+          parentData: {
+            $map: { input: "$parentData", as: "p", in: "$$p.username" },
+          },
+        },
+      },
+
+      // ===== USER CODE =====
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "userInfo",
+        },
+      },
+      { $addFields: { userInfo: { $arrayElemAt: ["$userInfo", 0] } } },
+      { $addFields: { userCode: "$userInfo.code" } },
+      { $project: { userInfo: 0 } },
+    ]);
+
+    // 🔹 STEP 3: Fancy + Ledger
+    const allFancyNames = bets.map(b => b.selectionName).filter(Boolean);
+
+    const [fancyResults, ledgerRaw] = await Promise.all([
+      Fancy.find({
+        matchId: { $in: matchIds },
+        fancyName: { $in: allFancyNames },
+      }).lean(),
+
+      ledger.find({
+        matchId: { $in: matchIds },
+      }).lean(),
+    ]);
+
+    // 🔹 Share map
+    const shareMap = new Map(
+      usersWithThisAsParent.map(c => [c._id.toString(), c.share || 0])
+    );
+
+    // 🔹 Ledger + superShare
+    const ledgerData = ledgerRaw.map(l => ({
+      ...l,
+      superShare: shareMap.get(l.ChildId?.toString()) || 0,
+    }));
+
+    // 🔹 Maps
+    const betsByMatch = new Map<string, any[]>();
+    const ledgersByBetId = new Map<string, any[]>();
+    const fancyMap = new Map<string, any>();
+
+    bets.forEach(bet => {
+      const mId = bet.matchId?.toString();
+      if (!betsByMatch.has(mId)) betsByMatch.set(mId, []);
+      betsByMatch.get(mId)!.push(bet);
+    });
+
+    ledgerData.forEach(l => {
+      const betId = l.betId?.toString();
+      if (!ledgersByBetId.has(betId)) ledgersByBetId.set(betId, []);
+      ledgersByBetId.get(betId)!.push(l);
+    });
+
+    fancyResults.forEach((f:any) => {
+      fancyMap.set(
+        `${f.matchId}_${f.fancyName}`,
+        convertDecimalFields(f)
+      );
+    });
+
+    // 🔹 STEP 4: Merge everything match-wise
+    const matchesWithBets = matches.map((match: any) => {
+      const relatedBets = betsByMatch.get(match.matchId?.toString()) || [];
+
+      const enrichedBets = relatedBets.map(bet => {
+        const cleaned = convertDecimalFields(bet);
+        const fancyKey = `${cleaned.matchId}_${cleaned.selectionName}`;
+        return {
+          ...cleaned,
+          fancy: fancyMap.get(fancyKey),
+        };
+      });
+
+      const relatedBetIds = relatedBets.map(b => b._id?.toString());
+      const ledgers = relatedBetIds.flatMap(
+        id => ledgersByBetId.get(id) || []
+      );
+
+      return {
+        ...match,
+        bets: enrichedBets,
+        ledgers,
+      };
+    });
+
+    // ✅ FINAL RESPONSE
+    return this.success(res, {
+      status: true,
+      page,
+      limit,
+      totalMatches,
+      totalPages: Math.ceil(totalMatches / limit),
+      matches: matchesWithBets,
+    });
+
+  } catch (e: any) {
+    console.error("❌ marketDetails error:", e);
+    return this.fail(res, e);
+  }
+};
+
+
+
+
+
 
 
   completedgames = async (req: Request, res: Response): Promise<Response> => {

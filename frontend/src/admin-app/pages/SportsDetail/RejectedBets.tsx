@@ -9,7 +9,7 @@ const DeletedBets = () => {
     
 
      React.useEffect(() => {
-        accountService.matchdetail().then((res: AxiosResponse) => {
+        accountService.matchdetail2().then((res: AxiosResponse) => {
           console.log(res, "marketffffff data");
           const allBets = res.data.data.bets;
           const filteredBets = allBets.filter((bet: any) => bet.matchId == maid && bet.status === "pending");
