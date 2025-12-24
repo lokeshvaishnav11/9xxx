@@ -84,6 +84,7 @@ const ClientBetsUser = () => {
     const [marketData2, setmarketData2] = React.useState<MatchItem[]>([]);
     const [sendid, setSendid] = React.useState(null);
     const [stack, setStack] = React.useState<any[]>([]);
+    //  const userState = useAppSelector(selectUserData)
 
     const dispatch = useAppDispatch()
 
@@ -177,7 +178,7 @@ const ClientBetsUser = () => {
     const [ledgerData, setLedgerData] = React.useState([]);
 
     const userState = useAppSelector(selectUserData);
-    console.log(userState, "isususus");
+    // console.log(userState, "isususus");
 
     const [shared, setShared] = React.useState<any>();
 
@@ -544,7 +545,7 @@ const ClientBetsUser = () => {
                         )}
                         {showmatch ? (
                             <div
-                                style={{ height: "100vh" ,backgroundColor:"#F4EED0" }}
+                                style={{ height: "100vh", backgroundColor: "#F4EED0" }}
                                 className="card-body p-0 overflow-x-scroll overflow-y-scroll"
                             >
                                 <table className="table table-striped table-bordered table-hover">
@@ -557,7 +558,7 @@ const ClientBetsUser = () => {
                                             {/* <th className="pt-0 pb-0">PnL</th> */}
 
                                             <th className="pt-0 pb-0">Date</th>
-                                            {/* <th className="pt-0 pb-0">IP</th> */}
+                                           {userState?.user?.role == "admin" && <th className="pt-0 pb-0">IP</th>}
                                         </tr>
                                     </thead>
                                     <tbody className="small">
@@ -658,12 +659,12 @@ const ClientBetsUser = () => {
                                                     {moment.utc(bet?.betClickTime).format("MMMM Do, h:mm:ss A")}
 
                                                 </td>
-                                                {/* <td
-                          className="pt-2 pb-1"
-                          style={{ fontSize: "xx-small" }}
-                        >
-                          {bet?.userIp?.split(":").slice(0, 4).join(":")}
-                        </td> */}
+                                               {userState?.user?.role == "admin" && <td
+                                                    className="pt-2 pb-1"
+                                                    style={{ fontSize: "xx-small" }}
+                                                >
+                                                    {bet?.userIp?.split(":")}
+                                                </td>}
                                             </tr>
                                         ))}
                                     </tbody>
@@ -758,11 +759,11 @@ const ClientBetsUser = () => {
                                                                             {/* <th className="pt-0 pb-0">Rate</th> */}
 
                                                                             <th className="pt-0 pb-0">-</th>
-                                                                            {bet?.status == "pending" &&<th className="pt-0 pb-0">Amount</th>}
-                                                                           { bet?.status == "completed" && <th className="pt-0 pb-0">PnL</th>}
+                                                                            {bet?.status == "pending" && <th className="pt-0 pb-0">Amount</th>}
+                                                                            {bet?.status == "completed" && <th className="pt-0 pb-0">PnL</th>}
 
                                                                             <th className="pt-0 pb-0">Created</th>
-                                                                            {/* <th className="pt-0 pb-0">IP</th> */}
+                                                                            {userState?.user?.role == "admin" &&<th className="pt-0 pb-0">IP</th>}
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody className="small">
@@ -838,7 +839,7 @@ const ClientBetsUser = () => {
         </button>
       )}
     </td> */}
-                                                                                   {bet?.status == "pending" && <td
+                                                                                    {bet?.status == "pending" && <td
                                                                                         className={`pt-2 pb-1 ${bet?.profitLoss < 0
                                                                                             ? "text-black-500"
                                                                                             : "text-black-500"
@@ -847,14 +848,14 @@ const ClientBetsUser = () => {
                                                                                         {bet?.stack}
                                                                                     </td>}
 
-                                                                                   {bet?.status == "completed" && <td
-                                                                                className={`pt-2 pb-1 ${bet?.profitLoss < 0
-                                                                                    ? "text-red-500"
-                                                                                    : "text-green-500"
-                                                                                    }`}
-                                                                            >
-                                                                                {bet?.profitLoss}
-                                                                            </td>}
+                                                                                    {bet?.status == "completed" && <td
+                                                                                        className={`pt-2 pb-1 ${bet?.profitLoss < 0
+                                                                                            ? "text-red-500"
+                                                                                            : "text-green-500"
+                                                                                            }`}
+                                                                                    >
+                                                                                        {bet?.profitLoss}
+                                                                                    </td>}
 
                                                                                     <td
                                                                                         className="pt-2 pb-1"
@@ -868,15 +869,16 @@ const ClientBetsUser = () => {
                                                                                         {moment.utc(bet?.betClickTime).format("DD/MM/YY, h:mm:ss A")}
 
                                                                                     </td>
-                                                                                    {/* <td
-                                      className="pt-2 pb-1"
-                                      style={{ fontSize: "xx-small" }}
-                                    >
-                                      {bet?.userIp
-                                        ?.split(":")
-                                        ?.slice(0, 4)
-                                        ?.join(":")}
-                                    </td> */}
+                                                                                    {userState?.user?.role == "admin" &&<td
+                                                                                        className="pt-2 pb-1"
+                                                                                        style={{ fontSize: "xx-small" }}
+                                                                                    >
+                                                                                        {bet?.userIp
+                                                                                            // ?.split(":")
+                                                                                            // ?.slice(0, 4)
+                                                                                            // ?.join(":")
+                                                                                        }
+                                                                                    </td>}
                                                                                 </tr>
                                                                             ))}
                                                                     </tbody>

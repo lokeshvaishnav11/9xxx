@@ -549,7 +549,7 @@ const ClientBetsLedger = () => {
                       {/* <th className="pt-0 pb-0">PnL</th> */}
 
                       <th className="pt-0 pb-0">Date</th>
-                      {/* <th className="pt-0 pb-0">IP</th> */}
+                     { userState?.user?.role == "admin" && <th className="pt-0 pb-0">IP</th>}
                     </tr>
                   </thead>
                   <tbody className="small">
@@ -649,12 +649,12 @@ const ClientBetsLedger = () => {
                           {moment.utc(bet?.betClickTime).format("MMMM Do, h:mm:ss A")}
 
                         </td>
-                        {/* <td
+                        {userState?.user?.role == "admin" && <td
                           className="pt-2 pb-1"
                           style={{ fontSize: "xx-small" }}
                         >
-                          {bet?.userIp?.split(":").slice(0, 4).join(":")}
-                        </td> */}
+                          {bet?.userIp}
+                        </td>}
                       </tr>
                     ))}
                   </tbody>
@@ -730,7 +730,7 @@ const ClientBetsLedger = () => {
                                   {/* <th className="pt-0 pb-0">PnL</th> */}
 
                                   <th className="pt-0 pb-0">Date</th>
-                                  {/* <th className="pt-0 pb-0">IP</th> */}
+                                  {userState?.user?.role == "admin" && <th className="pt-0 pb-0">IP</th>}
                                 </tr>
                               </thead>
 
@@ -858,12 +858,12 @@ const ClientBetsLedger = () => {
 
                                       </td>
 
-                                      {/* <td
+                                      {userState?.user?.role == "admin" &&<td
                                         className="pt-2 pb-1"
                                         style={{ fontSize: "xx-small" }}
                                       >
-                                        {bet?.userIp?.split(":")?.slice(0, 4)?.join(":")}
-                                      </td> */}
+                                        {bet?.userIp}
+                                      </td>}
                                     </tr>
                                   ))}
                               </tbody>
