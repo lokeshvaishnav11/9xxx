@@ -375,7 +375,7 @@ const AdminDashboard = () => {
           <div className="container mt30">
             <div className="row">
               <div className="col-6 mb-2 col-md-3 text-center">
-                <a href={`admin/list-clients`}>
+                <a href={`admin/list-clients/${userState?.user?.username}/user`}>
                   <div className="wap w-100 text-center">
                     <span className="icon-circle">
                       <AccountCircleIcon

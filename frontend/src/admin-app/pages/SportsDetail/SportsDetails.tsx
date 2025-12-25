@@ -76,7 +76,7 @@ const SportsDetails = () => {
       setmarketData(
         res?.data?.data?.matches
           ? res?.data?.data?.matches
-            ?.filter((match: any) => match?.bets && match?.bets?.length > 0)
+            ?.filter((match: any) => match?.bets)
             .reverse()
           : []
       );
