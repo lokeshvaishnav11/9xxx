@@ -6,6 +6,7 @@ import moment from 'moment'
 import mobileSubheader from '../_layout/elements/mobile-subheader'
 import { isMobile } from 'react-device-detect'
 import userService from '../../../services/user.service'
+import { Color } from 'antd/es/color-picker'
 
 
 const DeletedBets = ({ hideHeader, matchId }: any) => {
@@ -52,6 +53,7 @@ const DeletedBets = ({ hideHeader, matchId }: any) => {
               <th>Bet On</th>
               <th>Rate</th>
               <th>Amount</th>
+               <th>yes/No</th>
               <th>P/L</th>
               <th>Place Date</th>
             </tr>
@@ -72,8 +74,10 @@ const DeletedBets = ({ hideHeader, matchId }: any) => {
                   <td>{bet.bet_on || '-'}</td>
                   <td>{bet.odds ?? '-'}</td>
                   <td>{bet.stack ?? '-'}</td>
+                  <td style={{color: bet.isBack ? "green" : "red"}}>{bet.isBack ? 'Yes' : 'No'}</td>
                   <td>{bet.pnl ?? '-'}</td>
-                  <td>{new Date(bet.createdAt).toLocaleString()}</td>
+             
+                  <td>{moment.utc(bet.betClickTime).format("MMMM Do, h:mm:ss A")}</td>
                 </tr>
               ))
             )}
