@@ -244,6 +244,7 @@ const ListClients = () => {
     page?: number;
   }) => {
     if (!obj.page) obj.page = 1;
+    setUserList([] as any);
     userService.getUserList(obj).then((res: AxiosResponse<any>) => {
       setSearchObj(obj);
       console.log(res.data.data.items, "first data ");
