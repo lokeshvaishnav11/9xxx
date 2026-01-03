@@ -240,7 +240,7 @@ const CasinoDetail = () => {
   const [startDate, setStartDate] = React.useState("");
   const [endDate, setEndDate] = React.useState("");
   const [expandedMatches, setExpandedMatches] = React.useState<{ [key: string]: boolean }>({});
-   const userState = useAppSelector(selectUserData);
+  const userState = useAppSelector(selectUserData);
 
   // ✅ Helper function to safely parse Decimal128 or string to number
   const toNumber = (val: any): number => {
@@ -382,11 +382,16 @@ const CasinoDetail = () => {
                                             key={j}
                                             className="text-center align-middle fs-6"
                                           >
-                                            <td style={{ fontSize: "10px" }} className="p-1 pt-2 "> {b?.parentData
-                                                                                .filter((item: any) => item !== userState.user.username)
-                                                                                .join("/")}/{b?.userName}</td>
+                                            <td style={{ fontSize: "10px" }} className="p-1 pt-2 ">   {
+                                              b?.parentData
+                                                ?.slice(
+                                                  b?.parentData.indexOf(userState.user.username) + 1
+                                                )
+                                                .join("/")
+                                            }
+                                              /{b?.userName}</td>
 
-                                                                           
+
                                             <td>{b?.selectionName}</td>
                                             <td>{b?.odds}</td>
                                             <td>{b?.stack}</td>
@@ -395,9 +400,8 @@ const CasinoDetail = () => {
                                             </td>
                                             <td>
                                               <span
-                                                className={`badge rounded-pill text-light ${
-                                                  pl >= 0 ? "bg-success" : "bg-danger"
-                                                }`}
+                                                className={`badge rounded-pill text-light ${pl >= 0 ? "bg-success" : "bg-danger"
+                                                  }`}
                                               >
                                                 {pl >= 0 ? "Win" : "Lost"}
                                               </span>
